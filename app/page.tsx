@@ -9,14 +9,43 @@ import { FloatingActions } from "@/components/floating-actions"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Denmar Tours & Travel - Your Dream Trip Awaits",
   description:
     "Plan your dream vacation with Denmar Tours & Travel. Discover amazing destinations, affordable packages, and exceptional service for unforgettable travel experiences.",
+  keywords: "travel agency, vacation packages, tours, flights, hotels, travel deals, destinations, travel planning",
+  authors: [{ name: "Denmar Tours & Travel" }],
+  creator: "Denmar Tours & Travel",
+  publisher: "Denmar Tours & Travel",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "Denmar Tours & Travel - Your Dream Trip Awaits",
     description:
       "Plan your dream vacation with Denmar Tours & Travel. Discover amazing destinations, affordable packages, and exceptional service.",
-    images: ["/placeholder.svg?height=630&width=1200"],
+    images: ["/denmar.png"],
+  },
+  icons: {
+    icon: [
+      {
+        url: "/denmar.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/denmar.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+    ],
   },
 }
 

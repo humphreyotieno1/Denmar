@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Poppins, Open_Sans } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -50,7 +49,7 @@ export const metadata: Metadata = {
       "Discover amazing destinations with Denmar Tours & Travel. Affordable prices, safety first, tailored trips, and 24/7 support.",
     images: [
       {
-        url: "/placeholder.svg?height=630&width=1200",
+        url: "/denmar.png",
         width: 1200,
         height: 630,
         alt: "Denmar Tours & Travel - Amazing Destinations",
@@ -62,7 +61,7 @@ export const metadata: Metadata = {
     title: "Denmar Tours & Travel - Your Dream Trip Awaits",
     description:
       "Discover amazing destinations with Denmar Tours & Travel. Affordable prices, safety first, tailored trips, and 24/7 support.",
-    images: ["/placeholder.svg?height=630&width=1200"],
+    images: ["/denmar.png"],
     creator: "@denmartours",
   },
   verification: {
@@ -71,7 +70,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://denmartours.com",
   },
-    generator: 'v0.dev'
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -82,9 +81,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${openSans.variable}`}>
       <body className="font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   )

@@ -7,21 +7,21 @@ import { Button } from "@/components/ui/button"
 const heroSlides = [
   {
     id: 1,
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "/denmar1.jpeg",
     title: "Discover Paradise",
     subtitle: "Escape to breathtaking destinations around the world",
     cta: "Plan Your Dream Trip",
   },
   {
     id: 2,
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "/denmar2.jpeg",
     title: "Adventure Awaits",
     subtitle: "Experience thrilling adventures in stunning locations",
     cta: "Explore Adventures",
   },
   {
     id: 3,
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "/denmar3.jpeg",
     title: "Cultural Journeys",
     subtitle: "Immerse yourself in rich cultures and ancient traditions",
     cta: "Discover Culture",
@@ -47,7 +47,7 @@ export function HeroSection() {
   }
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-[calc(100vh-10rem)] overflow-hidden">
       {/* Slides */}
       {heroSlides.map((slide, index) => (
         <div
@@ -97,7 +97,7 @@ export function HeroSection() {
       </button>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
         {heroSlides.map((_, index) => (
           <button
             key={index}

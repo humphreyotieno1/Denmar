@@ -9,8 +9,8 @@ export function TopBanner() {
   if (!isVisible) return null
 
   return (
-    <div className="bg-brand-accent text-brand-primary py-2 px-4 text-center text-sm font-medium relative">
-      <p>🌟 Special Offer: Book your dream vacation now and save up to 30%! Limited time only.</p>
+    <div className="bg-brand-success text-brand-primary py-2 px-4 text-center text-sm font-medium relative">
+      <p>🌟 Special Offer: Book your dream vacation now and save big! Limited time only.</p>
       <button
         onClick={() => setIsVisible(false)}
         className="absolute right-4 top-1/2 -translate-y-1/2 hover:opacity-70"
