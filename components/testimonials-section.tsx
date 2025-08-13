@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 const testimonials = [
   {
@@ -188,12 +189,14 @@ export function TestimonialsSection() {
         {/* Call to Action */}
         <div className="text-center mt-16">
           <p className="text-lg text-gray-600 mb-6">Ready to create your own amazing travel story?</p>
+          <Link href='/contact'>
           <Button
             size="lg"
-            className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold px-8 py-4"
+            className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
           >
             Start Planning Your Trip
           </Button>
+          </Link>
         </div>
       </div>
     </section>

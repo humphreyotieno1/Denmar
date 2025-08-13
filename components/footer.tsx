@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react"
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer className="bg-brand-primary text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
@@ -21,28 +21,56 @@ export function Footer() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm">
                 <MapPin className="h-4 w-4 text-brand-accent" />
-                <span className="text-gray-300">123 Travel Street, Adventure City</span>
+                <span className="text-gray-300">3rd Floor, Design Center, Tausi Lane, Westlands, Nairobi, Kenya</span>
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Phone className="h-4 w-4 text-brand-accent" />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <span className="text-gray-300">+254 793 041 888</span>
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Mail className="h-4 w-4 text-brand-accent" />
-                <span className="text-gray-300">info@denmartours.com</span>
+                <span className="text-gray-300">info@denmartravel.co.ke</span>
               </div>
+            </div>
+          </div>
+
+          {/* Top Destinations */}
+          <div className="space-y-4">
+            <h3 className="font-heading text-lg font-semibold text-brand-accent">Top Destinations</h3>
+            <div className="space-y-2">
+              <Link href="/destinations/nairobi" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Nairobi
+              </Link>
+              <Link href="/destinations/europe" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Europe
+              </Link>
+              <Link href="/destinations/dubai" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Dubai and UAE
+              </Link>
+              <Link href="/destinations/africa" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Africa
+              </Link>
+              <Link href="/destinations/zimbabwe" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Zimbabwe
+              </Link>
+              <Link href="/destinations/mombasa" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Mombasa
+              </Link>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="font-heading text-lg font-semibold text-brand-accent">Quick Links</h3>
+            <h3 className="font-heading text-lg font-semibold text-brand-accent">The Company</h3>
             <div className="space-y-2">
-              <Link href="/" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
-                Home
-              </Link>
               <Link href="/about" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
                 About Us
+              </Link>
+              <Link href="/about" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Customer Reviews
+              </Link>
+              <Link href="/terms" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
+                Terms & Conditions
               </Link>
               <Link href="/services" className="block text-gray-300 hover:text-brand-accent transition-colors text-sm">
                 Services
@@ -78,19 +106,19 @@ export function Footer() {
                 placeholder="Your email"
                 className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
               />
-              <Button className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary">Subscribe</Button>
+              <Button className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary">Subscribe</Button>
             </div>
             <div className="flex space-x-4 pt-4">
-              <Link href="#" className="text-gray-300 hover:text-brand-accent transition-colors">
+              <Link href="https://www.facebook.com/denmartravel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
                 <Facebook className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-300 hover:text-brand-accent transition-colors">
+              <Link href="https://www.instagram.com/denmar_travel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
                 <Instagram className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-300 hover:text-brand-accent transition-colors">
-                <Linkedin className="h-5 w-5" />
+              <Link href="https://www.youtube.com/c/dennisGathitu/videos" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
+                <Youtube className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-300 hover:text-brand-accent transition-colors">
+              <Link href="https://x.com/DenmarTravel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
                 <Twitter className="h-5 w-5" />
               </Link>
             </div>
@@ -100,7 +128,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Denmar Tours & Travel. All rights reserved. | Privacy Policy | Terms of Service
+            {`  ${new Date().getFullYear()} Denmar Tours & Travel. All rights reserved.`} | Privacy Policy | Terms of Service
           </p>
         </div>
       </div>

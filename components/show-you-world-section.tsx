@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Globe, Users, Award } from "lucide-react"
+import Link from "next/link"
 
 export function ShowYouWorldSection() {
   return (
@@ -48,20 +49,22 @@ export function ShowYouWorldSection() {
               </div>
             </div>
 
+            <Link href='/services'>
             <Button
               size="lg"
-              className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold px-8 py-4"
+              className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
             >
               Start Your Journey
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
+            </Link>
           </div>
 
           {/* Right Image */}
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/placeholder.svg?height=600&width=500"
+                src="/denmar.png"
                 alt="Happy travelers exploring the world"
                 className="w-full h-[600px] object-cover"
               />

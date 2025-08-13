@@ -9,7 +9,7 @@ import { TestimonialsSection } from "@/components/testimonials-section"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <TopBanner />
       <Navbar />
 

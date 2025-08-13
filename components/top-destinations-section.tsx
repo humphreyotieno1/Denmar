@@ -1,191 +1,343 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight, Star, MapPin } from "lucide-react"
+import { useRef, useState, useEffect } from "react"
+import { ChevronLeft, ChevronRight, Star, MapPin} from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link"
 
-const destinations = [
+interface Destination {
+  id: number
+  name: string
+  image: string
+  description: string
+  price: string
+  rating: number
+  badge: string
+  badgeColor: string
+  href: string
+}
+
+const destinations: Destination[] = [
   {
     id: 1,
-    name: "Bali, Indonesia",
-    image: "/placeholder.svg?height=300&width=400",
-    description: "Tropical paradise with stunning beaches, ancient temples, and vibrant culture.",
+    name: "Nairobi, Kenya",
+    image: "/denmar1.jpeg",
+    description: "Discover the vibrant city of Nairobi with its rich history, modern architecture, and diverse culture.",
     price: "From $899",
     rating: 4.9,
     badge: "Hot Deal",
     badgeColor: "bg-red-500",
+    href: "/destinations/nairobi",
   },
   {
     id: 2,
-    name: "Paris, France",
-    image: "/placeholder.svg?height=300&width=400",
-    description: "The city of love with iconic landmarks, world-class cuisine, and rich history.",
+    name: "Europe",
+    image: "/denmar2.jpeg",
+    description: "Explore the diverse and rich culture of Europe with its ancient landmarks, modern cities, and vibrant nightlife.",
     price: "From $1,299",
     rating: 4.8,
     badge: "Popular",
     badgeColor: "bg-brand-accent",
+    href: "/destinations/europe",
   },
   {
     id: 3,
-    name: "Tokyo, Japan",
-    image: "/placeholder.svg?height=300&width=400",
-    description: "Modern metropolis blending traditional culture with cutting-edge technology.",
+    name: "Dubai, UAE",
+    image: "/denmar3.jpeg",
+    description: "Modern metropolis with world-class shopping, dining, and entertainment.",
     price: "From $1,599",
     rating: 4.9,
     badge: "New",
     badgeColor: "bg-brand-success",
+    href: "/destinations/dubai",
   },
   {
     id: 4,
-    name: "Santorini, Greece",
-    image: "/placeholder.svg?height=300&width=400",
-    description: "Breathtaking sunsets, white-washed buildings, and crystal-clear waters.",
+    name: "Africa",
+    image: "/denmar2.jpeg",
+    description: "Explore the diverse and rich culture of Africa with its ancient landmarks, modern cities, and vibrant nightlife.",
     price: "From $1,199",
     rating: 4.7,
     badge: "Romantic",
     badgeColor: "bg-pink-500",
+    href: "/destinations/africa",
   },
   {
     id: 5,
-    name: "Dubai, UAE",
-    image: "/placeholder.svg?height=300&width=400",
-    description: "Luxury destination with world-class shopping, dining, and entertainment.",
+    name: "The Beach - Mombasa, Kenya",
+    image: "/denmar1.jpeg",
+    description: "Tour the beautiful beaches of Mombasa with its rich history, modern architecture, and diverse culture.",
     price: "From $1,099",
     rating: 4.8,
     badge: "Luxury",
     badgeColor: "bg-purple-500",
+    href: "/destinations/mombasa",
   },
   {
     id: 6,
-    name: "Maldives",
-    image: "/placeholder.svg?height=300&width=400",
-    description: "Ultimate tropical getaway with overwater villas and pristine beaches.",
+    name: "Zimbabwe, Tanzania",
+    image: "/denmar2.jpeg",
+    description: "Travel and get to experience the beauty of Zimbabwe and Tanzania.",
     price: "From $2,299",
     rating: 4.9,
     badge: "Exclusive",
     badgeColor: "bg-brand-secondary",
+    href: "/destinations/zimbabwe",
   },
 ]
 
+// Floating shape component for background elements
+const FloatingShape = ({ className = "", delay = 0, duration = 10, y = 20 }) => (
+  <motion.div
+    className={`absolute rounded-full ${className}`}
+    initial={{ y: 0, opacity: 0.1 }}
+    animate={{ 
+      y: [0, y, 0],
+      opacity: [0.1, 0.15, 0.1]
+    }}
+    transition={{ 
+      duration,
+      delay,
+      repeat: Infinity,
+      repeatType: "reverse",
+      ease: "easeInOut"
+    }}
+  />
+)
+
 export function TopDestinationsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const itemsPerView = 3
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const cardWidth = 320 // Reduced to w-80 (20rem) for better responsiveness
+  const gap = 16 // gap-4 = 1rem = 16px
+
+  // Update currentIndex based on scroll position
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    const handleScroll = () => {
+      const scrollLeft = scrollContainer.scrollLeft
+      const newIndex = Math.round(scrollLeft / (cardWidth + gap))
+      setCurrentIndex(newIndex)
+    }
+
+    scrollContainer.addEventListener("scroll", handleScroll)
+    return () => scrollContainer.removeEventListener("scroll", handleScroll)
+  }, [cardWidth, gap])
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        nextSlide()
+      } else if (e.key === "ArrowLeft") {
+        prevSlide()
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [currentIndex])
+
+  const scrollToIndex = (index: number) => {
+    if (!scrollContainerRef.current) return
+    const scrollPosition = index * (cardWidth + gap)
+    scrollContainerRef.current.scrollTo({
+      left: scrollPosition,
+      behavior: "smooth",
+    })
+    setCurrentIndex(index)
+  }
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + itemsPerView >= destinations.length ? 0 : prev + itemsPerView))
+    const nextIndex = Math.min(currentIndex + 1, destinations.length - 1)
+    scrollToIndex(nextIndex)
   }
 
   const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? Math.max(0, destinations.length - itemsPerView) : Math.max(0, prev - itemsPerView),
-    )
+    const prevIndex = Math.max(currentIndex - 1, 0)
+    scrollToIndex(prevIndex)
   }
 
-  const visibleDestinations = destinations.slice(currentIndex, currentIndex + itemsPerView)
-
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-4xl font-bold text-brand-primary mb-4">TOP DESTINATIONS</h2>
+    <section className="relative py-20 bg-gradient-to-b from-blue-50 to-teal-70">
+      {/* Background Elements (clipped to section) */}
+      <div className="absolute inset-0 overflow-hidden">
+        <FloatingShape className="w-80 h-80 left-0 top-0 bg-brand-accent/15" delay={0} duration={8} y={20} />
+        <FloatingShape className="w-64 h-64 right-1/2 bottom-0 bg-brand-success/15" delay={0.5} duration={10} y={15} />
+        <FloatingShape className="w-48 h-48 right-1/3 top-1/4 bg-blue-400/15" delay={1} duration={12} y={10} />
+        <FloatingShape className="w-48 h-48 left-1/3 bottom-1/4 bg-blue-400/15" delay={1} duration={12} y={10} />
+
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-brand-primary/25"
+            style={{
+              left: `${20 + Math.random() * 60}%`, // Constrain to avoid edges
+              top: `${20 + Math.random() * 60}%`,
+            }}
+            animate={{
+              y: [0, 15, 0],
+              opacity: [0.2, 0.5, 0.2],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 3,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="font-heading text-4xl font-bold text-brand-primary mb-4">
+            TOP DESTINATIONS
+          </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Discover our most popular destinations and start planning your next adventure.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="relative">
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center mb-8">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={prevSlide}
-              className="flex items-center space-x-2 bg-transparent"
-              disabled={currentIndex === 0}
-            >
-              <ChevronLeft className="h-4 w-4" />
-              <span>Previous</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={nextSlide}
-              className="flex items-center space-x-2 bg-transparent"
-              disabled={currentIndex + itemsPerView >= destinations.length}
-            >
-              <span>Next</span>
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* Destinations Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {visibleDestinations.map((destination) => (
-              <Card key={destination.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-                <div className="relative">
-                  <img
-                    src={destination.image || "/placeholder.svg"}
-                    alt={destination.name}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <Badge className={`absolute top-4 left-4 ${destination.badgeColor} text-white`}>
-                    {destination.badge}
-                  </Badge>
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center space-x-1">
-                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-medium">{destination.rating}</span>
-                  </div>
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <MapPin className="h-4 w-4 text-brand-accent" />
-                    <h3 className="font-heading text-xl font-semibold text-brand-primary">{destination.name}</h3>
-                  </div>
-                  <p className="text-gray-600 mb-4 leading-relaxed">{destination.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-brand-success">{destination.price}</span>
-                    <Button className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary">
-                      View Details
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Mobile Horizontal Scroll */}
-          <div className="lg:hidden mt-8">
-            <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
-              {destinations.map((destination) => (
-                <Card
-                  key={destination.id}
-                  className="flex-shrink-0 w-80 hover:shadow-xl transition-all duration-300 overflow-hidden"
-                >
-                  <div className="relative">
+        <div className="relative overflow-hidden">
+          {/* Horizontal Scrollable Cards */}
+          <div
+            ref={scrollContainerRef}
+            className="flex space-x-4 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory scroll-smooth"
+            style={{ scrollSnapType: "x mandatory" }}
+            tabIndex={0}
+            role="region"
+            aria-label="Destinations carousel"
+          >
+            {destinations.map((destination, index) => (
+              <motion.div
+                key={destination.id}
+                className="flex-shrink-0 w-80 snap-center" // Reduced to w-80
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1,
+                  type: "spring",
+                  stiffness: 100,
+                }}
+              >
+                <Card className="group h-full hover:shadow-2xl transition-all duration-300 overflow-hidden border-0 shadow-lg bg-white/95 backdrop-blur-sm">
+                  <div className="relative overflow-hidden">
                     <img
                       src={destination.image || "/placeholder.svg"}
                       alt={destination.name}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <Badge className={`absolute top-4 left-4 ${destination.badgeColor} text-white`}>
+                    <Badge
+                      className={`absolute top-4 left-4 ${destination.badgeColor} text-white border-0 transform group-hover:scale-110 transition-transform duration-300`}
+                    >
                       {destination.badge}
                     </Badge>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1 transform group-hover:scale-110 transition-transform duration-300">
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <span className="text-sm font-medium">{destination.rating}</span>
+                    </div>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-heading text-lg font-semibold text-brand-primary mb-2">{destination.name}</h3>
-                    <p className="text-gray-600 text-sm mb-3">{destination.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-brand-success">{destination.price}</span>
-                      <Button size="sm" className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary">
-                        View
+                  <CardContent className="p-5 bg-gradient-to-b from-white to-gray-50">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <MapPin className="h-5 w-5 text-brand-accent" />
+                      <h3 className="font-heading text-lg font-bold text-brand-primary">
+                        {destination.name}
+                      </h3>
+                    </div>
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      {destination.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-xl font-bold text-brand-success">
+                        {destination.price}
+                      </span>
+                      <Link href={destination.href}>  
+                      <Button
+                        className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold hover:shadow-md transition-all duration-300 transform hover:scale-105"
+                        size="sm"
+                      >
+                        View Details
                       </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Floating Navigation Arrows */}
+          <AnimatePresence>
+            {currentIndex > 0 && (
+              <motion.div
+                className="absolute top-1/2 -translate-y-1/2 left-2 z-10"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={prevSlide}
+                  className="rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+                  aria-label="Previous destination"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </Button>
+              </motion.div>
+            )}
+            {currentIndex < destinations.length - 1 && (
+              <motion.div
+                className="absolute top-1/2 -translate-y-1/2 right-2 z-10"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={nextSlide}
+                  className="rounded-full w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+                  aria-label="Next destination"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Dots Navigation */}
+          <div className="flex justify-center space-x-2 mt-6">
+            {destinations.map((_, index) => (
+              <motion.button
+                key={index}
+                onClick={() => scrollToIndex(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex
+                    ? "bg-brand-accent w-6"
+                    : "bg-gray-300 hover:bg-gray-400 w-2"
+                }`}
+                aria-label={`Go to destination ${index + 1}`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              />
+            ))}
           </div>
         </div>
       </div>

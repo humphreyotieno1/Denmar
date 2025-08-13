@@ -2,6 +2,7 @@ import { Calendar, DollarSign, Globe, Clock, Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
 interface Package {
   name: string
@@ -105,9 +106,11 @@ export function DestinationDetail({ destination }: DestinationDetailProps) {
                               <div className="text-2xl font-bold text-brand-success">{pkg.price}</div>
                             </div>
                           </div>
-                          <Button className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold mt-4 md:mt-0">
+                          <Link href="/contact">
+                          <Button className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold mt-4 md:mt-0">
                             Book Now
                           </Button>
+                          </Link>
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-700 mb-2">Package Includes:</p>
@@ -172,16 +175,23 @@ export function DestinationDetail({ destination }: DestinationDetailProps) {
                   <p className="text-white/80 mb-6">
                     Our travel experts are here to help you create the perfect itinerary for your trip.
                   </p>
-                  <div className="space-y-3">
-                    <Button className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold">
+                  <div className="mb-4">
+                    <Link href="/contact">
+                    <Button className="w-full bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold">
                       Get Free Consultation
                     </Button>
+                    </Link>
+                    </div>
+
+                  <div className="mt-4">
+                    <Link href="tel:+254722222222">
                     <Button
                       variant="outline"
                       className="w-full border-white text-white hover:bg-white hover:text-brand-primary bg-transparent"
                     >
                       Call Us Now
                     </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

@@ -1,6 +1,7 @@
 import { MessageSquare, Phone, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import Link from "next/link"
 
 const ctaOptions = [
   {
@@ -9,6 +10,7 @@ const ctaOptions = [
     description: "Tell us your dream destination and we'll create a personalized quote for you.",
     buttonText: "Request Quote",
     color: "bg-brand-accent hover:bg-brand-accent/90 text-brand-primary",
+    href: "/contact",
   },
   {
     icon: Phone,
@@ -16,6 +18,7 @@ const ctaOptions = [
     description: "Speak directly with our travel experts for personalized recommendations.",
     buttonText: "Call Now",
     color: "bg-brand-success hover:bg-brand-success/90 text-white",
+    href: "/contact",
   },
   {
     icon: Package,
@@ -23,6 +26,7 @@ const ctaOptions = [
     description: "Explore our curated travel packages designed for every type of traveler.",
     buttonText: "View Packages",
     color: "bg-brand-secondary hover:bg-brand-secondary/90 text-white",
+    href: "/deals",
   },
 ]
 
@@ -47,9 +51,11 @@ export function ReadyToPlanSection() {
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-6 group-hover:scale-110 transition-transform duration-300">
                   <option.icon className="h-8 w-8 text-brand-accent" />
                 </div>
-                <h3 className="font-heading text-2xl font-semibold mb-4">{option.title}</h3>
+                <h3 className="font-heading text-white text-2xl font-semibold mb-4">{option.title}</h3>
                 <p className="text-white/80 mb-6 leading-relaxed">{option.description}</p>
-                <Button className={`w-full ${option.color} font-semibold`}>{option.buttonText}</Button>
+                <Link href={option.href}>
+                <Button className={`w-full ${option.color} font-semibold hover:bg-brand-primary hover:text-white`}>{option.buttonText}</Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
@@ -58,6 +64,7 @@ export function ReadyToPlanSection() {
         {/* Additional CTA */}
         <div className="text-center mt-16">
           <p className="text-lg mb-6 opacity-90">Or explore all our services and destinations</p>
+          <Link href="/services">
           <Button
             size="lg"
             variant="outline"
@@ -65,6 +72,7 @@ export function ReadyToPlanSection() {
           >
             Explore All Services
           </Button>
+          </Link>
         </div>
       </div>
     </section>

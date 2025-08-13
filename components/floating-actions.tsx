@@ -28,7 +28,7 @@ export function FloatingActions() {
         asChild
       >
         <a
-          href="https://wa.me/1234567890"
+          href="https://wa.me/254793041888"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contact us on WhatsApp"
@@ -43,7 +43,7 @@ export function FloatingActions() {
         className="rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg w-14 h-14 p-0"
         asChild
       >
-        <a href="tel:+1234567890" aria-label="Call us">
+        <a href="tel:+254793041888" aria-label="Call us">
           <Phone className="h-6 w-6" />
         </a>
       </Button>

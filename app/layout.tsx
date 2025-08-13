@@ -18,6 +18,7 @@ const openSans = Open_Sans({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://denmartravel.co.ke/"),
   title: {
     default: "Denmar Tours & Travel - Your Dream Trip Awaits",
     template: "%s | Denmar Tours & Travel",

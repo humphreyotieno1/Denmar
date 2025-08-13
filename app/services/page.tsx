@@ -7,7 +7,7 @@ import { ServicesGrid } from "@/components/services-grid"
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <TopBanner />
       <Navbar />
 

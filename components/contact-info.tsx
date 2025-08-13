@@ -18,11 +18,13 @@ export function ContactInfo() {
           <div>
             <h3 className="font-semibold text-brand-primary mb-1">Office Address</h3>
             <p className="text-gray-600">
-              123 Travel Street
+              3rd Floor
               <br />
-              Adventure City, AC 12345
+              Design Center
               <br />
-              United States
+              Tausi Lane, Westlands
+              <br />
+              Nairobi, Kenya
             </p>
           </div>
         </div>
@@ -35,11 +37,9 @@ export function ContactInfo() {
           <div>
             <h3 className="font-semibold text-brand-primary mb-1">Phone Numbers</h3>
             <p className="text-gray-600">
-              Main: +1 (555) 123-4567
+              Main: +254 793 041 888
               <br />
-              Emergency: +1 (555) 123-4568
-              <br />
-              Toll Free: 1-800-DENMAR-1
+              Emergency: +254 793 041 888
             </p>
           </div>
         </div>
@@ -52,11 +52,11 @@ export function ContactInfo() {
           <div>
             <h3 className="font-semibold text-brand-primary mb-1">Email Addresses</h3>
             <p className="text-gray-600">
-              General: info@denmartours.com
+              General: info@denmartravel.co.ke
               <br />
-              Bookings: bookings@denmartours.com
+              Bookings: bookings@denmartravel.co.ke
               <br />
-              Support: support@denmartours.com
+              Support: support@denmartravel.co.ke
             </p>
           </div>
         </div>
@@ -83,7 +83,7 @@ export function ContactInfo() {
         {/* Quick Contact Buttons */}
         <div className="pt-6 border-t space-y-3">
           <Button className="w-full bg-green-500 hover:bg-green-600 text-white" asChild>
-            <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/254793041888" target="_blank" rel="noopener noreferrer">
               <MessageCircle className="mr-2 h-4 w-4" />
               WhatsApp Chat
             </a>

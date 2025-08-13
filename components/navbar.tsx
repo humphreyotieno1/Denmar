@@ -2,28 +2,27 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { Search, Menu, X, ChevronDown, ChevronRight } from "lucide-react"
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { SearchFunctionality } from "@/components/search-functionality"
 import Image from "next/image"
 
 const destinations = [
-  { name: "Bali, Indonesia", href: "/destinations/bali" },
-  { name: "Paris, France", href: "/destinations/paris" },
-  { name: "Tokyo, Japan", href: "/destinations/tokyo" },
-  { name: "Santorini, Greece", href: "/destinations/santorini" },
-  { name: "Dubai, UAE", href: "/destinations/dubai" },
+  { name: "Africa", href: "/destinations/africa", image: "/denmar1.jpeg" },
+  { name: "Dubai, UAE", href: "/destinations/dubai", image: "/denmar2.jpeg" },
+  { name: "Europe", href: "/destinations/europe", image: "/denmar3.jpeg" },
+  { name: "Mombasa, Kenya", href: "/destinations/mombasa", image: "/denmar1.jpeg" },
+  { name: "Zimbabwe", href: "/destinations/zimbabwe", image: "/denmar2.jpeg" },
+  { name: "Nairobi, Kenya", href: "/destinations/nairobi", image: "/denmar2.jpeg" },
 ]
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isDestinationsOpen, setIsDestinationsOpen] = useState(false)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
@@ -32,111 +31,113 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Handle click outside to close mobile menu
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
-        mobileMenuRef.current && 
+        mobileMenuRef.current &&
         !mobileMenuRef.current.contains(event.target as Node) &&
         menuButtonRef.current &&
         !menuButtonRef.current.contains(event.target as Node)
       ) {
         setIsMobileMenuOpen(false)
+        setIsDestinationsOpen(false)
       }
     }
 
-    // Add event listener when menu is open
     if (isMobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      document.body.style.overflow = 'hidden' // Prevent scrolling when menu is open
+      document.addEventListener("mousedown", handleClickOutside)
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = 'auto' // Re-enable scrolling when menu is closed
+      document.body.style.overflow = "auto"
     }
 
-    // Clean up
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.body.style.overflow = 'auto'
+      document.removeEventListener("mousedown", handleClickOutside)
+      document.body.style.overflow = "auto"
     }
   }, [isMobileMenuOpen])
 
-  // Close mobile menu when a link is clicked
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
+    setIsDestinationsOpen(false)
   }
 
-  // Toggle mobile menu
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
 
+  const toggleDestinations = () => {
+    setIsDestinationsOpen(!isDestinationsOpen)
+  }
+
   return (
     <nav
-      className={`sticky top-0 z-40 transition-all duration-300 ${
-        isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white"
-      }`}
+      className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 py-2 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+
           <Link href="/" className="flex items-center" onClick={closeMobileMenu}>
-            <Image src="/denmar.png" alt="Logo" width={200} height={200} />
+            <Image
+              src="/denmar.png"
+              alt="Denmar Travel Logo"
+              width={150}
+              height={150}
+              className="object-contain"
+              priority
+            />
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-brand-success transition-colors font-medium">
+            <Link href="/" className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg">
               Home
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-brand-success transition-colors font-medium">
+            <Link href="/about" className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg">
               About Us
             </Link>
-            <Link href="/services" className="text-gray-700 hover:text-brand-success transition-colors font-medium">
+            <Link href="/services" className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg">
               Services
             </Link>
 
-            {/* Destinations Dropdown */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center space-x-1 text-gray-700 hover:text-brand-success transition-colors font-medium">
+              <DropdownMenuTrigger className="flex items-center space-x-1 text-gray-700 hover:text-brand-success transition-colors font-bold text-lg">
                 <span>Destinations</span>
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center" className="w-48">
+              <DropdownMenuContent
+                align="center"
+                className="w-64 mt-2 origin-top animate-fade-in-down"
+              >
                 {destinations.map((destination) => (
                   <DropdownMenuItem key={destination.name} asChild>
-                    <Link href={destination.href} className="w-full">
-                      {destination.name}
+                    <Link
+                      href={destination.href}
+                      className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-md transition-all duration-200"
+                    >
+                      <Image
+                        src={destination.image}
+                        alt={`${destination.name} preview`}
+                        width={100}
+                        height={100}
+                        className="rounded-md object-cover"
+                      />
+                      <span className="text-md font-semibold">{destination.name}</span>
                     </Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link href="/deals" className="text-gray-700 hover:text-brand-success transition-colors font-medium">
+            <Link href="/deals" className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg">
               Deals
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-brand-success transition-colors font-medium">
+            <Link href="/contact" className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg">
               Contact Us
             </Link>
           </div>
 
-          {/* Right Side - Search */}
           <div className="flex items-center space-x-4">
-            {/* Search */}
-            <div className="relative">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="hidden md:flex"
-                aria-label="Search destinations and services"
-              >
-                <Search className="h-4 w-4" />
-              </Button>
-              <SearchFunctionality isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-            </div>
-
-            {/* Mobile Menu Button */}
             <Button
               ref={menuButtonRef}
               variant="ghost"
@@ -152,17 +153,15 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <div 
+      <div
         ref={mobileMenuRef}
-        className={`fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="h-full flex flex-col overflow-y-auto">
           <div className="p-4 border-b">
             <div className="flex items-center justify-between">
-              <span className="text-lg font-semibold">Menu</span>
+              <span className="text-lg font-bold">Menu</span>
               <Button
                 variant="ghost"
                 size="sm"
@@ -174,56 +173,65 @@ export function Navbar() {
               </Button>
             </div>
           </div>
-          
-          <nav className="flex-1 p-4 space-y-1">
-            <MobileNavLink href="/" onClick={closeMobileMenu}>
+
+          <nav className="flex-1 p-4 space-y-4">
+            <MobileNavLink href="/" className="text-lg font-bold" onClick={closeMobileMenu}>
               Home
             </MobileNavLink>
-            <MobileNavLink href="/about" onClick={closeMobileMenu}>
+            <MobileNavLink href="/about" className="text-lg font-bold" onClick={closeMobileMenu}>
               About Us
             </MobileNavLink>
-            <MobileNavLink href="/services" onClick={closeMobileMenu}>
+            <MobileNavLink href="/services" className="text-lg font-bold" onClick={closeMobileMenu}>
               Services
             </MobileNavLink>
-            
+
             <div className="mt-2">
-              <div className="flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700">
-                Destinations
-                <ChevronRight className="h-4 w-4" />
-              </div>
-              <div className="pl-4 mt-1 space-y-1">
+              <button
+                className="flex items-center justify-between w-full px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 text-lg font-bold rounded-md focus:outline-none transition-all duration-200"
+                onClick={toggleDestinations}
+              >
+                <span className="text-lg font-bold">Destinations</span>
+                <ChevronRight
+                  className={`h-5 w-5 transition-transform duration-200 ${isDestinationsOpen ? "rotate-90" : ""
+                    }`}
+                />
+              </button>
+              <div
+                className={`pl-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ${isDestinationsOpen ? "max-h-96" : "max-h-0"
+                  }`}
+              >
                 {destinations.map((destination) => (
-                  <MobileNavLink 
-                    key={destination.name} 
-                    href={destination.href} 
+                  <MobileNavLink
+                    key={destination.name}
+                    href={destination.href}
                     onClick={closeMobileMenu}
-                    className="pl-3 text-sm"
+                    className="pl-3 text-sm flex items-center space-x-3"
                   >
-                    {destination.name}
+                    <Image
+                      src={destination.image}
+                      alt={`${destination.name} preview`}
+                      width={40}
+                      height={40}
+                      className="rounded-md object-cover"
+                    />
+                    <span className="text-md font-semibold">{destination.name}</span>
                   </MobileNavLink>
                 ))}
               </div>
             </div>
-            
-            <MobileNavLink href="/deals" onClick={closeMobileMenu}>
+
+            <MobileNavLink href="/deals" className="text-lg font-bold" onClick={closeMobileMenu}>
               Deals
             </MobileNavLink>
-            <MobileNavLink href="/contact" onClick={closeMobileMenu}>
+            <MobileNavLink href="/contact" className="text-lg font-bold" onClick={closeMobileMenu}>
               Contact Us
             </MobileNavLink>
           </nav>
-          
-          <div className="p-4 border-t">
-            <div className="relative">
-              <SearchFunctionality isOpen={true} onClose={closeMobileMenu} />
-            </div>
-          </div>
         </div>
       </div>
-      
-      {/* Backdrop */}
+
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300"
           onClick={closeMobileMenu}
           aria-hidden="true"
@@ -233,17 +241,16 @@ export function Navbar() {
   )
 }
 
-// Mobile Navigation Link Component
-function MobileNavLink({ 
-  href, 
-  onClick, 
+function MobileNavLink({
+  href,
+  onClick,
   children,
-  className = ""
-}: { 
-  href: string; 
-  onClick: () => void;
-  children: React.ReactNode;
-  className?: string;
+  className = "",
+}: {
+  href: string
+  onClick: () => void
+  children: React.ReactNode
+  className?: string
 }) {
   return (
     <Link

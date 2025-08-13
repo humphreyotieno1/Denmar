@@ -36,10 +36,7 @@ export function StorySection() {
         <div className="text-center mb-16">
           <h2 className="font-heading text-4xl font-bold text-brand-primary mb-6">OUR STORY</h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Founded in 2009 by a group of passionate travelers, Denmar Tours & Travel began as a small dream to share
-            the world's wonders with fellow adventurers. What started as a local travel agency has grown into a global
-            network of travel experts, but our core mission remains the same: to turn your travel dreams into
-            unforgettable realities.
+            Get to Know more about Denmar Tours & Travel
           </p>
         </div>
 
@@ -83,7 +80,7 @@ export function StorySection() {
             </div>
             <div className="relative">
               <img
-                src="/placeholder.svg?height=400&width=500"
+                src="/denmar.png"
                 alt="Our dedicated travel team"
                 className="w-full h-80 object-cover rounded-xl shadow-lg"
               />

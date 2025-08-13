@@ -15,12 +15,12 @@ export const metadata: Metadata = {
 const dubaiData = {
   name: "Dubai, UAE",
   tagline: "City of Gold and Innovation",
-  heroImage: "/placeholder.svg?height=600&width=1200",
+  heroImage: "/denmar1.jpeg",
   gallery: [
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
+    "/denmar2.jpeg",
+    "/denmar3.jpeg",
+    "/denmar1.jpeg",
+    "/denmar2.jpeg",
   ],
   description:
     "Dubai represents the pinnacle of modern luxury and innovation, where futuristic skyscrapers meet traditional Arabian culture. This cosmopolitan city offers world-class shopping, dining, entertainment, and architectural marvels that defy imagination.",
@@ -66,7 +66,7 @@ const dubaiData = {
 
 export default function DubaiPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <TopBanner />
       <Navbar />
 

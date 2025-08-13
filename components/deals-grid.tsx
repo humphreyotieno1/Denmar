@@ -1,9 +1,32 @@
+"use client"
+
+import { useState } from "react"
+import Image from "next/image"
 import { Calendar, Clock, Star, MapPin } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
-const deals = [
+interface Deal {
+  id: number
+  title: string
+  destination: string
+  image: string
+  originalPrice: string
+  salePrice: string
+  discount: string
+  duration: string
+  validUntil: string
+  description: string
+  includes: string[]
+  badge: string
+  badgeColor: string
+  rating: number
+  reviews: number
+}
+
+const deals: Deal[] = [
   {
     id: 1,
     title: "Early Bird Bali Special",
@@ -110,90 +133,167 @@ const deals = [
 ]
 
 export function DealsGrid() {
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 3 // Matches 3x2 grid on lg screens
+  const totalPages = Math.ceil(deals.length / itemsPerPage)
+
+  // Calculate the slice of deals to display
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const currentDeals = deals.slice(startIndex, startIndex + itemsPerPage)
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: "smooth" }) // Scroll to top on page change
+  }
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="font-heading text-4xl font-bold text-brand-primary mb-6">EXCLUSIVE TRAVEL DEALS</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <motion.h2
+            className="font-heading text-4xl font-bold text-brand-primary mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            EXCLUSIVE TRAVEL DEALS
+          </motion.h2>
+          <motion.p
+            className="text-xl text-gray-600 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             Don't miss out on these incredible offers! Limited-time deals on our most popular destinations.
-          </p>
+          </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {deals.map((deal) => (
-            <Card
+          {currentDeals.map((deal, index) => (
+            <motion.div
               key={deal.id}
-              className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <div className="relative">
-                <img
-                  src={deal.image || "/placeholder.svg"}
-                  alt={deal.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <Badge className={`absolute top-4 left-4 ${deal.badgeColor} text-white`}>{deal.badge}</Badge>
-                <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full font-bold text-sm">
-                  {deal.discount}
-                </div>
-                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
-                  <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                  <span className="text-sm font-medium">{deal.rating}</span>
-                  <span className="text-xs text-gray-500">({deal.reviews})</span>
-                </div>
-              </div>
-
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-2 mb-2">
-                  <MapPin className="h-4 w-4 text-brand-accent" />
-                  <span className="text-sm text-gray-600">{deal.destination}</span>
-                </div>
-
-                <h3 className="font-heading text-xl font-semibold text-brand-primary mb-3">{deal.title}</h3>
-
-                <p className="text-gray-600 text-sm mb-4 leading-relaxed">{deal.description}</p>
-
-                {/* Price */}
-                <div className="flex items-center space-x-2 mb-4">
-                  <span className="text-2xl font-bold text-brand-success">{deal.salePrice}</span>
-                  <span className="text-lg text-gray-400 line-through">{deal.originalPrice}</span>
-                </div>
-
-                {/* Duration and Valid Until */}
-                <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
-                  <div className="flex items-center space-x-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{deal.duration}</span>
+              <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg">
+                <div className="relative">
+                  <Image
+                    src={deal.image || "/placeholder.svg"}
+                    alt={deal.title}
+                    width={400}
+                    height={192}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    priority={index < 3}
+                  />
+                  <Badge className={`absolute top-4 left-4 ${deal.badgeColor} text-white`}>{deal.badge}</Badge>
+                  <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full font-bold text-sm">
+                    {deal.discount}
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="h-4 w-4" />
-                    <span>Until {deal.validUntil}</span>
+                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
+                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                    <span className="text-sm font-medium">{deal.rating}</span>
+                    <span className="text-xs text-gray-500">({deal.reviews})</span>
                   </div>
                 </div>
 
-                {/* Includes */}
-                <div className="mb-6">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Package Includes:</p>
-                  <div className="space-y-1">
-                    {deal.includes.slice(0, 3).map((item, index) => (
-                      <div key={index} className="flex items-center text-xs text-gray-600">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent mr-2" />
-                        {item}
-                      </div>
-                    ))}
-                    {deal.includes.length > 3 && (
-                      <div className="text-xs text-brand-accent">+{deal.includes.length - 3} more included</div>
-                    )}
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <MapPin className="h-4 w-4 text-brand-accent" />
+                    <span className="text-sm text-gray-600">{deal.destination}</span>
                   </div>
-                </div>
 
-                <Button className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold">
-                  Book This Deal
-                </Button>
-              </CardContent>
-            </Card>
+                  <h3 className="font-heading text-xl font-semibold text-brand-primary mb-3">{deal.title}</h3>
+
+                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{deal.description}</p>
+
+                  {/* Price */}
+                  <div className="flex items-center space-x-2 mb-4">
+                    <span className="text-2xl font-bold text-brand-success">{deal.salePrice}</span>
+                    <span className="text-lg text-gray-400 line-through">{deal.originalPrice}</span>
+                  </div>
+
+                  {/* Duration and Valid Until */}
+                  <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-4 w-4" />
+                      <span>{deal.duration}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="h-4 w-4" />
+                      <span>Until {deal.validUntil}</span>
+                    </div>
+                  </div>
+
+                  {/* Includes */}
+                  <div className="mb-6">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Package Includes:</p>
+                    <div className="space-y-1">
+                      {deal.includes.slice(0, 3).map((item, index) => (
+                        <div key={index} className="flex items-center text-xs text-gray-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-brand-accent mr-2" />
+                          {item}
+                        </div>
+                      ))}
+                      {deal.includes.length > 3 && (
+                        <div className="text-xs text-brand-accent">+{deal.includes.length - 3} more included</div>
+                      )}
+                    </div>
+                  </div>
+
+                  <Button className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold">
+                    Book This Deal
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center space-x-2 mt-12">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1"
+              aria-label="Previous page"
+            >
+              Previous
+            </Button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <motion.button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
+                  currentPage === index + 1
+                    ? "bg-brand-accent text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                aria-label={`Go to page ${index + 1}`}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                {index + 1}
+              </motion.button>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1"
+              aria-label="Next page"
+            >
+              Next
+            </Button>
+          </div>
+        )}
 
         {/* Newsletter Signup */}
         <div className="mt-16 text-center">

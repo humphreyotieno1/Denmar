@@ -122,6 +122,16 @@
   --color-brand-success: #7aa842;
   --color-brand-secondary: #4b7e3f;
   --color-brand-white: #ffffff;
+
+  /* Accent tints */
+  --color-accent-50: rgba(249, 176, 0, 0.05);
+  --color-accent-100: rgba(249, 176, 0, 0.1);
+  --color-accent-200: rgba(249, 176, 0, 0.2);
+  
+  /* Success tints */
+  --color-success-50: rgba(122, 168, 66, 0.05);
+  --color-success-100: rgba(122, 168, 66, 0.1);
+  --color-success-200: rgba(122, 168, 66, 0.2);
 }
 
 @layer base {

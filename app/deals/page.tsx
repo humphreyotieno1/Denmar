@@ -7,7 +7,7 @@ import { DealsGrid } from "@/components/deals-grid"
 
 export default function DealsPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <TopBanner />
       <Navbar />
 
