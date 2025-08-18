@@ -72,7 +72,7 @@ export function ContactForm() {
   }
 
   return (
-    <Card className="border-0 shadow-lg">
+    <Card className="border-0 shadow-lg p-8">
       <CardHeader>
         <CardTitle className="font-heading text-2xl text-brand-primary">Get in Touch</CardTitle>
         <p className="text-gray-600">Fill out the form below and we'll help you plan your perfect trip.</p>

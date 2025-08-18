@@ -26,94 +26,150 @@ interface Destination {
 
 const destinations: Destination[] = [
   {
-    id: "africa",
-    name: "Africa",
+    id: "thailand",
+    name: "Thailand",
     image: "/denmar1.jpeg",
-    description: "Experience the vibrant culture, stunning landscapes, and incredible wildlife of Africa.",
-    price: "From $899",
-    duration: "7-14 days",
-    rating: 4.9,
-    reviews: 1247,
-    badge: "Hot Deal",
-    badgeColor: "bg-red-500",
-    highlights: ["Wildlife reserves", "Vibrant culture", "Stunning landscapes", "Adventure activities"],
-    href: "/destinations/africa",
-  },
-  {
-    id: "dubai",
-    name: "Dubai, UAE",
-    image: "/denmar2.jpeg",
-    description: "Explore the iconic landmarks, luxurious shopping malls, and world-class cuisine of Dubai.",
-    price: "From $1,299",
-    duration: "5-10 days",
+    description: "Discover vibrant culture, stunning beaches, and ancient temples in the Land of Smiles.",
+    price: "From $1,999",
+    duration: "7-12 days",
     rating: 4.8,
-    reviews: 2156,
+    reviews: 1567,
     badge: "Popular",
     badgeColor: "bg-brand-accent",
-    highlights: ["Burj Khalifa", "Luxury shopping", "Desert safari", "Modern architecture"],
-    href: "/destinations/dubai",
+    highlights: ["Grand Palace", "Phuket beaches", "Chiang Mai temples", "Street food markets"],
+    href: "/destinations/thailand",
   },
   {
-    id: "europe",
-    name: "Europe",
-    image: "/denmar3.jpeg",
-    description: "Discover the rich history, stunning landscapes, and vibrant culture of Europe.",
-    price: "From $1,599",
-    duration: "6-12 days",
-    rating: 4.9,
-    reviews: 987,
-    badge: "New",
-    badgeColor: "bg-brand-success",
-    highlights: ["Historic landmarks", "Stunning landscapes", "Vibrant culture", "World-class cuisine"],
-    href: "/destinations/europe",
-  },
-  {
-    id: "mombasa",
-    name: "Mombasa, Kenya",
-    image: "/denmar1.jpeg",
-    description: "Relax on the stunning beaches, explore the historic Old Town, and experience the vibrant culture of Mombasa.",
-    price: "From $1,199",
-    duration: "4-8 days",
-    rating: 4.7,
-    reviews: 834,
-    badge: "Romantic",
-    badgeColor: "bg-pink-500",
-    highlights: ["Stunning beaches", "Historic Old Town", "Vibrant culture", "Water sports"],
-    href: "/destinations/mombasa",
-  },
-  {
-    id: "nairobi",
-    name: "Nairobi, Kenya",
+    id: "south-africa",
+    name: "South Africa",
     image: "/denmar2.jpeg",
-    description: "Explore the vibrant city of Nairobi, with its world-class shopping, dining, and entertainment.",
-    price: "From $1,099",
-    duration: "4-7 days",
-    rating: 4.8,
-    reviews: 1456,
+    description: "Experience diverse landscapes, wildlife safaris, and vibrant culture in South Africa.",
+    price: "From $2,799",
+    duration: "8-14 days",
+    rating: 4.9,
+    reviews: 1234,
+    badge: "Hot Deal",
+    badgeColor: "bg-red-500",
+    highlights: ["Kruger safaris", "Table Mountain", "Stellenbosch wines", "Garden Route"],
+    href: "/destinations/south-africa",
+  },
+  {
+    id: "seychelles",
+    name: "Seychelles",
+    image: "/denmar3.jpeg",
+    description: "Relax on pristine beaches and explore turquoise waters in this tropical paradise. Explore now.",
+    price: "From $3,599",
+    duration: "7-10 days",
+    rating: 4.9,
+    reviews: 892,
     badge: "Luxury",
     badgeColor: "bg-purple-500",
-    highlights: ["World-class shopping", "Luxury dining", "Modern architecture", "Entertainment"],
-    href: "/destinations/nairobi",
+    highlights: ["Anse Lazio", "Coral reefs", "Vallée de Mai", "Island-hopping"],
+    href: "/destinations/seychelles",
   },
   {
-    id: "zimbabwe",
-    name: "Zimbabwe, Tanzania",
-    image: "/denmar3.jpeg",
-    description: "Experience the incredible wildlife, stunning landscapes, and adventure activities of Zimbabwe.",
-    price: "From $2,299",
-    duration: "5-10 days",
+    id: "mauritius",
+    name: "Mauritius",
+    image: "/denmar1.jpeg",
+    description: "Unwind on idyllic beaches and explore the vibrant culture of Mauritius.",
+    price: "From $3,299",
+    duration: "7-10 days",
+    rating: 4.8,
+    reviews: 1045,
+    badge: "Romantic",
+    badgeColor: "bg-pink-500",
+    highlights: ["Le Morne", "Black River Gorges", "Port Louis markets", "Blue Bay"],
+    href: "/destinations/mauritius",
+  },
+  {
+    id: "italy",
+    name: "Italy",
+    image: "/denmar2.jpeg",
+    description: "Immerse yourself in the art, history, and cuisine of Italy’s iconic cities.",
+    price: "From $2,699",
+    duration: "7-12 days",
     rating: 4.9,
+    reviews: 1789,
+    badge: "Cultural",
+    badgeColor: "bg-blue-500",
+    highlights: ["Colosseum", "Venice canals", "Tuscan vineyards", "Italian cuisine"],
+    href: "/destinations/italy",
+  },
+  {
+    id: "china",
+    name: "China",
+    image: "/denmar3.jpeg",
+    description: "Discover ancient wonders and modern marvels in China’s vibrant cities.",
+    price: "From $2,799",
+    duration: "8-14 days",
+    rating: 4.8,
+    reviews: 1345,
+    badge: "Adventure",
+    badgeColor: "bg-brand-success",
+    highlights: ["Great Wall", "Forbidden City", "Yangtze cruise", "Terracotta Army"],
+    href: "/destinations/china",
+  },
+  {
+    id: "turkey",
+    name: "Turkey",
+    image: "/denmar1.jpeg",
+    description: "Explore where East meets West with Turkey’s history and landscapes.",
+    price: "From $2,499",
+    duration: "7-10 days",
+    rating: 4.7,
+    reviews: 987,
+    badge: "Unique",
+    badgeColor: "bg-orange-500",
+    highlights: ["Hagia Sophia", "Cappadocia balloons", "Ephesus ruins", "Grand Bazaar"],
+    href: "/destinations/turkey",
+  },
+  {
+    id: "singapore",
+    name: "Singapore",
+    image: "/denmar2.jpeg",
+    description: "Experience modern marvels and cultural diversity in vibrant Singapore.",
+    price: "From $2,299",
+    duration: "5-7 days",
+    rating: 4.8,
+    reviews: 1123,
+    badge: "City Break",
+    badgeColor: "bg-teal-500",
+    highlights: ["Marina Bay Sands", "Gardens by the Bay", "Sentosa Island", "Hawker food"],
+    href: "/destinations/singapore",
+  },
+  {
+    id: "maldives",
+    name: "Maldives",
+    image: "/denmar3.jpeg",
+    description: "Escape to luxury with overwater villas and crystal-clear waters.",
+    price: "From $4,799",
+    duration: "6-10 days",
+    rating: 5.0,
     reviews: 678,
-    badge: "Exclusive",
-    badgeColor: "bg-brand-secondary",
-    highlights: ["Wildlife reserves", "Stunning landscapes", "Adventure activities", "Luxury resorts"],
-    href: "/destinations/zimbabwe",
+    badge: "Luxury",
+    badgeColor: "bg-purple-500",
+    highlights: ["Overwater villas", "Coral reefs", "Sunset cruises", "Spa retreats"],
+    href: "/destinations/maldives",
+  },
+  {
+    id: "malaysia",
+    name: "Malaysia",
+    image: "/denmar1.jpeg",
+    description: "Explore diverse cultures, rainforests, and vibrant cities in Malaysia.",
+    price: "From $2,499",
+    duration: "7-12 days",
+    rating: 4.7,
+    reviews: 945,
+    badge: "Diverse",
+    badgeColor: "bg-green-500",
+    highlights: ["Petronas Towers", "Borneo jungles", "Langkawi beaches", "George Town"],
+    href: "/destinations/malaysia",
   },
 ]
 
 export function DestinationsGrid() {
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 3 // Show 6 items (2x3 grid on lg screens)
+  const itemsPerPage = 3 // Show 3 items per page for consistency
   const totalPages = Math.ceil(destinations.length / itemsPerPage)
 
   // Calculate the slice of destinations to display
@@ -122,7 +178,7 @@ export function DestinationsGrid() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    window.scrollTo({ top: 0, behavior: "smooth" }) // Scroll to top on page change
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   return (
@@ -158,14 +214,14 @@ export function DestinationsGrid() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg">
+              <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg min-h-[500px] flex flex-col">
                 <div className="relative">
                   <Image
                     src={destination.image || "/placeholder.svg"}
                     alt={destination.name}
                     width={400}
-                    height={256}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    height={240}
+                    className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-300 aspect-[5/3]"
                     priority={index < 3}
                   />
                   <Badge className={`absolute top-4 left-4 ${destination.badgeColor} text-white`}>
@@ -178,15 +234,14 @@ export function DestinationsGrid() {
                   </div>
                 </div>
 
-                <CardContent className="p-6">
+                <CardContent className="p-6 flex flex-col flex-grow">
                   <div className="flex items-center space-x-2 mb-3">
                     <MapPin className="h-4 w-4 text-brand-accent" />
                     <h3 className="font-heading text-xl font-semibold text-brand-primary">{destination.name}</h3>
                   </div>
 
-                  <p className="text-gray-600 mb-4 leading-relaxed">{destination.description}</p>
+                  <p className="text-gray-600 mb-4 leading-relaxed line-clamp-3">{destination.description}</p>
 
-                  {/* Highlights */}
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-2">
                       {destination.highlights.slice(0, 3).map((highlight, index) => (
@@ -202,7 +257,6 @@ export function DestinationsGrid() {
                     </div>
                   </div>
 
-                  {/* Duration and Price */}
                   <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -214,10 +268,12 @@ export function DestinationsGrid() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-auto">
                     <span className="text-2xl font-bold text-brand-success">{destination.price}</span>
                     <Link href={destination.href}>
-                      <Button className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary">Explore</Button>
+                      <Button className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary" aria-label={`Explore ${destination.name}`}>
+                        Explore
+                      </Button>
                     </Link>
                   </div>
                 </CardContent>
@@ -226,7 +282,6 @@ export function DestinationsGrid() {
           ))}
         </div>
 
-        {/* Pagination Controls */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center space-x-2 mt-12">
             <Button
@@ -268,23 +323,22 @@ export function DestinationsGrid() {
           </div>
         )}
 
-        {/* Call to Action */}
         <div className="text-center mt-16">
           <div className="bg-gray-50 rounded-2xl p-8 md:p-12">
             <h3 className="font-heading text-3xl font-bold text-brand-primary mb-6">
               Can't Find Your Dream Destination?
             </h3>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              We offer custom travel packages to destinations worldwide. Tell us where you want to go, and we'll make it
-              happen.
+              We offer custom travel packages to destinations worldwide. Tell us where you want to go, and we'll make it happen.
             </p>
             <Link href="/contact">
-            <Button
-              size="lg"
-              className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
-            >
-              Request Custom Destination
-            </Button>
+              <Button
+                size="lg"
+                className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold px-8 py-4"
+                aria-label="Request custom destination"
+              >
+                Request Custom Destination
+              </Button>
             </Link>
           </div>
         </div>

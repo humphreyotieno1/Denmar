@@ -131,30 +131,32 @@ export function ServicesGrid() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg cursor-pointer">
-                <CardContent className="p-8">
-                  <div
-                    className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${service.bgColor} mb-6 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <service.icon className={`h-8 w-8 ${service.color}`} />
-                  </div>
-                  <h3 className="font-heading text-xl font-semibold text-brand-primary mb-4">{service.title}</h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">{service.description}</p>
+              <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg cursor-pointer min-h-[400px] flex flex-col">
+                <CardContent className="p-4 flex flex-col h-full justify-between">
+                  <div>
+                    <div
+                      className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${service.bgColor} mb-2 group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      <service.icon className={`h-8 w-8 ${service.color}`} />
+                    </div>
+                    <h3 className="font-heading text-xl font-semibold text-brand-primary mb-2">{service.title}</h3>
+                    <p className="text-gray-600 leading-relaxed mb-2 line-clamp-3">{service.description}</p>
 
-                  {/* Features List */}
-                  <ul className="space-y-2 mb-6">
-                    {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm text-gray-600">
-                        <div className={`w-2 h-2 rounded-full ${service.color.replace("text-", "bg-")} mr-3`} />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                    {/* Features List */}
+                    <ul className="space-y-1 mb-2 max-h-[100px] overflow-hidden">
+                      {service.features.slice(0, 4).map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-center text-sm text-gray-600">
+                          <div className={`w-2 h-2 rounded-full ${service.color.replace("text-", "bg-")} mr-2`} />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                   
                   <Link href='/contact'>
-                  <Button className="w-full bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold">
-                    Learn More
-                  </Button>
+                    <Button className="w-full bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold mt-auto">
+                      Learn More
+                    </Button>
                   </Link>
                 </CardContent>
               </Card>
@@ -214,22 +216,22 @@ export function ServicesGrid() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href='/contact'>
-              <Button
-                size="lg"
-                className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
-              >
-                Request Custom Package
-              </Button>
+                <Button
+                  size="lg"
+                  className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
+                >
+                  Request Custom Package
+                </Button>
               </Link>
 
               <Link href='/contact'>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white px-8 py-4 bg-transparent"
-              >
-                Speak with Expert
-              </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white px-8 py-4 bg-transparent"
+                >
+                  Speak with Expert
+                </Button>
               </Link>
             </div>
           </div>
