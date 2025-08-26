@@ -61,8 +61,8 @@ export function ServicesGrid() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Our Travel Services
+          <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+            TRAVEL SERVICES
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Comprehensive travel services to make your journey seamless and unforgettable. From planning to execution, we've got you covered.
@@ -100,7 +100,7 @@ export function ServicesGrid() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+              <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
                 <div className="relative h-48 overflow-hidden group">
                   <div className={`absolute inset-0 ${getCategoryColor(service.category)}/10 flex items-center justify-center`}>
                     <span className="text-6xl">{service.icon}</span>
@@ -118,14 +118,16 @@ export function ServicesGrid() {
                   </div>
                 </div>
 
-                <CardContent className="p-5">
-                  <div className="mb-3">
-                    <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2 min-h-[2.5rem]">
-                      {service.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm line-clamp-2 min-h-[2.5rem]">
-                      {service.shortDescription}
-                    </p>
+                <CardContent className="p-5 flex flex-col h-full">
+                  <div className="flex-1">
+                    <div className="mb-3">
+                      <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2">
+                        {service.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm line-clamp-2">
+                        {service.shortDescription}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Price and Duration */}
@@ -168,14 +170,16 @@ export function ServicesGrid() {
                   </div>
 
                   {/* Action Button */}
-                  <Button 
-                    className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95"
-                    asChild
-                  >
-                    <a href={`/services/${service.slug}`}>
-                      Learn More
-                    </a>
-                  </Button>
+                  <div className="mt-auto pt-4">
+                    <Button 
+                      className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                      asChild
+                    >
+                      <a href={`/services/${service.slug}`}>
+                        Learn More
+                      </a>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -213,6 +217,7 @@ export function ServicesGrid() {
             <p className="text-lg mb-6 opacity-90">
               Our travel experts are here to create personalized experiences just for you.
             </p>
+            <Link href="/contact">
             <Button 
               size="lg" 
               variant="secondary"
@@ -220,6 +225,7 @@ export function ServicesGrid() {
             >
               Contact Our Experts
             </Button>
+            </Link>
           </div>
         </div>
       </div>

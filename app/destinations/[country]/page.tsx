@@ -79,7 +79,7 @@ export default function CountryPage({ params }: CountryPageProps) {
           </div>
           <div className="relative z-10 flex items-center justify-center h-full">
             <div className="text-center text-white">
-              <h1 className="text-5xl font-bold mb-4">{country.name}</h1>
+              <h1 className="font-heading text-5xl font-bold mb-4">{country.name}</h1>
               <p className="text-xl max-w-2xl mx-auto px-4">{country.summary}</p>
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function CountryPage({ params }: CountryPageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Main Content */}
               <div className="lg:col-span-2">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">About {country.name}</h2>
+                <h2 className="font-heading text-3xl font-bold text-gray-900 mb-6">About {country.name}</h2>
                 <p className="text-gray-600 text-lg leading-relaxed mb-6">
                   {country.description}
                 </p>
@@ -134,7 +134,7 @@ export default function CountryPage({ params }: CountryPageProps) {
               {/* Sidebar */}
               <div className="lg:col-span-1">
                 <div className="bg-gray-50 rounded-lg p-6 sticky top-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Facts</h3>
+                  <h3 className="font-heading text-lg font-semibold text-gray-900 mb-4">Quick Facts</h3>
                   <div className="space-y-3">
                     <div>
                       <span className="font-medium text-gray-700">Region:</span>
@@ -161,7 +161,7 @@ export default function CountryPage({ params }: CountryPageProps) {
         <section className="py-16 px-4 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
                 Destinations in {country.name}
               </h2>
               <p className="text-xl text-gray-600">

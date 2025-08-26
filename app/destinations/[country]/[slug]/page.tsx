@@ -93,7 +93,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
           </div>
           <div className="relative z-10 flex items-center justify-center h-full">
             <div className="text-center text-white">
-              <h1 className="text-5xl font-bold mb-4">{destination.name}</h1>
+              <h1 className="font-heading text-5xl font-bold mb-4">{destination.name}</h1>
               <p className="text-xl max-w-2xl mx-auto px-4">{destination.summary}</p>
               <div className="flex items-center justify-center gap-4 mt-4">
                 <div className="flex items-center gap-1">
@@ -126,7 +126,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
               <div className="lg:col-span-2">
                 {/* Description */}
                 <div className="mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">About {destination.name}</h2>
+                  <h2 className="font-heading text-3xl font-bold text-gray-900 mb-4">About {destination.name}</h2>
                   <p className="text-gray-600 text-lg leading-relaxed">
                     {destination.description}
                   </p>
@@ -160,7 +160,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
 
                 {/* Highlights */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Highlights</h3>
+                  <h3 className="font-heading text-2xl font-bold text-gray-900 mb-4">Highlights</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {destination.highlights.map((highlight: string, index: number) => (
                       <div key={index} className="flex items-start gap-3">
@@ -173,7 +173,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
 
                 {/* Tags */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Experience Type</h3>
+                  <h3 className="font-heading text-2xl font-bold text-gray-900 mb-4">Experience Type</h3>
                   <div className="flex flex-wrap gap-2">
                                       {destination.tags.map((tag: string) => (
                     <Badge 
@@ -189,7 +189,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
 
                 {/* Gallery */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Gallery</h3>
+                  <h3 className="font-heading text-2xl font-bold text-gray-900 mb-4">Gallery</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {destination.images.slice(0, 6).map((image: string, index: number) => (
                       <div key={index} className="aspect-square rounded-lg overflow-hidden">
@@ -211,7 +211,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
                   {/* Quick Enquiry */}
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-4">Ready to Plan Your Trip?</h3>
+                      <h3 className="font-heading text-xl font-bold text-gray-900 mb-4">Ready to Plan Your Trip?</h3>
                       <p className="text-gray-600 mb-6">
                         Get in touch with our travel experts to start planning your perfect {destination.name} adventure.
                       </p>
@@ -229,7 +229,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
                   {/* Quick Facts */}
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Facts</h3>
+                      <h3 className="font-heading text-lg font-semibold text-gray-900 mb-4">Quick Facts</h3>
                       <div className="space-y-3">
                         <div className="flex justify-between">
                           <span className="text-gray-600">Country:</span>
@@ -265,7 +265,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
           <section className="py-16 px-4 bg-gray-50">
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">Travel Packages</h2>
+                <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">Travel Packages</h2>
                 <p className="text-xl text-gray-600">
                   Choose from our carefully curated packages for {destination.name}
                 </p>
@@ -315,7 +315,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
           <section className="py-16 px-4 bg-white">
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">More Destinations in {country.name}</h2>
+                <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">More Destinations in {country.name}</h2>
                 <p className="text-xl text-gray-600">
                   Explore other amazing places in {country.name}
                 </p>
