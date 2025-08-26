@@ -31,17 +31,17 @@ export const metadata: Metadata = {
     title: "Denmar Tours & Travel - Your Dream Trip Awaits",
     description:
       "Plan your dream vacation with Denmar Tours & Travel. Discover amazing destinations, affordable packages, and exceptional service.",
-    images: ["/denmar.png"],
+    images: ["/tablogo.png"],
   },
   icons: {
     icon: [
       {
-        url: "/denmar.png",
+        url: "/tablogo.png",
         sizes: "32x32",
         type: "image/png",
       },
       {
-        url: "/denmar.png",
+        url: "/tablogo.png",
         sizes: "192x192",
         type: "image/png",
       },

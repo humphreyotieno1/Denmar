@@ -50,7 +50,7 @@ export const metadata: Metadata = {
       "Discover amazing destinations with Denmar Tours & Travel. Affordable prices, safety first, tailored trips, and 24/7 support.",
     images: [
       {
-        url: "/denmar.png",
+        url: "/tablogo.png",
         width: 1200,
         height: 630,
         alt: "Denmar Tours & Travel - Amazing Destinations",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: "Denmar Tours & Travel - Your Dream Trip Awaits",
     description:
       "Discover amazing destinations with Denmar Tours & Travel. Affordable prices, safety first, tailored trips, and 24/7 support.",
-    images: ["/denmar.png"],
+    images: ["/tablogo.png"],
     creator: "@denmartours",
   },
   verification: {
