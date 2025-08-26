@@ -10,38 +10,64 @@ import Image from "next/image"
 // Grouped destinations for better organization
 const groupedDestinations = [
   {
-    region: "Africa",
+    region: "Africa & Indian Ocean",
     destinations: [
-      { name: "Mombasa, Kenya", href: "/destinations/mombasa", image: "/denmar1.jpeg" },
-      { name: "Nairobi, Kenya", href: "/destinations/nairobi", image: "/denmar2.jpeg" },
-      { name: "Zanzibar", href: "/destinations/zanzibar", image: "/denmar2.jpeg" },
-      { name: "South Africa", href: "/destinations/southafrica", image: "/denmar3.jpeg" },
-      { name: "Seychelles", href: "/destinations/seychelles", image: "/denmar2.jpeg" },
-      { name: "Mauritius", href: "/destinations/mauritius", image: "/denmar1.jpeg" },
+      { name: "Kenya", href: "/destinations/kenya", image: "/denmar1.jpeg", subDestinations: [
+        { name: "Mombasa", href: "/destinations/kenya/mombasa" },
+        { name: "Diani Beach", href: "/destinations/kenya/diani" },
+        { name: "Nairobi", href: "/destinations/kenya/nairobi" },
+        { name: "Amboseli", href: "/destinations/kenya/amboseli" },
+        { name: "Lake Naivasha", href: "/destinations/kenya/naivasha" },
+      ]},
+      { name: "Tanzania", href: "/destinations/tanzania", image: "/denmar2.jpeg", subDestinations: [
+        { name: "Zanzibar", href: "/destinations/tanzania/zanzibar" },
+      ]},
+      { name: "South Africa", href: "/destinations/south-africa", image: "/denmar3.jpeg", subDestinations: [
+        { name: "Cape Town", href: "/destinations/south-africa/cape-town" },
+      ]},
+      { name: "Seychelles", href: "/destinations/seychelles", image: "/denmar2.jpeg", subDestinations: [
+        { name: "Mahe Island", href: "/destinations/seychelles/mahe" },
+      ]},
+      { name: "Mauritius", href: "/destinations/mauritius", image: "/denmar1.jpeg", subDestinations: [
+        { name: "Port Louis", href: "/destinations/mauritius/port-louis" },
+      ]},
     ],
   },
   {
-    region: "Asia",
+    region: "Asia & Middle East",
     destinations: [
-      { name: "Dubai, UAE", href: "/destinations/dubai", image: "/denmar2.jpeg" },
-      { name: "Thailand", href: "/destinations/thailand", image: "/denmar1.jpeg" },
-      { name: "China", href: "/destinations/china", image: "/denmar3.jpeg" },
-      { name: "Singapore", href: "/destinations/singapore", image: "/denmar2.jpeg" },
-      { name: "Malaysia", href: "/destinations/malaysia", image: "/denmar1.jpeg" },
+      { name: "UAE", href: "/destinations/uae", image: "/denmar2.jpeg", subDestinations: [
+        { name: "Dubai", href: "/destinations/uae/dubai" },
+      ]},
+      { name: "Thailand", href: "/destinations/thailand", image: "/denmar1.jpeg", subDestinations: [
+        { name: "Bangkok", href: "/destinations/thailand/bangkok" },
+      ]},
+      { name: "China", href: "/destinations/china", image: "/denmar3.jpeg", subDestinations: [
+        { name: "Beijing", href: "/destinations/china/beijing" },
+      ]},
+      { name: "Singapore", href: "/destinations/singapore", image: "/denmar2.jpeg", subDestinations: [
+        { name: "Singapore City", href: "/destinations/singapore/singapore-city" },
+      ]},
+      { name: "Malaysia", href: "/destinations/malaysia", image: "/denmar1.jpeg", subDestinations: [
+        { name: "Kuala Lumpur", href: "/destinations/malaysia/kuala-lumpur" },
+      ]},
+      { name: "Maldives", href: "/destinations/maldives", image: "/denmar3.jpeg", subDestinations: [
+        { name: "Male", href: "/destinations/maldives/male" },
+      ]},
     ],
   },
   {
     region: "Europe",
     destinations: [
-      { name: "Europe", href: "/destinations/europe", image: "/denmar3.jpeg" },
-      { name: "Italy", href: "/destinations/italy", image: "/denmar2.jpeg" },
-    ],
-  },
-  {
-    region: "Other",
-    destinations: [
-      { name: "Maldives", href: "/destinations/maldives", image: "/denmar3.jpeg" },
-      { name: "Turkey", href: "/destinations/turkey", image: "/denmar1.jpeg" },
+      { name: "Europe", href: "/destinations/europe", image: "/denmar3.jpeg", subDestinations: [
+        { name: "Paris", href: "/destinations/europe/paris" },
+      ]},
+      { name: "Italy", href: "/destinations/italy", image: "/denmar2.jpeg", subDestinations: [
+        { name: "Rome", href: "/destinations/italy/rome" },
+      ]},
+      { name: "Turkey", href: "/destinations/turkey", image: "/denmar1.jpeg", subDestinations: [
+        { name: "Istanbul", href: "/destinations/turkey/istanbul" },
+      ]},
     ],
   },
 ]
@@ -117,9 +143,24 @@ export function Navbar() {
   // Filter destinations based on search query
   const filteredDestinations = memoizedDestinations
     .flatMap((group) =>
-      group.destinations.filter((dest) =>
-        dest.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      group.destinations.flatMap((dest) => {
+        const mainMatch = dest.name.toLowerCase().includes(searchQuery.toLowerCase())
+        const subMatches = dest.subDestinations?.filter((sub) =>
+          sub.name.toLowerCase().includes(searchQuery.toLowerCase())
+        ) || []
+        
+        if (mainMatch) {
+          return [dest]
+        } else if (subMatches.length > 0) {
+          return subMatches.map(sub => ({
+            ...dest,
+            name: sub.name,
+            href: sub.href,
+            image: dest.image
+          }))
+        }
+        return []
+      })
     )
 
   return (
@@ -173,31 +214,56 @@ export function Navbar() {
               <DropdownMenuContent
                 ref={dropdownRef}
                 align="center"
-                className="w-80 mt-2 bg-white rounded-lg shadow-lg p-4 max-h-[60vh] overflow-y-auto"
+                className="w-80 mt-2 bg-white rounded-lg shadow-lg p-4 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
                 id="destinations-menu"
               >
                 {memoizedDestinations.map((group) => (
                   <div key={group.region} className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2">
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2 mb-2">
                       {group.region}
                     </h3>
                     {group.destinations.map((destination) => (
-                      <DropdownMenuItem key={destination.name} asChild>
-                        <Link
-                          href={destination.href}
-                          className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-success"
-                        >
-                          <Image
-                            src={destination.image}
-                            alt={`${destination.name} preview`}
-                            width={80}
-                            height={80}
-                            className="rounded-md object-cover"
-                            loading="lazy"
-                          />
-                          <span className="text-md font-semibold">{destination.name}</span>
-                        </Link>
-                      </DropdownMenuItem>
+                      <div key={destination.name} className="mb-2">
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href={destination.href}
+                            className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-success"
+                          >
+                            <Image
+                              src={destination.image}
+                              alt={`${destination.name} preview`}
+                              width={80}
+                              height={80}
+                              className="rounded-md object-cover"
+                              loading="lazy"
+                            />
+                            <div className="flex-1">
+                              <span className="text-md font-semibold block">{destination.name}</span>
+                              {destination.subDestinations && destination.subDestinations.length > 0 && (
+                                <div className="text-xs text-gray-500 mt-1">
+                                  {destination.subDestinations.slice(0, 2).map(sub => sub.name).join(", ")}
+                                  {destination.subDestinations.length > 2 && "..."}
+                                </div>
+                              )}
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
+                        {destination.subDestinations && destination.subDestinations.length > 0 && (
+                          <div className="ml-4 space-y-1">
+                            {destination.subDestinations.map((subDest) => (
+                              <DropdownMenuItem key={subDest.name} asChild>
+                                <Link
+                                  href={subDest.href}
+                                  className="flex items-center space-x-2 p-1 hover:bg-gray-50 rounded text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                                >
+                                  <ChevronRight className="w-3 h-3 text-gray-400" />
+                                  <span>{subDest.name}</span>
+                                </Link>
+                              </DropdownMenuItem>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 ))}
@@ -323,22 +389,38 @@ export function Navbar() {
                           {group.region}
                         </h3>
                         {group.destinations.map((destination) => (
-                          <MobileNavLink
-                            key={destination.name}
-                            href={destination.href}
-                            onClick={closeMobileMenu}
-                            className="pl-3 text-sm flex items-center space-x-3"
-                          >
-                            <Image
-                              src={destination.image}
-                              alt={`${destination.name} preview`}
-                              width={40}
-                              height={40}
-                              className="rounded-md object-cover"
-                              loading="lazy"
-                            />
-                            <span className="text-md font-semibold">{destination.name}</span>
-                          </MobileNavLink>
+                          <div key={destination.name}>
+                            <MobileNavLink
+                              href={destination.href}
+                              onClick={closeMobileMenu}
+                              className="pl-3 text-sm flex items-center space-x-3"
+                            >
+                              <Image
+                                src={destination.image}
+                                alt={`${destination.name} preview`}
+                                width={40}
+                                height={40}
+                                className="rounded-md object-cover"
+                                loading="lazy"
+                              />
+                              <span className="text-md font-semibold">{destination.name}</span>
+                            </MobileNavLink>
+                            {destination.subDestinations && destination.subDestinations.length > 0 && (
+                              <div className="ml-6 mt-1 space-y-1">
+                                {destination.subDestinations.map((subDest) => (
+                                  <MobileNavLink
+                                    key={subDest.name}
+                                    href={subDest.href}
+                                    onClick={closeMobileMenu}
+                                    className="pl-3 text-sm flex items-center space-x-2 text-gray-600"
+                                  >
+                                    <ChevronRight className="w-3 h-3 text-gray-400" />
+                                    <span>{subDest.name}</span>
+                                  </MobileNavLink>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         ))}
                       </div>
                     ))}

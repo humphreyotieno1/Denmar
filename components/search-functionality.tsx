@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 
 const searchSuggestions = [
-  { type: "destination", name: "Bali, Indonesia", href: "/destinations/bali", icon: MapPin },
-  { type: "destination", name: "Paris, France", href: "/destinations/paris", icon: MapPin },
-  { type: "destination", name: "Tokyo, Japan", href: "/destinations/tokyo", icon: MapPin },
-  { type: "destination", name: "Santorini, Greece", href: "/destinations/santorini", icon: MapPin },
-  { type: "destination", name: "Dubai, UAE", href: "/destinations/dubai", icon: MapPin },
+  { type: "destination", name: "Bali, Indonesia", href: "/destinations/indonesia/bali", icon: MapPin },
+  { type: "destination", name: "Paris, France", href: "/destinations/france/paris", icon: MapPin },
+  { type: "destination", name: "Tokyo, Japan", href: "/destinations/japan/tokyo", icon: MapPin },
+  { type: "destination", name: "Santorini, Greece", href: "/destinations/greece/santorini", icon: MapPin },
+  { type: "destination", name: "Dubai, UAE", href: "/destinations/uae/dubai", icon: MapPin },
   { type: "service", name: "Flight Booking", href: "/services", icon: Plane },
   { type: "service", name: "Hotel Reservations", href: "/services", icon: Plane },
   { type: "service", name: "Tour Packages", href: "/services", icon: Plane },

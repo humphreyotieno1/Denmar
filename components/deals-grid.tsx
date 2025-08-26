@@ -2,317 +2,202 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Calendar, Clock, Star, MapPin } from "lucide-react"
+import { Calendar, Clock, Star, MapPin, Percent } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-
-interface Deal {
-  id: number
-  title: string
-  destination: string
-  image: string
-  originalPrice: string
-  salePrice: string
-  discount: string
-  duration: string
-  validUntil: string
-  description: string
-  includes: string[]
-  badge: string
-  badgeColor: string
-  rating: number
-  reviews: number
-}
-
-const deals: Deal[] = [
-  {
-    id: 1,
-    title: "Thailand Cultural Journey",
-    destination: "Thailand",
-    image: "/denmar1.jpeg",
-    originalPrice: "$2,799",
-    salePrice: "$1,999",
-    discount: "28% OFF",
-    duration: "10 days / 9 nights",
-    validUntil: "March 31, 2026",
-    description: "Immerse yourself in Thailand’s vibrant culture with temple tours and beach relaxation.",
-    includes: ["Round-trip flights", "4-star hotels", "Daily breakfast", "Guided temple tours", "Beach activities"],
-    badge: "Cultural",
-    badgeColor: "bg-blue-500",
-    rating: 4.8,
-    reviews: 567,
-  },
-  {
-    id: 2,
-    title: "South Africa Safari Special",
-    destination: "South Africa",
-    image: "/denmar2.jpeg",
-    originalPrice: "$4,199",
-    salePrice: "$2,999",
-    discount: "29% OFF",
-    duration: "12 days / 11 nights",
-    validUntil: "April 15, 2026",
-    description: "Experience thrilling safaris and scenic beauty in South Africa’s iconic landscapes.",
-    includes: ["Round-trip flights", "4-star lodges", "Daily breakfast", "Guided safaris", "City tours"],
-    badge: "Adventure",
-    badgeColor: "bg-brand-success",
-    rating: 4.9,
-    reviews: 432,
-  },
-  {
-    id: 3,
-    title: "Seychelles Island Escape",
-    destination: "Seychelles",
-    image: "/denmar3.jpeg",
-    originalPrice: "$4,999",
-    salePrice: "$3,599",
-    discount: "28% OFF",
-    duration: "7 days / 6 nights",
-    validUntil: "May 31, 2026",
-    description: "Relax in luxury with pristine beaches and turquoise waters in Seychelles.",
-    includes: ["Seaplane transfers", "5-star resorts", "Daily breakfast", "Snorkeling", "Spa treatments"],
-    badge: "Luxury",
-    badgeColor: "bg-purple-500",
-    rating: 4.9,
-    reviews: 298,
-  },
-  {
-    id: 4,
-    title: "Mauritius Beach Getaway",
-    destination: "Mauritius",
-    image: "/denmar1.jpeg",
-    originalPrice: "$4,299",
-    salePrice: "$3,299",
-    discount: "23% OFF",
-    duration: "7 days / 6 nights",
-    validUntil: "June 30, 2026",
-    description: "Unwind on Mauritius’ stunning beaches with vibrant markets and nature tours.",
-    includes: ["Round-trip flights", "5-star resorts", "Daily breakfast", "Market tours", "Snorkeling"],
-    badge: "Romantic",
-    badgeColor: "bg-pink-500",
-    rating: 4.8,
-    reviews: 345,
-  },
-  {
-    id: 5,
-    title: "Italian Art & History Tour",
-    destination: "Italy",
-    image: "/denmar2.jpeg",
-    originalPrice: "$3,799",
-    salePrice: "$2,699",
-    discount: "29% OFF",
-    duration: "10 days / 9 nights",
-    validUntil: "April 30, 2026",
-    description: "Explore Italy’s iconic cities with art, history, and culinary delights.",
-    includes: ["Round-trip flights", "4-star hotels", "Daily breakfast", "Guided city tours", "Wine tasting"],
-    badge: "Cultural",
-    badgeColor: "bg-blue-500",
-    rating: 4.9,
-    reviews: 678,
-  },
-  {
-    id: 6,
-    title: "China Ancient Wonders",
-    destination: "China",
-    image: "/denmar3.jpeg",
-    originalPrice: "$3,999",
-    salePrice: "$2,799",
-    discount: "30% OFF",
-    duration: "12 days / 11 nights",
-    validUntil: "March 31, 2026",
-    description: "Discover China’s ancient heritage and modern marvels in this epic journey.",
-    includes: ["Round-trip flights", "4-star hotels", "Daily breakfast", "Great Wall tour", "River cruise"],
-    badge: "Adventure",
-    badgeColor: "bg-brand-success",
-    rating: 4.8,
-    reviews: 512,
-  },
-  {
-    id: 7,
-    title: "Turkey Cultural Escape",
-    destination: "Turkey",
-    image: "/denmar1.jpeg",
-    originalPrice: "$3,299",
-    salePrice: "$2,499",
-    discount: "24% OFF",
-    duration: "7 days / 6 nights",
-    validUntil: "May 15, 2026",
-    description: "Experience Turkey’s unique blend of East and West with historic sites and balloon rides.",
-    includes: ["Round-trip flights", "4-star hotels", "Daily breakfast", "Cappadocia balloon ride", "City tours"],
-    badge: "Unique",
-    badgeColor: "bg-orange-500",
-    rating: 4.7,
-    reviews: 389,
-  },
-  {
-    id: 8,
-    title: "Singapore City Break",
-    destination: "Singapore",
-    image: "/denmar2.jpeg",
-    originalPrice: "$2,799",
-    salePrice: "$2,299",
-    discount: "18% OFF",
-    duration: "5 days / 4 nights",
-    validUntil: "March 15, 2026",
-    description: "Explore Singapore’s futuristic skyline and vibrant cultural districts.",
-    includes: ["Round-trip flights", "4-star hotels", "Daily breakfast", "Marina Bay tour", "Sentosa activities"],
-    badge: "City Break",
-    badgeColor: "bg-teal-500",
-    rating: 4.8,
-    reviews: 423,
-  },
-  {
-    id: 9,
-    title: "Maldives Luxury Retreat",
-    destination: "Maldives",
-    image: "/denmar3.jpeg",
-    originalPrice: "$6,499",
-    salePrice: "$4,799",
-    discount: "26% OFF",
-    duration: "7 days / 6 nights",
-    validUntil: "June 30, 2026",
-    description: "Indulge in luxury with overwater villas and pristine waters in the Maldives.",
-    includes: ["Seaplane transfers", "5-star villas", "All meals", "Spa treatments", "Snorkeling"],
-    badge: "Luxury",
-    badgeColor: "bg-purple-500",
-    rating: 5.0,
-    reviews: 276,
-  },
-  {
-    id: 10,
-    title: "Malaysia Adventure",
-    destination: "Malaysia",
-    image: "/denmar1.jpeg",
-    originalPrice: "$3,199",
-    salePrice: "$2,499",
-    discount: "22% OFF",
-    duration: "10 days / 9 nights",
-    validUntil: "April 30, 2026",
-    description: "Explore Malaysia’s vibrant cities, rainforests, and stunning beaches.",
-    includes: ["Round-trip flights", "4-star hotels", "Daily breakfast", "Jungle tours", "City tours"],
-    badge: "Diverse",
-    badgeColor: "bg-green-500",
-    rating: 4.7,
-    reviews: 356,
-  },
-]
+import { deals as dealsData, type Deal } from "@/lib/services"
+import { Pagination } from "@/components/pagination"
 
 export function DealsGrid() {
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 3 // Matches 3x2 grid on lg screens
-  const totalPages = Math.ceil(deals.length / itemsPerPage)
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const pageSize = 6
 
-  // Calculate the slice of deals to display
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentDeals = deals.slice(startIndex, startIndex + itemsPerPage)
+  // Filter deals by category
+  const filteredDeals = selectedCategory === "all" 
+    ? dealsData 
+    : dealsData.filter(deal => deal.category === selectedCategory)
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-    window.scrollTo({ top: 0, behavior: "smooth" })
+  // Paginate deals
+  const totalPages = Math.ceil(filteredDeals.length / pageSize)
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  const currentDeals = filteredDeals.slice(startIndex, endIndex)
+
+  const categories = [
+    { value: "all", label: "All Deals" },
+    { value: "package", label: "Packages" },
+    { value: "flight", label: "Flights" },
+    { value: "hotel", label: "Hotels" },
+    { value: "activity", label: "Activities" }
+  ]
+
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      package: "bg-brand-accent",
+      flight: "bg-blue-500",
+      hotel: "bg-green-500",
+      activity: "bg-purple-500"
+    }
+    return colors[category] || "bg-gray-500"
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
   }
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="font-heading text-4xl font-bold text-brand-primary mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            EXCLUSIVE TRAVEL DEALING
-          </motion.h2>
-          <motion.p
-            className="text-xl text-gray-600 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Don't miss out on these incredible offers! Limited-time deals on our most popular destinations.
-          </motion.p>
+    <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Exclusive Travel Deals
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Discover incredible savings on your next adventure. Limited time offers on flights, hotels, and packages worldwide.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Category Filters */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {categories.map((category) => (
+            <Button
+              key={category.value}
+              variant={selectedCategory === category.value ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                setSelectedCategory(category.value)
+                setCurrentPage(1)
+              }}
+              className={`${
+                selectedCategory === category.value 
+                  ? "bg-brand-accent text-white border-brand-accent" 
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              {category.label}
+            </Button>
+          ))}
+        </div>
+
+        {/* Deals Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {currentDeals.map((deal, index) => (
             <motion.div
               key={deal.id}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg min-h-[500px] flex flex-col">
-                <div className="relative">
+              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                <div className="relative h-48 overflow-hidden group">
                   <Image
-                    src={deal.image || "/placeholder.svg"}
+                    src={deal.image}
                     alt={deal.title}
-                    width={400}
-                    height={192}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 aspect-[5/3]"
-                    priority={index < 3}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                  <Badge className={`absolute top-4 left-4 ${deal.badgeColor} text-white`}>{deal.badge}</Badge>
-                  <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full font-bold text-sm">
-                    {deal.discount}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  
+                  {/* Discount Badge */}
+                  <div className="absolute top-3 left-3">
+                    <Badge className={`${getCategoryColor(deal.category)} text-white border-0 text-sm font-bold`}>
+                      <Percent className="w-3 h-3 mr-1" />
+                      {deal.discount}% OFF
+                    </Badge>
                   </div>
-                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
-                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-medium">{deal.rating}</span>
-                    <span className="text-xs text-gray-500">({deal.reviews})</span>
+
+                  {/* Category Badge */}
+                  <div className="absolute top-3 right-3">
+                    <Badge variant="secondary" className="bg-white/90 text-gray-800 border-0">
+                      {deal.category}
+                    </Badge>
+                  </div>
+
+                  {/* Valid Until */}
+                  <div className="absolute bottom-3 left-3 text-white text-xs bg-black/50 px-2 py-1 rounded">
+                    Valid until {formatDate(deal.validUntil)}
                   </div>
                 </div>
 
-                <CardContent className="p-6 flex flex-col flex-grow">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <MapPin className="h-4 w-4 text-brand-accent" />
-                    <span className="text-sm text-gray-600">{deal.destination}</span>
+                <CardContent className="p-5">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2 min-h-[2.5rem]">
+                      {deal.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2 min-h-[2.5rem]">
+                      {deal.shortDescription}
+                    </p>
                   </div>
 
-                  <h3 className="font-heading text-xl font-semibold text-brand-primary mb-3">{deal.title}</h3>
-
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-3">{deal.description}</p>
-
-                  <div className="flex items-center space-x-2 mb-4">
-                    <span className="text-2xl font-bold text-brand-success">{deal.salePrice}</span>
-                    <span className="text-lg text-gray-400 line-through">{deal.originalPrice}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{deal.duration}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>Until {deal.validUntil}</span>
-                    </div>
-                  </div>
-
-                  <div className="mb-6 flex-grow">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Package Includes:</p>
-                    <div className="space-y-1">
-                      {deal.includes.slice(0, 3).map((item, index) => (
-                        <div key={index} className="flex items-center text-xs text-gray-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-brand-accent mr-2" />
-                          {item}
-                        </div>
+                  {/* Destinations */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <MapPin className="w-4 h-4 text-brand-accent flex-shrink-0" />
+                    <div className="flex flex-wrap gap-1">
+                      {deal.destinations.slice(0, 2).map((dest, idx) => (
+                        <Badge key={idx} variant="outline" className="text-xs">
+                          {dest}
+                        </Badge>
                       ))}
-                      {deal.includes.length > 3 && (
-                        <div className="text-xs text-brand-accent">+{deal.includes.length - 3} more included</div>
+                      {deal.destinations.length > 2 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{deal.destinations.length - 2} more
+                        </Badge>
                       )}
                     </div>
                   </div>
 
-                  <Button
-                    className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold mt-auto"
-                    aria-label={`Book ${deal.title}`}
+                  {/* Pricing */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-center">
+                      <div className="text-sm text-gray-500 line-through">
+                        {deal.originalPrice}
+                      </div>
+                      <div className="text-2xl font-bold text-brand-accent">
+                        {deal.discountedPrice}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-gray-600">Save</div>
+                      <div className="text-lg font-bold text-green-600">
+                        ${parseInt(deal.originalPrice.replace(/[^0-9]/g, '')) - parseInt(deal.discountedPrice.replace(/[^0-9]/g, ''))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Highlights */}
+                  <div className="mb-4">
+                    <div className="text-sm font-medium text-gray-700 mb-2">What's Included:</div>
+                    <div className="flex flex-wrap gap-1">
+                      {deal.highlights.slice(0, 3).map((highlight, idx) => (
+                        <Badge key={idx} variant="secondary" className="text-xs">
+                          {highlight}
+                        </Badge>
+                      ))}
+                      {deal.highlights.length > 3 && (
+                        <Badge variant="secondary" className="text-xs">
+                          +{deal.highlights.length - 3} more
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <Button 
+                    className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                    asChild
                   >
-                    Book This Deal
+                    <a href={`/deals/${deal.slug}`}>
+                      View Deal Details
+                    </a>
                   </Button>
                 </CardContent>
               </Card>
@@ -320,67 +205,44 @@ export function DealsGrid() {
           ))}
         </div>
 
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center space-x-2 mt-12">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-1"
-              aria-label="Previous page"
-            >
-              Previous
-            </Button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <motion.button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
-                  currentPage === index + 1
-                    ? "bg-brand-accent text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-                aria-label={`Go to page ${index + 1}`}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                {index + 1}
-              </motion.button>
-            ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1"
-              aria-label="Next page"
-            >
-              Next
-            </Button>
+        {/* No Results */}
+        {currentDeals.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No deals found for the selected category.</p>
           </div>
         )}
 
-        <div className="mt-16 text-center">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-            <h3 className="font-heading text-3xl font-bold text-brand-primary mb-6">Never Miss a Deal!</h3>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Subscribe to our newsletter and be the first to know about exclusive deals, flash sales, and special offers.
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-8 flex justify-center">
+            <Pagination 
+              totalItems={filteredDeals.length}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={(page) => {
+                setCurrentPage(page)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+            />
+          </div>
+        )}
+
+        {/* Call to Action */}
+        <div className="text-center mt-12">
+          <div className="bg-gradient-to-r from-brand-accent to-brand-success rounded-lg p-8 text-white">
+            <h3 className="text-2xl font-bold mb-4">
+              Don't Miss Out on These Amazing Deals!
+            </h3>
+            <p className="text-lg mb-6 opacity-90">
+              Subscribe to our newsletter and be the first to know about exclusive offers and flash sales.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-accent"
-                aria-label="Email for newsletter"
-              />
-              <Button
-                className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold px-8 py-3"
-                aria-label="Subscribe to newsletter"
-              >
-                Subscribe
-              </Button>
-            </div>
+            <Button 
+              size="lg" 
+              variant="secondary"
+              className="bg-white text-brand-accent hover:bg-gray-100"
+            >
+              Subscribe Now
+            </Button>
           </div>
         </div>
       </div>

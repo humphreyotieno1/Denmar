@@ -37,7 +37,7 @@ const destinations: Destination[] = [
     badge: "Popular",
     badgeColor: "bg-brand-accent",
     highlights: ["Grand Palace", "Phuket beaches", "Chiang Mai temples", "Street food markets"],
-    href: "/destinations/thailand",
+    href: "/destinations/thailand/bangkok",
   },
   {
     id: "south-africa",

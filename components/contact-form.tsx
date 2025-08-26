@@ -13,15 +13,15 @@ import { Label } from "@/components/ui/label"
 import { Send, CheckCircle } from "lucide-react"
 
 const contactSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  firstName: z.string().min(2, "First name must be at least 2 characters").max(50, "First name must be less than 50 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters").max(50, "Last name must be less than 50 characters"),
   email: z.string().email("Please enter a valid email address"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
+  phone: z.string().min(10, "Please enter a valid phone number").regex(/^[\+]?[1-9][\d]{0,15}$/, "Please enter a valid phone number"),
   destination: z.string().min(1, "Please select a destination"),
   travelDate: z.string().min(1, "Please select a travel date"),
   travelers: z.string().min(1, "Please select number of travelers"),
   budget: z.string().min(1, "Please select your budget range"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
@@ -43,41 +43,51 @@ export function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    console.log("Form submitted:", data)
-    setIsSubmitted(true)
-    setIsSubmitting(false)
-    reset()
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      console.log("Form submitted:", data)
+      setIsSubmitted(true)
+      reset()
+    } catch (error) {
+      console.error("Form submission error:", error)
+      // You can add toast notification here
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSubmitted) {
     return (
       <Card className="border-0 shadow-lg">
-        <CardContent className="p-8 text-center">
-          <CheckCircle className="h-16 w-16 text-brand-success mx-auto mb-6" />
-          <h3 className="font-heading text-2xl font-bold text-brand-primary mb-4">Thank You!</h3>
-          <p className="text-gray-600 mb-6">
-            Your message has been sent successfully. Our travel experts will get back to you within 24 hours.
+              <CardContent className="p-12 text-center">
+        <div className="mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
+            <CheckCircle className="h-12 w-12 text-brand-success" />
+          </div>
+          <h3 className="font-heading text-3xl font-bold text-brand-primary mb-4">Thank You!</h3>
+          <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto">
+            Your message has been sent successfully. Our travel experts will get back to you within 24 hours with personalized travel recommendations.
           </p>
-          <Button
-            onClick={() => setIsSubmitted(false)}
-            className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary"
-          >
-            Send Another Message
-          </Button>
-        </CardContent>
+        </div>
+        <Button
+          onClick={() => setIsSubmitted(false)}
+          className="bg-brand-accent hover:bg-brand-accent/90 text-white px-8 py-3 text-lg transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+        >
+          Send Another Message
+        </Button>
+      </CardContent>
       </Card>
     )
   }
 
   return (
-    <Card className="border-0 shadow-lg p-8">
-      <CardHeader>
-        <CardTitle className="font-heading text-2xl text-brand-primary">Get in Touch</CardTitle>
-        <p className="text-gray-600">Fill out the form below and we'll help you plan your perfect trip.</p>
+    <Card className="border-0 shadow-xl bg-white/95 backdrop-blur-sm">
+      <CardHeader className="pb-6">
+        <CardTitle className="font-heading text-3xl text-brand-primary mb-3">Get in Touch</CardTitle>
+        <p className="text-gray-600 text-lg">Fill out the form below and we'll help you plan your perfect trip. Our travel experts will get back to you within 24 hours.</p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-8 pt-0">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -87,9 +97,14 @@ export function ContactForm() {
                 id="firstName"
                 {...register("firstName")}
                 placeholder="Enter your first name"
-                className={errors.firstName ? "border-red-500" : ""}
+                className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
+                  errors.firstName ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                }`}
               />
-              {errors.firstName && <p className="text-sm text-red-500">{errors.firstName.message}</p>}
+              {errors.firstName && <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 bg-red-500 rounded-full"></span>
+                {errors.firstName.message}
+              </p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="lastName">Last Name *</Label>
@@ -97,9 +112,14 @@ export function ContactForm() {
                 id="lastName"
                 {...register("lastName")}
                 placeholder="Enter your last name"
-                className={errors.lastName ? "border-red-500" : ""}
+                className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
+                  errors.lastName ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                }`}
               />
-              {errors.lastName && <p className="text-sm text-red-500">{errors.lastName.message}</p>}
+              {errors.lastName && <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 bg-red-500 rounded-full"></span>
+                {errors.lastName.message}
+              </p>}
             </div>
           </div>
 
@@ -112,9 +132,14 @@ export function ContactForm() {
                 type="email"
                 {...register("email")}
                 placeholder="Enter your email"
-                className={errors.email ? "border-red-500" : ""}
+                className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
+                  errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                }`}
               />
-              {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+              {errors.email && <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 bg-red-500 rounded-full"></span>
+                {errors.email.message}
+              </p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number *</Label>
@@ -122,9 +147,14 @@ export function ContactForm() {
                 id="phone"
                 {...register("phone")}
                 placeholder="Enter your phone number"
-                className={errors.phone ? "border-red-500" : ""}
+                className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
+                  errors.phone ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                }`}
               />
-              {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
+              {errors.phone && <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 bg-red-500 rounded-full"></span>
+                {errors.phone.message}
+              </p>}
             </div>
           </div>
 
@@ -154,9 +184,14 @@ export function ContactForm() {
                 id="travelDate"
                 type="date"
                 {...register("travelDate")}
-                className={errors.travelDate ? "border-red-500" : ""}
+                className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
+                  errors.travelDate ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                }`}
               />
-              {errors.travelDate && <p className="text-sm text-red-500">{errors.travelDate.message}</p>}
+              {errors.travelDate && <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 bg-red-500 rounded-full"></span>
+                {errors.travelDate.message}
+              </p>}
             </div>
           </div>
 
@@ -203,22 +238,30 @@ export function ContactForm() {
               {...register("message")}
               placeholder="Tell us about your dream trip, special requirements, or any questions you have..."
               rows={5}
-              className={errors.message ? "border-red-500" : ""}
+              className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent resize-none ${
+                errors.message ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+              }`}
             />
-            {errors.message && <p className="text-sm text-red-500">{errors.message.message}</p>}
+            {errors.message && <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+              <span className="w-1 h-1 bg-red-500 rounded-full"></span>
+              {errors.message.message}
+            </p>}
           </div>
 
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold py-3"
+            className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold py-4 text-lg transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
-              "Sending..."
+              <div className="flex items-center gap-2">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                Sending Message...
+              </div>
             ) : (
               <>
                 Send Message
-                <Send className="ml-2 h-4 w-4" />
+                <Send className="ml-2 h-5 w-5" />
               </>
             )}
           </Button>
