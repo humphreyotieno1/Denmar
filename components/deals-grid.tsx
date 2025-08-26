@@ -191,7 +191,7 @@ export function DealsGrid() {
                   </div>
 
                   {/* Action Button */}
-                  <Button 
+                  <Button
                     className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95"
                     asChild
                   >
@@ -236,13 +236,13 @@ export function DealsGrid() {
             <p className="text-lg mb-6 opacity-90">
               Subscribe to our newsletter and be the first to know about exclusive offers and flash sales.
             </p>
-            <Button 
+              <Button
               size="lg" 
               variant="secondary"
               className="bg-white text-brand-accent hover:bg-gray-100"
-            >
+              >
               Subscribe Now
-            </Button>
+              </Button>
           </div>
         </div>
       </div>

@@ -14,10 +14,11 @@ interface HeroSlide {
   ctaLink?: string // Optional link for CTA button
 }
 
+// Hero section slides with updated images
 const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    image: "/denmar1.jpeg",
+    image: "/travel.jpg",
     title: "The Bold and Daring",
     subtitle: "Escape to breathtaking destinations around the world",
     cta: "Plan Your Dream Trip",
@@ -25,7 +26,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 2,
-    image: "/denmar2.jpeg",
+    image: "/tablemt.jpg",
     title: "Adventure Awaits",
     subtitle: "Experience thrilling adventures in stunning locations",
     cta: "Explore Adventures",
@@ -33,7 +34,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 3,
-    image: "/denmar3.jpeg",
+    image: "/naivasha.jpg",
     title: "Cultural Journeys",
     subtitle: "Immerse yourself in rich cultures and ancient traditions",
     cta: "Discover Culture",
