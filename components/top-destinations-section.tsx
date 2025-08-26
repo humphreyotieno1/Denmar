@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Destination {
   id: number
@@ -30,7 +31,7 @@ const destinations: Destination[] = [
     rating: 4.9,
     badge: "Hot Deal",
     badgeColor: "bg-red-500",
-    href: "/destinations/nairobi",
+    href: "/destinations/kenya/nairobi",
   },
   {
     id: 2,
@@ -52,7 +53,7 @@ const destinations: Destination[] = [
     rating: 4.9,
     badge: "New",
     badgeColor: "bg-brand-success",
-    href: "/destinations/dubai",
+    href: "/destinations/uae/dubai",
   },
   {
     id: 4,
@@ -74,7 +75,7 @@ const destinations: Destination[] = [
     rating: 4.8,
     badge: "Luxury",
     badgeColor: "bg-purple-500",
-    href: "/destinations/mombasa",
+    href: "/destinations/kenya/diani",
   },
   {
     id: 6,
@@ -85,7 +86,7 @@ const destinations: Destination[] = [
     rating: 4.9,
     badge: "Exclusive",
     badgeColor: "bg-brand-secondary",
-    href: "/destinations/zanzibar",
+    href: "/destinations/tanzania/zanzibar",
   },
   {
     id: 7,
@@ -96,7 +97,7 @@ const destinations: Destination[] = [
     rating: 4.7,
     badge: "Popular",
     badgeColor: "bg-brand-success",
-    href: "/destinations/thailand",
+    href: "/destinations/thailand/bangkok",
   },
   {
     id: 8,
@@ -107,7 +108,7 @@ const destinations: Destination[] = [
     rating: 4.8,
     badge: "Romantic",
     badgeColor: "bg-pink-500",
-    href: "/destinations/seychelles",
+    href: "/destinations/seychelles/mahe",
   },
   {
     id: 9,
@@ -118,7 +119,7 @@ const destinations: Destination[] = [
     rating: 4.9,
     badge: "New",
     badgeColor: "bg-brand-success",
-    href: "/destinations/southafrica",
+    href: "/destinations/south-africa",
   },
   {
     id: 10,
@@ -129,7 +130,7 @@ const destinations: Destination[] = [
     rating: 4.7,
     badge: "Luxury",
     badgeColor: "bg-purple-500",
-    href: "/destinations/mauritius",
+    href: "/destinations/mauritius/port-louis",
   },
   {
     id: 11,
@@ -140,7 +141,7 @@ const destinations: Destination[] = [
     rating: 4.8,
     badge: "Exclusive",
     badgeColor: "bg-brand-secondary",
-    href: "/destinations/italy",
+    href: "/destinations/italy/rome",
   },
   {
     id: 12,
@@ -151,7 +152,7 @@ const destinations: Destination[] = [
     rating: 4.9,
     badge: "New",
     badgeColor: "bg-brand-success",
-    href: "/destinations/china",
+    href: "/destinations/china/beijing",
   },
   {
     id: 13,
@@ -162,7 +163,7 @@ const destinations: Destination[] = [
     rating: 4.7,
     badge: "Romantic",
     badgeColor: "bg-pink-500",
-    href: "/destinations/turkey",
+    href: "/destinations/turkey/istanbul",
   },
   {
     id: 14,
@@ -173,7 +174,7 @@ const destinations: Destination[] = [
     rating: 4.8,
     badge: "Luxury",
     badgeColor: "bg-purple-500",
-    href: "/destinations/singapore",
+    href: "/destinations/singapore/singapore-city",
   },
   {
     id: 15,
@@ -184,7 +185,7 @@ const destinations: Destination[] = [
     rating: 4.9,
     badge: "Exclusive",
     badgeColor: "bg-brand-secondary",
-    href: "/destinations/maldives",
+    href: "/destinations/maldives/male",
   },
   {
     id: 16,
@@ -195,7 +196,7 @@ const destinations: Destination[] = [
     rating: 4.7,
     badge: "Popular",
     badgeColor: "bg-brand-success",
-    href: "/destinations/malaysia",
+    href: "/destinations/malaysia/kuala-lumpur",
   },
 
 ]
@@ -344,15 +345,18 @@ export function TopDestinationsSection() {
                   stiffness: 100,
                 }}
               >
-                <Card className="group h-full hover:shadow-2xl transition-all duration-300 overflow-hidden border-0 shadow-lg bg-white/95 backdrop-blur-sm">
-                  <div className="relative overflow-hidden">
-                    <img
+                <Card className="h-full overflow-hidden border-0 shadow-lg bg-white/95 backdrop-blur-sm hover:shadow-2xl transition-all duration-300">
+                  <div className="relative h-56 overflow-hidden group">
+                    <Image
                       src={destination.image || "/placeholder.svg"}
                       alt={destination.name}
-                      className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 768px) 320px, 320px"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      priority={false}
                     />
                     <Badge
-                      className={`absolute top-4 left-4 ${destination.badgeColor} text-white border-0 transform group-hover:scale-110 transition-transform duration-300`}
+                      className={`absolute top-4 left-4 ${destination.badgeColor} text-white border-0 transform group-hover:scale-110 transition-transform duration-300 z-10`}
                     >
                       {destination.badge}
                     </Badge>
@@ -364,12 +368,12 @@ export function TopDestinationsSection() {
                   </div>
                   <CardContent className="p-5 bg-gradient-to-b from-white to-gray-50">
                     <div className="flex items-center space-x-2 mb-3">
-                      <MapPin className="h-5 w-5 text-brand-accent" />
-                      <h3 className="font-heading text-lg font-bold text-brand-primary">
+                      <MapPin className="h-5 w-5 text-brand-accent flex-shrink-0" />
+                      <h3 className="font-heading text-lg font-bold text-brand-primary line-clamp-1">
                         {destination.name}
                       </h3>
                     </div>
-                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3 min-h-[3.5rem]">
                       {destination.description}
                     </p>
                     <div className="flex items-center justify-between mt-4">
@@ -377,12 +381,12 @@ export function TopDestinationsSection() {
                         {destination.price}
                       </span>
                       <Link href={destination.href}>  
-                      <Button
-                        className="bg-brand-accent hover:bg-brand-accent/90 text-brand-primary font-semibold hover:shadow-md transition-all duration-300 transform hover:scale-105"
-                        size="sm"
-                      >
-                        View Details
-                      </Button>
+                        <Button
+                          className="bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold hover:shadow-md transition-all duration-200 transform hover:scale-105 active:scale-95"
+                          size="sm"
+                        >
+                          View Details
+                        </Button>
                       </Link>
                     </div>
                   </CardContent>
@@ -395,6 +399,7 @@ export function TopDestinationsSection() {
           <AnimatePresence>
             {currentIndex > 0 && (
               <motion.div
+                key="prev-arrow"
                 className="absolute top-1/2 -translate-y-1/2 left-2 z-10"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -414,6 +419,7 @@ export function TopDestinationsSection() {
             )}
             {currentIndex < destinations.length - 1 && (
               <motion.div
+                key="next-arrow"
                 className="absolute top-1/2 -translate-y-1/2 right-2 z-10"
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}

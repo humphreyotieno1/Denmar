@@ -3,6 +3,7 @@ import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
 import { WhyUsSection } from "@/components/why-us-section"
 import { TopDestinationsSection } from "@/components/top-destinations-section"
+import { PackagesSection } from "@/components/packages-section"
 import { ReadyToPlanSection } from "@/components/ready-to-plan-section"
 import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
@@ -59,6 +60,7 @@ export default function HomePage() {
         <HeroSection />
         <WhyUsSection />
         <TopDestinationsSection />
+        <PackagesSection />
         <ReadyToPlanSection />
       </main>
 

@@ -1,239 +1,231 @@
 "use client"
 
 import { useState } from "react"
-import { Plane, Hotel, MapPin, Shield, FileText, Camera, Car, Utensils } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Link from "next/link"
-
-interface Service {
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  description: string
-  features: string[]
-  color: string
-  bgColor: string
-}
-
-const services: Service[] = [
-  {
-    icon: Plane,
-    title: "Flight Booking",
-    description: "Find and book the best flights at competitive prices with our extensive airline partnerships.",
-    features: ["Best price guarantee", "24/7 booking support", "Flexible cancellation", "Seat selection"],
-    color: "text-blue-500",
-    bgColor: "bg-blue-50",
-  },
-  {
-    icon: Hotel,
-    title: "Hotel Reservations",
-    description: "Choose from thousands of hotels worldwide, from budget-friendly to luxury accommodations.",
-    features: ["Verified reviews", "Best rate guarantee", "Free cancellation", "Instant confirmation"],
-    color: "text-brand-accent",
-    bgColor: "bg-brand-accent/10",
-  },
-  {
-    icon: MapPin,
-    title: "Tour Packages",
-    description: "Expertly crafted tour packages that showcase the best of each destination.",
-    features: ["Expert local guides", "Small group sizes", "Cultural experiences", "All-inclusive options"],
-    color: "text-brand-success",
-    bgColor: "bg-brand-success/10",
-  },
-  {
-    icon: Shield,
-    title: "Travel Insurance",
-    description: "Comprehensive travel insurance to protect you and your investment during your trip.",
-    features: ["Medical coverage", "Trip cancellation", "Lost luggage protection", "24/7 emergency assistance"],
-    color: "text-red-500",
-    bgColor: "bg-red-50",
-  },
-  {
-    icon: FileText,
-    title: "Visa Assistance",
-    description: "Expert guidance and support for visa applications and travel documentation.",
-    features: ["Document review", "Application assistance", "Status tracking", "Express processing"],
-    color: "text-purple-500",
-    bgColor: "bg-purple-50",
-  },
-  {
-    icon: Camera,
-    title: "Photography Tours",
-    description: "Specialized photography tours led by professional photographers in stunning locations.",
-    features: ["Professional guidance", "Exclusive locations", "Small groups", "Equipment rental"],
-    color: "text-pink-500",
-    bgColor: "bg-pink-50",
-  },
-  {
-    icon: Car,
-    title: "Transportation",
-    description: "Reliable ground transportation including airport transfers and private car rentals.",
-    features: ["Airport transfers", "Private drivers", "Car rentals", "Group transportation"],
-    color: "text-indigo-500",
-    bgColor: "bg-indigo-50",
-  },
-  {
-    icon: Utensils,
-    title: "Culinary Experiences",
-    description: "Discover local flavors with our curated food tours and cooking classes.",
-    features: ["Local food tours", "Cooking classes", "Wine tastings", "Market visits"],
-    color: "text-orange-500",
-    bgColor: "bg-orange-50",
-  },
-]
+import { services as servicesData, type Service } from "@/lib/services"
+import { Pagination } from "@/components/pagination"
+import { Badge } from "@/components/ui/badge"
 
 export function ServicesGrid() {
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 4 // Matches 4x2 grid on lg screens
-  const totalPages = Math.ceil(services.length / itemsPerPage)
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const pageSize = 6
 
-  // Calculate the slice of services to display
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentServices = services.slice(startIndex, startIndex + itemsPerPage)
+  // Filter services by category
+  const filteredServices = selectedCategory === "all" 
+    ? servicesData 
+    : servicesData.filter(service => service.category === selectedCategory)
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-    window.scrollTo({ top: 0, behavior: "smooth" }) // Scroll to top on page change
+  // Paginate services
+  const totalPages = Math.ceil(filteredServices.length / pageSize)
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  const currentServices = filteredServices.slice(startIndex, endIndex)
+
+  const categories = [
+    { value: "all", label: "All Services" },
+    { value: "travel", label: "Travel" },
+    { value: "accommodation", label: "Accommodation" },
+    { value: "transportation", label: "Transportation" },
+    { value: "activities", label: "Activities" },
+    { value: "planning", label: "Planning" }
+  ]
+
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      travel: "bg-brand-accent",
+      accommodation: "bg-green-500",
+      transportation: "bg-blue-500",
+      activities: "bg-purple-500",
+      planning: "bg-orange-500"
+    }
+    return colors[category] || "bg-gray-500"
+  }
+
+  const getCategoryIcon = (category: string) => {
+    const icons: Record<string, string> = {
+      travel: "🎒",
+      accommodation: "🏨",
+      transportation: "✈️",
+      activities: "🎯",
+      planning: "📋"
+    }
+    return icons[category] || "🔧"
   }
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="font-heading text-4xl font-bold text-brand-primary mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            COMPREHENSIVE TRAVEL SERVICES
-          </motion.h2>
-          <motion.p
-            className="text-xl text-gray-600 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Everything you need for the perfect trip, all in one place. Our expert team is here to make your travel
-            dreams a reality.
-          </motion.p>
+    <section className="py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+            TRAVEL SERVICES
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Comprehensive travel services to make your journey seamless and unforgettable. From planning to execution, we've got you covered.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Category Filters */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {categories.map((category) => (
+            <Button
+              key={category.value}
+              variant={selectedCategory === category.value ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                setSelectedCategory(category.value)
+                setCurrentPage(1)
+              }}
+              className={`${
+                selectedCategory === category.value 
+                  ? "bg-brand-accent text-white border-brand-accent" 
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              {category.label}
+            </Button>
+          ))}
+        </div>
+
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {currentServices.map((service, index) => (
             <motion.div
-              key={index}
+              key={service.id}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg cursor-pointer min-h-[400px] flex flex-col">
-                <CardContent className="p-4 flex flex-col h-full justify-between">
-                  <div>
-                    <div
-                      className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${service.bgColor} mb-2 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <service.icon className={`h-8 w-8 ${service.color}`} />
-                    </div>
-                    <h3 className="font-heading text-xl font-semibold text-brand-primary mb-2">{service.title}</h3>
-                    <p className="text-gray-600 leading-relaxed mb-2 line-clamp-3">{service.description}</p>
-
-                    {/* Features List */}
-                    <ul className="space-y-1 mb-2 max-h-[100px] overflow-hidden">
-                      {service.features.slice(0, 4).map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center text-sm text-gray-600">
-                          <div className={`w-2 h-2 rounded-full ${service.color.replace("text-", "bg-")} mr-2`} />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+              <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                <div className="relative h-48 overflow-hidden group">
+                  <div className={`absolute inset-0 ${getCategoryColor(service.category)}/10 flex items-center justify-center`}>
+                    <span className="text-6xl">{service.icon}</span>
                   </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   
-                  <Link href='/contact'>
-                    <Button className="w-full bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold mt-auto">
-                      Learn More
+                  {/* Category Badge */}
+                  <div className="absolute top-3 right-3">
+                    <Badge 
+                      variant="secondary" 
+                      className={`${getCategoryColor(service.category)} text-white border-0`}
+                    >
+                      {service.category}
+                    </Badge>
+                  </div>
+                </div>
+
+                <CardContent className="p-5 flex flex-col h-full">
+                  <div className="flex-1">
+                    <div className="mb-3">
+                      <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2">
+                        {service.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm line-clamp-2">
+                        {service.shortDescription}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Price and Duration */}
+                  {(service.price || service.duration) && (
+                    <div className="flex items-center justify-between mb-4">
+                      {service.price && (
+                        <div className="text-center">
+                          <div className="text-sm text-gray-500">Starting from</div>
+                          <div className="text-lg font-bold text-brand-accent">
+                            {service.price}
+                          </div>
+                        </div>
+                      )}
+                      {service.duration && (
+                        <div className="text-center">
+                          <div className="text-sm text-gray-500">Duration</div>
+                          <div className="text-sm font-medium text-gray-700">
+                            {service.duration}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Features */}
+                  <div className="mb-4">
+                    <div className="text-sm font-medium text-gray-700 mb-2">Key Features:</div>
+                    <div className="flex flex-wrap gap-1">
+                      {service.features.slice(0, 3).map((feature, idx) => (
+                        <Badge key={idx} variant="outline" className="text-xs">
+                          {feature}
+                        </Badge>
+                      ))}
+                      {service.features.length > 3 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{service.features.length - 3} more
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="mt-auto pt-4">
+                    <Button 
+                      className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                      asChild
+                    >
+                      <a href={`/services/${service.slug}`}>
+                        Learn More
+                      </a>
                     </Button>
-                  </Link>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
         </div>
 
-        {/* Pagination Controls */}
+        {/* No Results */}
+        {currentServices.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No services found for the selected category.</p>
+          </div>
+        )}
+
+        {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center space-x-2 mt-12">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-1"
-              aria-label="Previous page"
-            >
-              Previous
-            </Button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <motion.button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
-                  currentPage === index + 1
-                    ? "bg-brand-accent text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-                aria-label={`Go to page ${index + 1}`}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                {index + 1}
-              </motion.button>
-            ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1"
-              aria-label="Next page"
-            >
-              Next
-            </Button>
+          <div className="mt-8 flex justify-center">
+            <Pagination 
+              totalItems={filteredServices.length}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={(page) => {
+                setCurrentPage(page)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+            />
           </div>
         )}
 
         {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-            <h3 className="font-heading text-3xl font-bold text-brand-primary mb-6">Need a Custom Package?</h3>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Can't find exactly what you're looking for? Our travel experts can create a personalized package tailored
-              to your specific needs and preferences.
+        <div className="text-center mt-12">
+          <div className="bg-gradient-to-r from-brand-accent to-brand-success rounded-lg p-8 text-white">
+            <h3 className="text-2xl font-bold mb-4">
+              Need a Custom Travel Solution?
+            </h3>
+            <p className="text-lg mb-6 opacity-90">
+              Our travel experts are here to create personalized experiences just for you.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href='/contact'>
-                <Button
-                  size="lg"
-                  className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
-                >
-                  Request Custom Package
-                </Button>
-              </Link>
-
-              <Link href='/contact'>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white px-8 py-4 bg-transparent"
-                >
-                  Speak with Expert
-                </Button>
-              </Link>
-            </div>
+            <Link href="/contact">
+            <Button 
+              size="lg" 
+              variant="secondary"
+              className="bg-white text-brand-accent hover:bg-gray-100"
+            >
+              Contact Our Experts
+            </Button>
+            </Link>
           </div>
         </div>
       </div>
