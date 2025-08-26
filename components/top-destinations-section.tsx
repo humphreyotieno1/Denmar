@@ -67,8 +67,8 @@ const destinations: Destination[] = [
   },
   {
     id: 5,
-    name: "The Beach - Mombasa, Kenya",
-    image: "/denmar1.jpeg",
+    name: "Diani - Mombasa, Kenya",
+    image: "/top/diani.jpg",
     description: "Tour the beautiful beaches of Mombasa with its rich history, modern architecture, and diverse culture.",
     price: "From $1000",
     rating: 4.8,
