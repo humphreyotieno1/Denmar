@@ -8,6 +8,7 @@ import { ReadyToPlanSection } from "@/components/ready-to-plan-section"
 import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
 import type { Metadata } from "next"
+import { DealsPopup } from "@/components/deals-popup"
 
 export const metadata: Metadata = {
   title: "Denmar Tours & Travel - Your Dream Trip Awaits",
@@ -56,7 +57,7 @@ export default function HomePage() {
       <TopBanner />
       <Navbar />
 
-      <main>
+      <main className="pt-2">
         <HeroSection />
         <WhyUsSection />
         <TopDestinationsSection />
@@ -66,6 +67,7 @@ export default function HomePage() {
 
       <Footer />
       <FloatingActions />
+      <DealsPopup />
     </div>
   )
 }

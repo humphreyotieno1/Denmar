@@ -43,13 +43,13 @@ export function PackagesSection() {
               transition={{ duration: 0.6, delay: index * 0.15 }}
               className="h-full"
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl pb-2 transition-all duration-300 border border-gray-100 group">
-                <div className="relative h-40 overflow-hidden">
+              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col">
+                <div className="relative h-56 overflow-hidden flex-shrink-0">
                   <Image
                     src={pkg.image}
                     alt={pkg.name}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -75,8 +75,8 @@ export function PackagesSection() {
                   </div>
                 </div>
 
-                <CardContent className="p-5 space-y-4">
-                  <div className="space-y-2">
+                <CardContent className="p-5 space-y-4 flex-1 flex flex-col">
+                  <div className="space-y-2 flex-shrink-0">
                     <h3 className="text-lg font-bold text-gray-900 line-clamp-2">
                       {pkg.name}
                     </h3>
@@ -86,7 +86,7 @@ export function PackagesSection() {
                   </div>
 
                   {/* Package Info */}
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3 flex-shrink-0">
                     <div className="text-center p-2 bg-gray-50 rounded-lg">
                       <div className="text-xs text-gray-500">Group Size</div>
                       <div className="text-base font-semibold text-gray-900">{pkg.maxGroupSize}</div>
@@ -98,41 +98,35 @@ export function PackagesSection() {
                   </div>
 
                   {/* Best Time */}
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <div className="text-xs font-medium text-blue-600">Best Time</div>
-                    <div className="text-sm text-blue-800">{pkg.bestTime}</div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 flex-shrink-0">
+                    <MapPin className="w-4 h-4 text-brand-accent" />
+                    <span>Best time: {pkg.bestTime}</span>
                   </div>
 
-                  {/* Pricing */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      {pkg.originalPrice && (
-                        <div className="text-xs text-gray-500 line-through">
-                          {pkg.originalPrice}
-                        </div>
-                      )}
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-xl font-bold text-brand-accent">
-                          {pkg.price}
-                        </span>
-                        {pkg.discount && (
-                          <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                            {pkg.discount}% OFF
-                          </span>
-                        )}
-                      </div>
+                  {/* Price */}
+                  <div className="flex items-center justify-between flex-shrink-0">
+                    <div className="flex items-center gap-1">
+                      <DollarSign className="w-4 h-4 text-green-600" />
+                      <span className="text-xl font-bold text-green-600">
+                        {pkg.price}
+                      </span>
                     </div>
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <span>Featured</span>
                     </div>
-                    <Button 
-                      size="sm"
-                      className="bg-brand-accent hover:bg-brand-accent/90 text-white"
-                      asChild
-                    >
-                      <Link href={`/destinations/${pkg.destinationSlug}`}>
-                        View
-                        <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
-                      </Link>
-                    </Button>
+                  </div>
+
+                  {/* Action Button */}
+                  <Button
+                    asChild
+                    className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95 mt-auto flex-shrink-0"
+                  >
+                    <Link href={`/packages/${pkg.slug}`}>
+                      View Package Details
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>

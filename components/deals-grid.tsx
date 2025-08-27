@@ -95,14 +95,15 @@ export function DealsGrid() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="h-full"
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
-                <div className="relative h-48 overflow-hidden group">
+              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg flex flex-col">
+                <div className="relative h-56 overflow-hidden group flex-shrink-0">
                   <Image
                     src={deal.image}
                     alt={deal.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -128,8 +129,8 @@ export function DealsGrid() {
                   </div>
                 </div>
 
-                <CardContent className="p-5">
-                  <div className="mb-3">
+                <CardContent className="p-5 flex-1 flex flex-col">
+                  <div className="mb-3 flex-shrink-0">
                     <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2 min-h-[2.5rem]">
                       {deal.title}
                     </h3>
@@ -139,7 +140,7 @@ export function DealsGrid() {
                   </div>
 
                   {/* Destinations */}
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-3 flex-shrink-0">
                     <MapPin className="w-4 h-4 text-brand-accent flex-shrink-0" />
                     <div className="flex flex-wrap gap-1">
                       {deal.destinations.slice(0, 2).map((dest, idx) => (
@@ -156,7 +157,7 @@ export function DealsGrid() {
                   </div>
 
                   {/* Pricing */}
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-4 flex-shrink-0">
                     <div className="text-center">
                       <div className="text-sm text-gray-500 line-through">
                         {deal.originalPrice}
@@ -174,7 +175,7 @@ export function DealsGrid() {
                   </div>
 
                   {/* Highlights */}
-                  <div className="mb-4">
+                  <div className="mb-4 flex-shrink-0">
                     <div className="text-sm font-medium text-gray-700 mb-2">What's Included:</div>
                     <div className="flex flex-wrap gap-1">
                       {deal.highlights.slice(0, 3).map((highlight, idx) => (
@@ -192,7 +193,7 @@ export function DealsGrid() {
 
                   {/* Action Button */}
                   <Button
-                    className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                    className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95 mt-auto flex-shrink-0"
                     asChild
                   >
                     <a href={`/deals/${deal.slug}`}>

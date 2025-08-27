@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Menu, X, ChevronDown, ChevronRight, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import Image from "next/image"
 
 // Grouped destinations for better organization
@@ -72,14 +73,45 @@ const groupedDestinations = [
   },
 ]
 
+// Global search data
+const globalSearchData = [
+  // Destinations
+  { type: "destination", name: "Mombasa", href: "/destinations/kenya/mombasa", image: "/top/mombasa.jpg" },
+  { type: "destination", name: "Diani Beach", href: "/destinations/kenya/diani", image: "/top/diani.jpg" },
+  { type: "destination", name: "Amboseli", href: "/destinations/kenya/amboseli", image: "/top/amboseli.jpg" },
+  { type: "destination", name: "Lake Naivasha", href: "/destinations/kenya/naivasha", image: "/top/naivasha.jpg" },
+  { type: "destination", name: "Tsavo", href: "/destinations/kenya/tsavo", image: "/top/tsavo.jpg" },
+  { type: "destination", name: "Samburu", href: "/destinations/kenya/samburu", image: "/top/samburu.jpg" },
+  { type: "destination", name: "Malindi", href: "/destinations/kenya/malindi", image: "/top/malindi.jpg" },
+  { type: "destination", name: "Zanzibar", href: "/destinations/tanzania/zanzibar", image: "/denmar2.jpeg" },
+  { type: "destination", name: "Cape Town", href: "/destinations/south-africa/cape-town", image: "/denmar3.jpeg" },
+  { type: "destination", name: "Dubai", href: "/destinations/uae/dubai", image: "/denmar2.jpeg" },
+  { type: "destination", name: "Bangkok", href: "/destinations/thailand/bangkok", image: "/denmar1.jpeg" },
+  { type: "destination", name: "Paris", href: "/destinations/europe/paris", image: "/denmar3.jpeg" },
+  { type: "destination", name: "Rome", href: "/destinations/italy/rome", image: "/denmar2.jpeg" },
+  { type: "destination", name: "Istanbul", href: "/destinations/turkey/istanbul", image: "/denmar1.jpeg" },
+  // Services
+  { type: "service", name: "Flight Booking", href: "/services", image: "/denmar1.jpeg" },
+  { type: "service", name: "Hotel Reservations", href: "/services", image: "/denmar2.jpeg" },
+  { type: "service", name: "Tour Packages", href: "/services", image: "/denmar3.jpeg" },
+  { type: "service", "name": "Car Rental", href: "/services", image: "/denmar1.jpeg" },
+  { type: "service", name: "Travel Insurance", href: "/services", image: "/denmar2.jpeg" },
+  // Deals
+  { type: "deal", name: "Kenya Safari Package", href: "/deals", image: "/top/amboseli.jpg" },
+  { type: "deal", name: "Beach Holiday Special", href: "/deals", image: "/top/diani.jpg" },
+  { type: "deal", name: "City Break Deals", href: "/deals", image: "/denmar3.jpeg" },
+]
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
+  const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false)
+  const [globalSearchQuery, setGlobalSearchQuery] = useState("")
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const globalSearchRef = useRef<HTMLDivElement>(null)
 
   // Memoize grouped destinations to prevent re-renders
   const memoizedDestinations = useMemo(() => groupedDestinations, [])
@@ -100,11 +132,18 @@ export function Navbar() {
       ) {
         setIsMobileMenuOpen(false)
         setIsDestinationsOpen(false)
-        setSearchQuery("")
+      }
+      
+      if (
+        globalSearchRef.current &&
+        !globalSearchRef.current.contains(event.target as Node)
+      ) {
+        setIsGlobalSearchOpen(false)
+        setGlobalSearchQuery("")
       }
     }
 
-    if (isMobileMenuOpen) {
+    if (isMobileMenuOpen || isGlobalSearchOpen) {
       document.addEventListener("mousedown", handleClickOutside)
       document.body.style.overflow = "hidden"
     } else {
@@ -115,38 +154,48 @@ export function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside)
       document.body.style.overflow = "auto"
     }
-  }, [isMobileMenuOpen])
+  }, [isMobileMenuOpen, isGlobalSearchOpen])
 
   // Handle keyboard accessibility for dropdown
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape" && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false)
-        setIsDestinationsOpen(false)
-        setSearchQuery("")
-        menuButtonRef.current?.focus()
+      if (event.key === "Escape") {
+        if (isMobileMenuOpen) {
+          setIsMobileMenuOpen(false)
+          setIsDestinationsOpen(false)
+          menuButtonRef.current?.focus()
+        }
+        if (isGlobalSearchOpen) {
+          setIsGlobalSearchOpen(false)
+          setGlobalSearchQuery("")
+        }
       }
     }
     document.addEventListener("keydown", handleKeyDown)
     return () => document.removeEventListener("keydown", handleKeyDown)
-  }, [isMobileMenuOpen])
+  }, [isMobileMenuOpen, isGlobalSearchOpen])
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
     setIsDestinationsOpen(false)
-    setSearchQuery("")
   }
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
   const toggleDestinations = () => setIsDestinationsOpen(!isDestinationsOpen)
+  const toggleGlobalSearch = () => setIsGlobalSearchOpen(!isGlobalSearchOpen)
+
+  // Filter global search results
+  const filteredGlobalSearch = globalSearchData.filter(item =>
+    item.name.toLowerCase().includes(globalSearchQuery.toLowerCase())
+  )
 
   // Filter destinations based on search query
   const filteredDestinations = memoizedDestinations
     .flatMap((group) =>
       group.destinations.flatMap((dest) => {
-        const mainMatch = dest.name.toLowerCase().includes(searchQuery.toLowerCase())
+        const mainMatch = dest.name.toLowerCase().includes(globalSearchQuery.toLowerCase())
         const subMatches = dest.subDestinations?.filter((sub) =>
-          sub.name.toLowerCase().includes(searchQuery.toLowerCase())
+          sub.name.toLowerCase().includes(globalSearchQuery.toLowerCase())
         ) || []
         
         if (mainMatch) {
@@ -165,7 +214,7 @@ export function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white"
       }`}
     >
@@ -285,6 +334,18 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
+            {/* Global Search Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleGlobalSearch}
+              className="hidden md:flex items-center space-x-2 text-gray-700 hover:text-brand-success"
+              aria-label="Global search"
+            >
+              <Search className="h-5 w-5" />
+              <span className="hidden lg:inline">Search</span>
+            </Button>
+
             <Button
               ref={menuButtonRef}
               variant="ghost"
@@ -299,6 +360,62 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Global Search Dropdown */}
+      {isGlobalSearchOpen && (
+        <div
+          ref={globalSearchRef}
+          className="absolute top-full left-0 right-0 bg-white border border-gray-200 shadow-lg z-50"
+        >
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search destinations, services, deals..."
+                value={globalSearchQuery}
+                onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                className="pl-10 pr-4 w-full text-lg"
+                autoFocus
+              />
+            </div>
+            
+            {globalSearchQuery.trim() === "" ? (
+              <div className="text-center text-gray-500 py-8">
+                <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p className="text-lg">Start typing to search across our website</p>
+                <p className="text-sm mt-2">Search for destinations, services, deals, and more</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+                {filteredGlobalSearch.map((item, index) => (
+                  <Link
+                    key={`${item.type}-${index}`}
+                    href={item.href}
+                    onClick={() => {
+                      setIsGlobalSearchOpen(false)
+                      setGlobalSearchQuery("")
+                    }}
+                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={60}
+                      height={60}
+                      className="rounded-md object-cover"
+                    />
+                    <div>
+                      <div className="font-medium text-gray-900">{item.name}</div>
+                      <div className="text-sm text-gray-500 capitalize">{item.type}</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div
         ref={mobileMenuRef}
@@ -323,6 +440,46 @@ export function Navbar() {
           </div>
 
           <nav className="flex-1 p-4 space-y-4">
+            {/* Mobile Global Search */}
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search across website..."
+                value={globalSearchQuery}
+                onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                className="pl-10 w-full"
+              />
+            </div>
+
+            {globalSearchQuery.trim() !== "" && (
+              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                <h4 className="font-semibold mb-2">Search Results:</h4>
+                <div className="space-y-2">
+                  {filteredGlobalSearch.slice(0, 5).map((item, index) => (
+                    <Link
+                      key={`mobile-${item.type}-${index}`}
+                      href={item.href}
+                      onClick={closeMobileMenu}
+                      className="flex items-center space-x-2 p-2 rounded hover:bg-gray-100"
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        width={40}
+                        height={40}
+                        className="rounded object-cover"
+                      />
+                      <div>
+                        <div className="font-medium text-sm">{item.name}</div>
+                        <div className="text-xs text-gray-500 capitalize">{item.type}</div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <MobileNavLink href="/" className="text-lg font-bold" onClick={closeMobileMenu}>
               Home
             </MobileNavLink>
@@ -353,77 +510,47 @@ export function Navbar() {
                 }`}
                 id="mobile-destinations-menu"
               >
-                <div className="relative mb-4">
-                  <input
-                    type="text"
-                    placeholder="Search destinations..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-3 py-2 pl-10 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-success"
-                    aria-label="Search destinations"
-                  />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                </div>
-                {searchQuery
-                  ? filteredDestinations.map((destination) => (
-                      <MobileNavLink
-                        key={destination.name}
-                        href={destination.href}
-                        onClick={closeMobileMenu}
-                        className="pl-3 text-sm flex items-center space-x-3"
-                      >
-                        <Image
-                          src={destination.image}
-                          alt={`${destination.name} preview`}
-                          width={40}
-                          height={40}
-                          className="rounded-md object-cover"
-                          loading="lazy"
-                        />
-                        <span className="text-md font-semibold">{destination.name}</span>
-                      </MobileNavLink>
-                    ))
-                  : memoizedDestinations.map((group) => (
-                      <div key={group.region} className="mb-4">
-                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2">
-                          {group.region}
-                        </h3>
-                        {group.destinations.map((destination) => (
-                          <div key={destination.name}>
-                            <MobileNavLink
-                              href={destination.href}
-                              onClick={closeMobileMenu}
-                              className="pl-3 text-sm flex items-center space-x-3"
-                            >
-                              <Image
-                                src={destination.image}
-                                alt={`${destination.name} preview`}
-                                width={40}
-                                height={40}
-                                className="rounded-md object-cover"
-                                loading="lazy"
-                              />
-                              <span className="text-md font-semibold">{destination.name}</span>
-                            </MobileNavLink>
-                            {destination.subDestinations && destination.subDestinations.length > 0 && (
-                              <div className="ml-6 mt-1 space-y-1">
-                                {destination.subDestinations.map((subDest) => (
-                                  <MobileNavLink
-                                    key={subDest.name}
-                                    href={subDest.href}
-                                    onClick={closeMobileMenu}
-                                    className="pl-3 text-sm flex items-center space-x-2 text-gray-600"
-                                  >
-                                    <ChevronRight className="w-3 h-3 text-gray-400" />
-                                    <span>{subDest.name}</span>
-                                  </MobileNavLink>
-                                ))}
-                              </div>
-                            )}
+                {memoizedDestinations.map((group) => (
+                  <div key={group.region} className="mb-4">
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2">
+                      {group.region}
+                    </h3>
+                    {group.destinations.map((destination) => (
+                      <div key={destination.name}>
+                        <MobileNavLink
+                          href={destination.href}
+                          onClick={closeMobileMenu}
+                          className="pl-3 text-sm flex items-center space-x-3"
+                        >
+                          <Image
+                            src={destination.image}
+                            alt={`${destination.name} preview`}
+                            width={40}
+                            height={40}
+                            className="rounded-md object-cover"
+                            loading="lazy"
+                          />
+                          <span className="text-md font-semibold">{destination.name}</span>
+                        </MobileNavLink>
+                        {destination.subDestinations && destination.subDestinations.length > 0 && (
+                          <div className="ml-6 mt-1 space-y-1">
+                            {destination.subDestinations.map((subDest) => (
+                              <MobileNavLink
+                                key={subDest.name}
+                                href={subDest.href}
+                                onClick={closeMobileMenu}
+                                className="pl-3 text-sm flex items-center space-x-2 text-gray-600"
+                              >
+                                <ChevronRight className="w-3 h-3 text-gray-400" />
+                                <span>{subDest.name}</span>
+                              </MobileNavLink>
+                            ))}
                           </div>
-                        ))}
+                        )}
                       </div>
                     ))}
+                  </div>
+                ))}
               </div>
             </div>
 

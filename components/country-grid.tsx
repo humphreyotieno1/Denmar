@@ -92,59 +92,76 @@ export function CountryGrid({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="h-full"
             >
-              <Link href={`/destinations/${country.slug}`}>
-                <Card className="group h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg">
-                  <div className="relative h-48 overflow-hidden">
+              <Link href={`/destinations/${country.slug}`} className="h-full block">
+                <Card className="group h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg flex flex-col">
+                  <div className="relative h-56 overflow-hidden flex-shrink-0">
                     {/* Skeleton backdrop */}
                     <div className={`absolute inset-0 animate-pulse bg-gray-200 ${
-                      loadedImages.has(country.id) ? "opacity-0" : "opacity-100"
+                      loadedImages.has(country.heroImage) ? "hidden" : ""
                     }`} />
+                    
                     <Image
                       src={country.heroImage}
                       alt={country.name}
                       fill
-                      className={`object-cover group-hover:scale-110 transition-transform duration-500 transition-opacity ${
-                        loadedImages.has(country.id) ? "opacity-100" : "opacity-0"
+                      className={`object-cover object-center transition-opacity duration-300 ${
+                        loadedImages.has(country.heroImage) ? "opacity-100" : "opacity-0"
                       }`}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      onLoadingComplete={() => {
-                        setLoadedImages(prev => new Set(prev).add(country.id))
-                      }}
+                      onLoad={() => setLoadedImages(prev => new Set(prev).add(country.heroImage))}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    {country.featured && (
-                      <Badge className="absolute top-3 left-3 bg-brand-accent text-white border-0">
-                        Featured
-                      </Badge>
-                    )}
+                    
+                    {/* Country name overlay */}
                     <div className="absolute bottom-3 left-3 text-white">
-                      <div className="flex items-center gap-1 mb-1">
-                        <MapPin className="w-4 h-4" />
-                        <span className="text-sm font-medium">{country.region}</span>
-                      </div>
-                      <h3 className="text-lg font-bold line-clamp-1">{country.name}</h3>
+                      <h3 className="text-lg font-bold">{country.name}</h3>
                     </div>
-                  </div>
-                  <CardContent className="p-4">
-                    <p className="text-gray-600 text-sm line-clamp-2 mb-3 min-h-[2.5rem]">
-                      {country.summary}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                        <span className="text-sm text-gray-600">
-                          {country.popularDestinations} destinations
+                    
+                    {/* Rating badge */}
+                    {country.rating && (
+                      <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
+                        <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                        <span className="text-xs text-white font-medium">
+                          {country.rating}
                         </span>
                       </div>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="group-hover:bg-brand-accent group-hover:text-white transition-colors"
-                      >
-                        Explore
-                      </Button>
+                    )}
+                  </div>
+                  
+                  <CardContent className="p-4 flex-1 flex flex-col">
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-3 flex-shrink-0">
+                      {country.description}
+                    </p>
+                    
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1 mb-3 flex-shrink-0">
+                      {country.tags.slice(0, 3).map((tag) => (
+                        <Badge 
+                          key={tag} 
+                          variant="secondary" 
+                          className="text-xs px-2 py-1"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
                     </div>
+                    
+                    {/* Destinations count */}
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3 flex-shrink-0">
+                      <MapPin className="w-4 h-4 text-brand-accent" />
+                      <span>{country.destinationsCount} destinations</span>
+                    </div>
+                    
+                    {/* Action Button */}
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="group-hover:bg-brand-accent group-hover:text-white transition-colors mt-auto flex-shrink-0"
+                    >
+                      Explore {country.name}
+                    </Button>
                   </CardContent>
                 </Card>
               </Link>

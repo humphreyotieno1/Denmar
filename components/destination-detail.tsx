@@ -2,6 +2,7 @@ import { Calendar, DollarSign, Globe, Clock, Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
 import Link from "next/link"
 
 interface Package {
@@ -34,9 +35,13 @@ export function DestinationDetail({ destination }: DestinationDetailProps) {
     <>
       {/* Hero Section */}
       <section className="relative h-96 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${destination.heroImage})` }}
+        <Image
+          src={destination.heroImage}
+          alt={destination.name}
+          fill
+          className="object-cover object-center"
+          priority
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 flex items-center justify-center h-full text-center text-white px-4">
@@ -78,10 +83,13 @@ export function DestinationDetail({ destination }: DestinationDetailProps) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {destination.gallery.map((image, index) => (
                     <div key={index} className="aspect-square overflow-hidden rounded-lg">
-                      <img
+                      <Image
                         src={image || "/placeholder.svg"}
                         alt={`${destination.name} gallery ${index + 1}`}
+                        width={300}
+                        height={300}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
                       />
                     </div>
                   ))}

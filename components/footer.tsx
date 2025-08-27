@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { FaTiktok } from 'react-icons/fa'
 
 export function Footer() {
   return (
@@ -120,6 +121,9 @@ export function Footer() {
               </Link>
               <Link href="https://x.com/DenmarTravel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
                 <Twitter className="h-5 w-5" />
+              </Link>
+              <Link href="https://www.tiktok.com/@denmar_travel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
+                <FaTiktok className="h-5 w-5" />
               </Link>
             </div>
           </div>

@@ -25,15 +25,17 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="h-full"
     >
-      <Link href={`/destinations/${countrySlug}/${destination.slug}`}>
-        <Card className="group h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg">
-          <div className="relative h-48 overflow-hidden">
+      <Link href={`/destinations/${countrySlug}/${destination.slug}`} className="h-full block">
+        <Card className="group h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg flex flex-col">
+          <div className="relative h-56 overflow-hidden flex-shrink-0">
             <Image
               src={destination.heroImage}
               alt={destination.name}
               fill
-              className="object-cover group-hover:scale-110 transition-transform duration-500"
+              className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             {destination.featured && (
@@ -51,13 +53,13 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
               <h3 className="text-lg font-bold">{destination.name}</h3>
             </div>
           </div>
-          <CardContent className="p-4">
-            <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+          <CardContent className="p-4 flex-1 flex flex-col">
+            <p className="text-gray-600 text-sm line-clamp-2 mb-3 flex-shrink-0">
               {destination.summary}
             </p>
             
             {/* Tags */}
-            <div className="flex flex-wrap gap-1 mb-3">
+            <div className="flex flex-wrap gap-1 mb-3 flex-shrink-0">
               {destination.tags.slice(0, 3).map((tag) => (
                 <Badge 
                   key={tag} 
@@ -70,7 +72,7 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
             </div>
 
             {/* Highlights */}
-            <div className="mb-3">
+            <div className="mb-3 flex-shrink-0">
               <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
                 <Tag className="w-4 h-4" />
                 <span className="font-medium">Highlights:</span>
@@ -81,7 +83,7 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
             </div>
 
             {/* Info Row */}
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
+            <div className="flex items-center justify-between text-sm text-gray-600 mb-3 flex-shrink-0">
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 <span>{destination.duration}</span>
@@ -93,7 +95,7 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
             </div>
 
             {/* Price and Action */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-auto flex-shrink-0">
               <div className="flex items-center gap-1">
                 <DollarSign className="w-4 h-4 text-green-600" />
                 <span className="font-bold text-green-600">
@@ -110,7 +112,7 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
             </div>
 
             {/* Reviews */}
-            <div className="mt-3 pt-3 border-t border-gray-100">
+            <div className="mt-3 pt-3 border-t border-gray-100 flex-shrink-0">
               <div className="flex items-center justify-between text-xs text-gray-500">
                 <span>{destination.reviews.toLocaleString()} reviews</span>
                 <span>Best time: {destination.bestTime.split('(')[0].trim()}</span>

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
 
 interface HeroSlide {
   id: number
@@ -14,11 +15,11 @@ interface HeroSlide {
   ctaLink?: string // Optional link for CTA button
 }
 
-// Hero section slides with updated images
+// Hero section slides with updated images - optimized for 1920x1080px
 const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    image: "/travel.jpg",
+    image: "/header.jpg", // This should be 1920x1080px
     title: "The Bold and Daring",
     subtitle: "Escape to breathtaking destinations around the world",
     cta: "Plan Your Dream Trip",
@@ -26,7 +27,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 2,
-    image: "/tablemt.jpg",
+    image: "/tablemt.jpg", // This should be 1920x1080px
     title: "Adventure Awaits",
     subtitle: "Experience thrilling adventures in stunning locations",
     cta: "Explore Adventures",
@@ -34,7 +35,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 3,
-    image: "/naivasha.jpg",
+    image: "/naivasha.jpg", // This should be 1920x1080px
     title: "Cultural Journeys",
     subtitle: "Immerse yourself in rich cultures and ancient traditions",
     cta: "Discover Culture",
@@ -84,7 +85,7 @@ export function HeroSection() {
 
   return (
     <section
-      className="relative h-[calc(100vh-10rem)] overflow-hidden"
+      className="relative h-[calc(100vh-4rem)] overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -98,25 +99,33 @@ export function HeroSection() {
               : "opacity-0 scale-105 pointer-events-none"
           }`}
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
+          {/* Background Image with proper sizing and priority loading */}
+          <div className="absolute inset-0">
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              fill
+              priority={index === 0} // Priority load first slide
+              className="object-cover object-center"
+              sizes="100vw"
+              quality={90}
+            />
+          </div>
           <div className="absolute inset-0 bg-black/40" />
 
           {/* Content */}
           <div className="relative z-10 flex items-center justify-center h-full text-center text-white px-4">
             <div className="max-w-4xl mx-auto">
-              <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6 animate-fade-in-up">
+              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in-up">
                 {slide.title}
               </h1>
-              <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in-up animation-delay-200">
+              <p className="text-lg sm:text-xl md:text-2xl mb-8 opacity-90 animate-fade-in-up animation-delay-200 max-w-3xl mx-auto">
                 {slide.subtitle}
               </p>
               <Button
                 asChild
                 size="lg"
-                className="bg-brand-accent hover:bg-brand-accent/100 text-brand-primary font-semibold px-8 py-4 text-lg transform hover:scale-105 hover:shadow-lg transition-all duration-300 animate-fade-in-up animation-delay-400"
+                className="bg-brand-accent hover:bg-brand-accent/100 text-brand-primary font-semibold px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transform hover:scale-105 hover:shadow-lg transition-all duration-300 animate-fade-in-up animation-delay-400"
               >
                 <Link href={slide.ctaLink || "#"}>{slide.cta}</Link>
               </Button>
@@ -128,17 +137,17 @@ export function HeroSection() {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transform hover:scale-110 transition-all duration-300"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 sm:p-3 transform hover:scale-110 transition-all duration-300"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-6 w-6 text-white" />
+        <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transform hover:scale-110 transition-all duration-300"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 sm:p-3 transform hover:scale-110 transition-all duration-300"
         aria-label="Next slide"
       >
-        <ChevronRight className="h-6 w-6 text-white" />
+        <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
       </button>
 
       {/* Slide Indicators */}
@@ -147,7 +156,7 @@ export function HeroSection() {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
               index === currentSlide
                 ? "bg-brand-success scale-125"
                 : "bg-white/50 hover:bg-white/80"
