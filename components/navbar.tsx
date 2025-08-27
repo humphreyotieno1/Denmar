@@ -108,6 +108,7 @@ export function Navbar() {
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false)
   const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false)
   const [globalSearchQuery, setGlobalSearchQuery] = useState("")
+  const [destinationsSearchQuery, setDestinationsSearchQuery] = useState("")
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -178,6 +179,7 @@ export function Navbar() {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
     setIsDestinationsOpen(false)
+    setDestinationsSearchQuery("")
   }
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -189,13 +191,13 @@ export function Navbar() {
     item.name.toLowerCase().includes(globalSearchQuery.toLowerCase())
   )
 
-  // Filter destinations based on search query
+  // Filter destinations for mini search (independent from global search)
   const filteredDestinations = memoizedDestinations
     .flatMap((group) =>
       group.destinations.flatMap((dest) => {
-        const mainMatch = dest.name.toLowerCase().includes(globalSearchQuery.toLowerCase())
+        const mainMatch = dest.name.toLowerCase().includes(destinationsSearchQuery.toLowerCase())
         const subMatches = dest.subDestinations?.filter((sub) =>
-          sub.name.toLowerCase().includes(globalSearchQuery.toLowerCase())
+          sub.name.toLowerCase().includes(destinationsSearchQuery.toLowerCase())
         ) || []
         
         if (mainMatch) {
@@ -510,47 +512,84 @@ export function Navbar() {
                 }`}
                 id="mobile-destinations-menu"
               >
-                {memoizedDestinations.map((group) => (
-                  <div key={group.region} className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2">
-                      {group.region}
-                    </h3>
-                    {group.destinations.map((destination) => (
-                      <div key={destination.name}>
-                        <MobileNavLink
-                          href={destination.href}
-                          onClick={closeMobileMenu}
-                          className="pl-3 text-sm flex items-center space-x-3"
-                        >
-                          <Image
-                            src={destination.image}
-                            alt={`${destination.name} preview`}
-                            width={40}
-                            height={40}
-                            className="rounded-md object-cover"
-                            loading="lazy"
-                          />
-                          <span className="text-md font-semibold">{destination.name}</span>
-                        </MobileNavLink>
-                        {destination.subDestinations && destination.subDestinations.length > 0 && (
-                          <div className="ml-6 mt-1 space-y-1">
-                            {destination.subDestinations.map((subDest) => (
-                              <MobileNavLink
-                                key={subDest.name}
-                                href={subDest.href}
-                                onClick={closeMobileMenu}
-                                className="pl-3 text-sm flex items-center space-x-2 text-gray-600"
-                              >
-                                <ChevronRight className="w-3 h-3 text-gray-400" />
-                                <span>{subDest.name}</span>
-                              </MobileNavLink>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ))}
+                {/* Mini Search for Destinations */}
+                <div className="relative mb-4">
+                  <input
+                    type="text"
+                    placeholder="Search destinations..."
+                    value={destinationsSearchQuery}
+                    onChange={(e) => setDestinationsSearchQuery(e.target.value)}
+                    className="w-full px-3 py-2 pl-10 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-success"
+                    aria-label="Search destinations"
+                  />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                </div>
+                
+                {/* Show filtered destinations if searching, otherwise show all */}
+                {destinationsSearchQuery.trim() !== "" ? (
+                  // Show filtered destinations from global search
+                  filteredDestinations.slice(0, 10).map((destination) => (
+                    <MobileNavLink
+                      key={destination.name}
+                      href={destination.href}
+                      onClick={closeMobileMenu}
+                      className="pl-3 text-sm flex items-center space-x-3"
+                    >
+                      <Image
+                        src={destination.image}
+                        alt={`${destination.name} preview`}
+                        width={40}
+                        height={40}
+                        className="rounded-md object-cover"
+                        loading="lazy"
+                      />
+                      <span className="text-md font-semibold">{destination.name}</span>
+                    </MobileNavLink>
+                  ))
+                ) : (
+                  // Show all destinations grouped by region
+                  memoizedDestinations.map((group) => (
+                    <div key={group.region} className="mb-4">
+                      <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2">
+                        {group.region}
+                      </h3>
+                      {group.destinations.map((destination) => (
+                        <div key={destination.name}>
+                          <MobileNavLink
+                            href={destination.href}
+                            onClick={closeMobileMenu}
+                            className="pl-3 text-sm flex items-center space-x-3"
+                          >
+                            <Image
+                              src={destination.image}
+                              alt={`${destination.name} preview`}
+                              width={40}
+                              height={40}
+                              className="rounded-md object-cover"
+                              loading="lazy"
+                            />
+                            <span className="text-md font-semibold">{destination.name}</span>
+                          </MobileNavLink>
+                          {destination.subDestinations && destination.subDestinations.length > 0 && (
+                            <div className="ml-6 mt-1 space-y-1">
+                              {destination.subDestinations.map((subDest) => (
+                                <MobileNavLink
+                                  key={subDest.name}
+                                  href={subDest.href}
+                                  onClick={closeMobileMenu}
+                                  className="pl-3 text-sm flex items-center space-x-2 text-gray-600"
+                                >
+                                  <ChevronRight className="w-3 h-3 text-gray-400" />
+                                  <span>{subDest.name}</span>
+                                </MobileNavLink>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
