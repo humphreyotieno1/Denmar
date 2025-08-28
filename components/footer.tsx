@@ -22,7 +22,7 @@ export function Footer() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm">
                 <MapPin className="h-4 w-4 text-brand-accent" />
-                <span className="text-gray-300">3rd Floor, Design Center, Tausi Lane, Westlands, Nairobi, Kenya</span>
+                <span className="text-gray-300">3rd Floor Office - Design Center Building, Tausi Road, Westlands, Nairobi, Kenya</span>
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Phone className="h-4 w-4 text-brand-accent" />

@@ -18,11 +18,9 @@ export function ContactInfo() {
           <div>
             <h3 className="font-semibold text-brand-primary mb-1">Office Address</h3>
             <p className="text-gray-600">
-              3rd Floor
+              3rd Floor Office - Design Center Building
               <br />
-              Design Center
-              <br />
-              Tausi Lane, Westlands
+              Tausi Road, Westlands
               <br />
               Nairobi, Kenya
             </p>
@@ -37,9 +35,13 @@ export function ContactInfo() {
           <div>
             <h3 className="font-semibold text-brand-primary mb-1">Phone Numbers</h3>
             <p className="text-gray-600">
-              Main: +254 793 041 888
+              Office Line: +254 114 320 486
               <br />
-              Emergency: +254 793 041 888
+              Call/ Whatsapp: +254 793 041 888
+              <br />
+              Call/ Whatsapp: +254 791 841 346
+              <br />
+              Call/ Whatsapp: +254 113 039 737
             </p>
           </div>
         </div>
@@ -52,30 +54,15 @@ export function ContactInfo() {
           <div>
             <h3 className="font-semibold text-brand-primary mb-1">Email Addresses</h3>
             <p className="text-gray-600">
-              General: info@denmartravel.co.ke
+              General Info: info@denmartravel.co.ke
               <br />
-              Bookings: bookings@denmartravel.co.ke
+              Bookings: sales@denmartravel.co.ke
               <br />
-              Support: support@denmartravel.co.ke
-            </p>
-          </div>
-        </div>
-
-        {/* Business Hours */}
-        <div className="flex items-start space-x-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-purple-100">
-            <Clock className="h-6 w-6 text-purple-600" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-brand-primary mb-1">Business Hours</h3>
-            <p className="text-gray-600">
-              Monday - Friday: 9:00 AM - 7:00 PM
+              Bookings: sales2@denmartravel.co.ke
               <br />
-              Saturday: 10:00 AM - 5:00 PM
+              Bookings: holidays@denmartravel.co.ke
               <br />
-              Sunday: 12:00 PM - 4:00 PM
-              <br />
-              <span className="text-sm text-brand-accent">24/7 Emergency Support Available</span>
+              Group Enquiries: groups@denmartravel.co.ke
             </p>
           </div>
         </div>
@@ -89,7 +76,7 @@ export function ContactInfo() {
             </a>
           </Button>
           <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white" asChild>
-            <a href="tel:+1234567890">
+            <a href="tel:+254793041888">
               <Phone className="mr-2 h-4 w-4" />
               Call Now
             </a>

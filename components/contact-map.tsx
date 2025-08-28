@@ -7,13 +7,17 @@ export function ContactMap() {
         <h3 className="font-heading text-lg font-semibold">Find Us Here</h3>
         <p className="text-sm opacity-90">Visit our office for personalized travel planning</p>
       </div>
-      <div className="h-64 bg-gray-200 flex items-center justify-center">
-        <div className="text-center text-gray-500" role="img" aria-label="Map placeholder showing office location">
-          <MapPin className="h-12 w-12 mx-auto mb-2" />
-          <p className="text-sm">Interactive Map</p>
-          <p className="text-xs">123 Travel Street, Adventure City</p>
-          <p className="text-xs mt-2 text-brand-accent">Google Maps integration would be embedded here</p>
-        </div>
+      <div className="h-96 w-full">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.827095105166!2d36.80619607481261!3d-1.2658444355707907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f176974865965%3A0x565501be305573d6!2sDenmar%20Tours%20and%20Travel%20Ltd!5e0!3m2!1sen!2ske!4v1693212345678"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen={true}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          aria-label="Google Maps showing Denmar Tours and Travel location"
+        ></iframe>
       </div>
     </div>
   )

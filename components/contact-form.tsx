@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { Send, CheckCircle } from "lucide-react"
+import { Send, CheckCircle, Plus, Minus, Users, Baby } from "lucide-react"
 
 const contactSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters").max(50, "First name must be less than 50 characters"),
@@ -18,8 +18,10 @@ const contactSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number").regex(/^[\+]?[1-9][\d]{0,15}$/, "Please enter a valid phone number"),
   destination: z.string().min(1, "Please select a destination"),
-  travelDate: z.string().min(1, "Please select a travel date"),
-  travelers: z.string().min(1, "Please select number of travelers"),
+  travelDateFrom: z.string().min(1, "Please select travel date from"),
+  travelDateTo: z.string().min(1, "Please select travel date to"),
+  adults: z.number().min(1, "At least 1 adult required").max(20, "Maximum 20 adults"),
+  children: z.number().min(0, "Children cannot be negative").max(20, "Maximum 20 children"),
   budget: z.string().min(1, "Please select your budget range"),
   message: z.string().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
 })
@@ -29,6 +31,8 @@ type ContactFormData = z.infer<typeof contactSchema>
 export function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [adults, setAdults] = useState(1)
+  const [children, setChildren] = useState(0)
 
   const {
     register,
@@ -39,7 +43,31 @@ export function ContactForm() {
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
+    defaultValues: {
+      adults: 1,
+      children: 0,
+    }
   })
+
+  const handleAdultsChange = (increment: boolean) => {
+    if (increment && adults < 20) {
+      setAdults(adults + 1)
+      setValue("adults", adults + 1)
+    } else if (!increment && adults > 1) {
+      setAdults(adults - 1)
+      setValue("adults", adults - 1)
+    }
+  }
+
+  const handleChildrenChange = (increment: boolean) => {
+    if (increment && children < 20) {
+      setChildren(children + 1)
+      setValue("children", children + 1)
+    } else if (!increment && children > 0) {
+      setChildren(children - 1)
+      setValue("children", children - 1)
+    }
+  }
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
@@ -49,6 +77,8 @@ export function ContactForm() {
       console.log("Form submitted:", data)
       setIsSubmitted(true)
       reset()
+      setAdults(1)
+      setChildren(0)
     } catch (error) {
       console.error("Form submission error:", error)
       // You can add toast notification here
@@ -179,55 +209,136 @@ export function ContactForm() {
               {errors.destination && <p className="text-sm text-red-500">{errors.destination.message}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="travelDate">Preferred Travel Date *</Label>
-              <Input
-                id="travelDate"
-                type="date"
-                {...register("travelDate")}
-                className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
-                  errors.travelDate ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
-                }`}
-              />
-              {errors.travelDate && <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                <span className="w-1 h-1 bg-red-500 rounded-full"></span>
-                {errors.travelDate.message}
-              </p>}
+              <Label>Travel Date Range *</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="travelDateFrom" className="text-sm text-gray-600">From</Label>
+                  <Input
+                    id="travelDateFrom"
+                    type="date"
+                    {...register("travelDateFrom")}
+                    className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
+                      errors.travelDateFrom ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.travelDateFrom && <p className="text-sm text-red-500 mt-1">{errors.travelDateFrom.message}</p>}
+                </div>
+                <div>
+                  <Label htmlFor="travelDateTo" className="text-sm text-gray-600">To</Label>
+                  <Input
+                    id="travelDateTo"
+                    type="date"
+                    {...register("travelDateTo")}
+                    className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
+                      errors.travelDateTo ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.travelDateTo && <p className="text-sm text-red-500 mt-1">{errors.travelDateTo.message}</p>}
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="travelers">Number of Travelers *</Label>
-              <Select onValueChange={(value) => setValue("travelers", value)}>
-                <SelectTrigger className={errors.travelers ? "border-red-500" : ""}>
-                  <SelectValue placeholder="Select travelers" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1 Traveler</SelectItem>
-                  <SelectItem value="2">2 Travelers</SelectItem>
-                  <SelectItem value="3-4">3-4 Travelers</SelectItem>
-                  <SelectItem value="5-8">5-8 Travelers</SelectItem>
-                  <SelectItem value="9+">9+ Travelers</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.travelers && <p className="text-sm text-red-500">{errors.travelers.message}</p>}
+          {/* Travelers Section */}
+          <div className="space-y-4">
+            <Label>Number of Travelers *</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Adults */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-brand-accent" />
+                  <Label className="text-sm font-medium">Adults (18+)</Label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleAdultsChange(false)}
+                    disabled={adults <= 1}
+                    className="w-10 h-10 p-0 hover:bg-red-50 hover:border-red-300 hover:text-red-600 disabled:opacity-50"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="text-2xl font-bold text-brand-primary min-w-[3rem] text-center">
+                    {adults}
+                  </span>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleAdultsChange(true)}
+                    disabled={adults >= 20}
+                    className="w-10 h-10 p-0 hover:bg-green-50 hover:border-green-300 hover:text-green-600 disabled:opacity-50"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                {errors.adults && <p className="text-sm text-red-500">{errors.adults.message}</p>}
+              </div>
+
+              {/* Children */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Baby className="h-5 w-5 text-brand-accent" />
+                  <Label className="text-sm font-medium">Children (0-17)</Label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleChildrenChange(false)}
+                    disabled={children <= 0}
+                    className="w-10 h-10 p-0 hover:bg-red-50 hover:border-red-300 hover:text-red-600 disabled:opacity-50"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="text-2xl font-bold text-brand-primary min-w-[3rem] text-center">
+                    {children}
+                  </span>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleChildrenChange(true)}
+                    disabled={children >= 20}
+                    className="w-10 h-10 p-0 hover:bg-green-50 hover:border-green-300 hover:text-green-600 disabled:opacity-50"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                {errors.children && <p className="text-sm text-red-500">{errors.children.message}</p>}
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="budget">Budget Range *</Label>
-              <Select onValueChange={(value) => setValue("budget", value)}>
-                <SelectTrigger className={errors.budget ? "border-red-500" : ""}>
-                  <SelectValue placeholder="Select budget" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="under-1000">Under $1,000</SelectItem>
-                  <SelectItem value="1000-2500">$1,000 - $2,500</SelectItem>
-                  <SelectItem value="2500-5000">$2,500 - $5,000</SelectItem>
-                  <SelectItem value="5000-10000">$5,000 - $10,000</SelectItem>
-                  <SelectItem value="over-10000">Over $10,000</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.budget && <p className="text-sm text-red-500">{errors.budget.message}</p>}
+            
+            {/* Total Travelers Display */}
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <p className="text-sm text-gray-600">
+                Total Travelers: <span className="font-semibold text-brand-primary">{adults + children}</span>
+                {adults > 0 && <span className="text-gray-500"> ({adults} adult{adults !== 1 ? 's' : ''}</span>}
+                {children > 0 && <span className="text-gray-500">, {children} child{children !== 1 ? 'ren' : ''}</span>}
+                {children > 0 && <span className="text-gray-500">)</span>}
+              </p>
             </div>
+          </div>
+
+          {/* Budget */}
+          <div className="space-y-2">
+            <Label htmlFor="budget">Budget Range *</Label>
+            <Select onValueChange={(value) => setValue("budget", value)}>
+              <SelectTrigger className={errors.budget ? "border-red-500" : ""}>
+                <SelectValue placeholder="Select budget" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="under-1000">Under $1,000</SelectItem>
+                <SelectItem value="1000-2500">$1,000 - $2,500</SelectItem>
+                <SelectItem value="2500-5000">$2,500 - $5,000</SelectItem>
+                <SelectItem value="5000-10000">$5,000 - $10,000</SelectItem>
+                <SelectItem value="over-10000">Over $10,000</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.budget && <p className="text-sm text-red-500">{errors.budget.message}</p>}
           </div>
 
           {/* Message */}
