@@ -40,6 +40,16 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  icons: {
+    icon: [
+      { url: '/tablogo.png', sizes: 'any', type: 'image/png' },
+      { url: '/tablogo.png', sizes: '16x16', type: 'image/png' },
+      { url: '/tablogo.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/tablogo.png' }
+    ]
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
