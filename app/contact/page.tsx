@@ -24,8 +24,8 @@ export default function ContactPage() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+              <div className="lg:col-span-3 space-y-8">
                 <div className="p-6 rounded-xl">
                   <ContactForm />
                 </div>
@@ -34,18 +34,9 @@ export default function ContactPage() {
                 </div>
               </div>
               
-              <div className="lg:sticky lg:top-24 h-fit">
+              <div className="lg:col-span-2 lg:sticky lg:top-24 h-fit">
                 <div className="p-6 rounded-xl">
                   <ContactInfo />
-                </div>
-                
-                <div className="bg-white mt-6 p-6 rounded-xl">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Business Hours</h3>
-                  <div className="space-y-2 text-gray-600">
-                    <p className="flex justify-between"><span>Monday - Friday</span> <span>6:00 AM - 5:00 PM</span></p>
-                    <p className="flex justify-between"><span>Saturday</span> <span>10:00 AM - 1:00 PM</span></p>
-                    <p className="flex justify-between"><span>Sunday</span> <span>Closed</span></p>
-                  </div>
                 </div>
               </div>
             </div>

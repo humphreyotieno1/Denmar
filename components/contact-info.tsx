@@ -62,10 +62,19 @@ export function ContactInfo() {
               <br />
               Bookings: holidays@denmartravel.co.ke
               <br />
-              Group Enquiries: groups@denmartravel.co.ke
+              Groups: groups@denmartravel.co.ke
             </p>
           </div>
         </div>
+
+        <div className="mt-6 p-6 rounded-xl">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Business Hours</h3>
+          <div className="space-y-2 text-gray-600">
+            <p className="flex justify-between"><span>Monday - Friday</span> <span>6:00 AM - 5:00 PM</span></p>
+            <p className="flex justify-between"><span>Saturday</span> <span>10:00 AM - 1:00 PM</span></p>
+            <p className="flex justify-between"><span>Sunday</span> <span>Closed</span></p>
+          </div>
+        </div>  
 
         {/* Quick Contact Buttons */}
         <div className="pt-6 border-t space-y-3">
