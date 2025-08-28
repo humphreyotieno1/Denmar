@@ -85,7 +85,7 @@ export function HeroSection() {
 
   return (
     <section
-      className="relative h-[calc(100vh-4rem)] overflow-hidden"
+      className="relative h-[740px] overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
