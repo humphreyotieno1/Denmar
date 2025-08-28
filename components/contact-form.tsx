@@ -20,8 +20,8 @@ const contactSchema = z.object({
   destination: z.string().min(1, "Please select a destination"),
   travelDateFrom: z.string().min(1, "Please select travel date from"),
   travelDateTo: z.string().min(1, "Please select travel date to"),
-  adults: z.number().min(1, "At least 1 adult required").max(20, "Maximum 20 adults"),
-  children: z.number().min(0, "Children cannot be negative").max(20, "Maximum 20 children"),
+  adults: z.number().min(1, "At least 1 adult required").max(100, "Maximum 100 adults"),
+  children: z.number().min(0, "Children cannot be negative").max(100, "Maximum 100 children"),
   budget: z.string().min(1, "Please select your budget range"),
   message: z.string().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
 })
@@ -50,7 +50,7 @@ export function ContactForm() {
   })
 
   const handleAdultsChange = (increment: boolean) => {
-    if (increment && adults < 20) {
+    if (increment && adults < 100) {
       setAdults(adults + 1)
       setValue("adults", adults + 1)
     } else if (!increment && adults > 1) {
@@ -60,7 +60,7 @@ export function ContactForm() {
   }
 
   const handleChildrenChange = (increment: boolean) => {
-    if (increment && children < 20) {
+    if (increment && children < 100) {
       setChildren(children + 1)
       setValue("children", children + 1)
     } else if (!increment && children > 0) {
@@ -247,7 +247,7 @@ export function ContactForm() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-brand-accent" />
-                  <Label className="text-sm font-medium">Adults (18+)</Label>
+                  <Label className="text-sm font-medium">Adults (12+)</Label>
                 </div>
                 <div className="flex items-center gap-3">
                   <Button
@@ -268,7 +268,7 @@ export function ContactForm() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleAdultsChange(true)}
-                    disabled={adults >= 20}
+                    disabled={adults >= 100}
                     className="w-10 h-10 p-0 hover:bg-green-50 hover:border-green-300 hover:text-green-600 disabled:opacity-50"
                   >
                     <Plus className="h-4 w-4" />
@@ -281,7 +281,7 @@ export function ContactForm() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <Baby className="h-5 w-5 text-brand-accent" />
-                  <Label className="text-sm font-medium">Children (0-17)</Label>
+                  <Label className="text-sm font-medium">Children (0-12)</Label>
                 </div>
                 <div className="flex items-center gap-3">
                   <Button
@@ -302,7 +302,7 @@ export function ContactForm() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleChildrenChange(true)}
-                    disabled={children >= 20}
+                    disabled={children >= 100}
                     className="w-10 h-10 p-0 hover:bg-green-50 hover:border-green-300 hover:text-green-600 disabled:opacity-50"
                   >
                     <Plus className="h-4 w-4" />

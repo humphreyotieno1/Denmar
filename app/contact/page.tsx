@@ -25,18 +25,24 @@ export default function ContactPage() {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-              <div className="lg:col-span-3 space-y-8">
-                <div className="p-6 rounded-xl">
+              {/* Left Column - Contact Form */}
+              <div className="lg:col-span-3">
+                <div className="p-6 rounded-xl bg-white shadow-md">
                   <ContactForm />
-                </div>
-                <div className="p-6 rounded-xl">
-                  <ContactMap />
                 </div>
               </div>
               
+              {/* Right Column - Contact Info */}
               <div className="lg:col-span-2 lg:sticky lg:top-24 h-fit">
-                <div className="p-6 rounded-xl">
+                <div className="p-6 rounded-xl bg-white shadow-md">
                   <ContactInfo />
+                </div>
+              </div>
+              
+              {/* Full Width Map */}
+              <div className="col-span-full mt-4">
+                <div className="rounded-xl overflow-hidden shadow-lg">
+                  <ContactMap />
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@ export function ContactInfo() {
     <Card className="border-0 shadow-lg">
       <CardHeader>
         <CardTitle className="font-heading text-2xl text-brand-primary">Contact Information</CardTitle>
-        <p className="text-gray-600">Get in touch with us through any of these channels.</p>
+        <p className="text-gray-600">Reach us through any of these channels.</p>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Office Address */}
