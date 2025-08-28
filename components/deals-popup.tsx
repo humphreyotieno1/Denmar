@@ -48,17 +48,17 @@ export function DealsPopup() {
   const [hasSeenPopup, setHasSeenPopup] = useState(false)
 
   useEffect(() => {
-    // Check if user has seen the popup recently (within last 3 days)
+    // Check if user has seen the popup in the last hour
     const popupSeen = localStorage.getItem("deals-popup-seen")
     const now = new Date().getTime()
-    const threeDaysInMs = 3 * 24 * 60 * 60 * 1000 // 3 days in milliseconds
+    const oneHourInMs = 60 * 60 * 1000 // 1 hour in milliseconds
     
     let shouldShowPopup = true
     
     if (popupSeen) {
       const lastSeen = parseInt(popupSeen)
-      // Show popup again if it's been more than 3 days
-      if (now - lastSeen < threeDaysInMs) {
+      // Show popup again if it's been more than 1 hour
+      if (now - lastSeen < oneHourInMs) {
         shouldShowPopup = false
       }
     }
@@ -66,8 +66,15 @@ export function DealsPopup() {
     if (shouldShowPopup) {
       // Show popup after 2 seconds
       const timer = setTimeout(() => {
-        setIsOpen(true)
-      }, 2000)
+        // Only show if it's been more than an hour since last seen
+        const lastSeen = localStorage.getItem("deals-popup-seen")
+        const oneHourAgo = Date.now() - 60 * 60 * 1000
+        
+        if (!lastSeen || parseInt(lastSeen) < oneHourAgo) {
+          setIsOpen(true)
+          localStorage.setItem("deals-popup-seen", Date.now().toString())
+        }
+      }, 3000) // Show after 3 seconds
       return () => clearTimeout(timer)
     }
   }, [])

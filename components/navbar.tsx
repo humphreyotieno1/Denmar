@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
+import { TopBanner } from "./top-banner"
 
 // Grouped destinations for better organization
 const groupedDestinations = [
@@ -215,11 +216,13 @@ export function Navbar() {
     )
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <TopBanner />
+      <nav
+        className={`bg-white transition-all duration-300 ${
+          isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : ""
+        }`}
+      >
       <div className="max-w-7xl mx-auto px-4 py-2 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center" onClick={closeMobileMenu}>
@@ -611,6 +614,7 @@ export function Navbar() {
         />
       )}
     </nav>
+    </header>
   )
 }
 
