@@ -86,7 +86,7 @@ export function PackagesSection() {
                   </div>
 
                   {/* Package Info */}
-                  <div className="grid grid-cols-2 gap-3 flex-shrink-0">
+                  {/* <div className="grid grid-cols-2 gap-3 flex-shrink-0">
                     <div className="text-center p-2 bg-gray-50 rounded-lg">
                       <div className="text-xs text-gray-500">Group Size</div>
                       <div className="text-base font-semibold text-gray-900">{pkg.maxGroupSize}</div>
@@ -95,7 +95,7 @@ export function PackagesSection() {
                       <div className="text-xs text-gray-500">Difficulty</div>
                       <div className="text-sm font-medium text-gray-700 capitalize">{pkg.difficulty}</div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Best Time */}
                   <div className="flex items-center gap-2 text-sm text-gray-600 flex-shrink-0">
