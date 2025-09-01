@@ -25,7 +25,7 @@ const destinations: Destination[] = [
   {
     id: 1,
     name: "Nairobi, Kenya",
-    image: "/denmar1.jpeg",
+    image: "/top/nairobi.jpg",
     description: "Discover the vibrant city of Nairobi with its rich history, modern architecture, and diverse culture.",
     price: "From $1000",
     rating: 4.9,
@@ -36,7 +36,7 @@ const destinations: Destination[] = [
   {
     id: 2,
     name: "Europe",
-    image: "/denmar2.jpeg",
+    image: "/top/europe.jpg",
     description: "Explore the diverse and rich culture of Europe with its ancient landmarks, modern cities, and vibrant nightlife.",
     price: "From $1000",
     rating: 4.8,
@@ -47,7 +47,7 @@ const destinations: Destination[] = [
   {
     id: 3,
     name: "Dubai, UAE",
-    image: "/denmar3.jpeg",
+    image: "/top/dubai.jpg",
     description: "Modern metropolis with world-class shopping, dining, and entertainment.",
     price: "From $1000",
     rating: 4.9,
@@ -58,7 +58,7 @@ const destinations: Destination[] = [
   {
     id: 4,
     name: "Africa",
-    image: "/denmar2.jpeg",
+    image: "/top/Africa.jpg",
     description: "Explore the diverse and rich culture of Africa with its ancient landmarks, modern cities, and vibrant nightlife.",
     price: "From $1000",
     rating: 4.7,
@@ -80,7 +80,7 @@ const destinations: Destination[] = [
   {
     id: 6,
     name: "Zanzibar, Tanzania",
-    image: "/denmar2.jpeg",
+    image: "/top/zanzibar.jpg",
     description: "Travel and get to experience the beauty of Zanzibar and Tanzania.",
     price: "From $1000",
     rating: 4.9,
@@ -91,7 +91,7 @@ const destinations: Destination[] = [
   {
     id: 7,
     name: "Thailand",
-    image: "/denmar1.jpeg",
+    image: "/top/thailand.jpg",
     description: "Explore the rich culture and beauty of Thailand.",
     price: "From $1000",
     rating: 4.7,
@@ -102,7 +102,7 @@ const destinations: Destination[] = [
   {
     id: 8,
     name: "Seychelles",
-    image: "/denmar2.jpeg",
+    image: "/top/seychelles.jpg",
     description: "Discover the crystal clear waters and beautiful beaches of Seychelles.",
     price: "From $1000",
     rating: 4.8,
@@ -113,7 +113,7 @@ const destinations: Destination[] = [
   {
     id: 9,
     name: "South Africa",
-    image: "/denmar1.jpeg",
+    image: "/top/southafrica.jpg",
     description: "Travel and get to experience the beauty of South Africa.",
     price: "From $1000",
     rating: 4.9,
@@ -124,7 +124,7 @@ const destinations: Destination[] = [
   {
     id: 10,
     name: "Mauritius",
-    image: "/denmar2.jpeg",
+    image: "/top/mauritius.jpg",
     description: "Discover the beauty of Mauritius with its crystal clear waters and lush landscapes.",
     price: "From $1000",
     rating: 4.7,
@@ -135,7 +135,7 @@ const destinations: Destination[] = [
   {
     id: 11,
     name: "Italy",
-    image: "/denmar1.jpeg",
+    image: "/top/italy.jpg",
     description: "Experience the rich history and culture of Italy.",
     price: "From $1000",
     rating: 4.8,
@@ -146,7 +146,7 @@ const destinations: Destination[] = [
   {
     id: 12,
     name: "China",
-    image: "/denmar2.jpeg",
+    image: "/top/china.jpg",
     description: "Discover the rich history and culture of China.",
     price: "From $1000",
     rating: 4.9,
@@ -157,7 +157,7 @@ const destinations: Destination[] = [
   {
     id: 13,
     name: "Turkey",
-    image: "/denmar1.jpeg",
+    image: "/top/turkey.jpg",
     description: "Explore the rich history and culture of Turkey.",
     price: "From $1000",
     rating: 4.7,
@@ -168,7 +168,7 @@ const destinations: Destination[] = [
   {
     id: 14,
     name: "Singapore",
-    image: "/denmar2.jpeg",
+    image: "/top/singapore.jpg",
     description: "Experience the vibrant culture and modern architecture of Singapore.",
     price: "From $1000",
     rating: 4.8,
@@ -179,7 +179,7 @@ const destinations: Destination[] = [
   {
     id: 15,
     name: "Maldives",
-    image: "/denmar1.jpeg",
+    image: "/top/maldives.jpg",
     description: "Discover the beautiful beaches and crystal clear waters of the Maldives.",
     price: "From $1000",
     rating: 4.9,
@@ -190,7 +190,7 @@ const destinations: Destination[] = [
   {
     id: 16,
     name: "Malaysia",
-    image: "/denmar2.jpeg",
+    image: "/top/malaysia.jpg",
     description: "Explore the diverse culture and natural beauty of Malaysia.",
     price: "From $1000",
     rating: 4.7,

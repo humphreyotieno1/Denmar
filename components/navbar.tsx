@@ -14,14 +14,14 @@ const groupedDestinations = [
   {
     region: "Africa & Indian Ocean",
     destinations: [
-      { name: "Kenya", href: "/destinations/kenya", image: "/denmar1.jpeg", subDestinations: [
+      { name: "Kenya", href: "/destinations/kenya", image: "/top/amboseli.jpg", subDestinations: [
         { name: "Mombasa", href: "/destinations/kenya/mombasa" },
         { name: "Diani Beach", href: "/destinations/kenya/diani" },
         { name: "Nairobi", href: "/destinations/kenya/nairobi" },
         { name: "Amboseli", href: "/destinations/kenya/amboseli" },
         { name: "Lake Naivasha", href: "/destinations/kenya/naivasha" },
       ]},
-      { name: "Tanzania", href: "/destinations/tanzania", image: "/denmar2.jpeg", subDestinations: [
+      { name: "Tanzania", href: "/destinations/tanzania", image: "/top/zanzibar.jpg", subDestinations: [
         { name: "Zanzibar", href: "/destinations/tanzania/zanzibar" },
       ]},
       { name: "South Africa", href: "/destinations/south-africa", image: "/denmar3.jpeg", subDestinations: [
@@ -38,22 +38,22 @@ const groupedDestinations = [
   {
     region: "Asia & Middle East",
     destinations: [
-      { name: "UAE", href: "/destinations/uae", image: "/denmar2.jpeg", subDestinations: [
+      { name: "UAE", href: "/destinations/uae", image: "/top/dubai.jpg", subDestinations: [
         { name: "Dubai", href: "/destinations/uae/dubai" },
       ]},
-      { name: "Thailand", href: "/destinations/thailand", image: "/denmar1.jpeg", subDestinations: [
+      { name: "Thailand", href: "/destinations/thailand", image: "/top/thailand.jpg", subDestinations: [
         { name: "Bangkok", href: "/destinations/thailand/bangkok" },
       ]},
-      { name: "China", href: "/destinations/china", image: "/denmar3.jpeg", subDestinations: [
+      { name: "China", href: "/destinations/china", image: "/top/china.jpg", subDestinations: [
         { name: "Beijing", href: "/destinations/china/beijing" },
       ]},
-      { name: "Singapore", href: "/destinations/singapore", image: "/denmar2.jpeg", subDestinations: [
+      { name: "Singapore", href: "/destinations/singapore", image: "/top/singapore.jpg", subDestinations: [
         { name: "Singapore City", href: "/destinations/singapore/singapore-city" },
       ]},
-      { name: "Malaysia", href: "/destinations/malaysia", image: "/denmar1.jpeg", subDestinations: [
+      { name: "Malaysia", href: "/destinations/malaysia", image: "/top/malaysia.jpg", subDestinations: [
         { name: "Kuala Lumpur", href: "/destinations/malaysia/kuala-lumpur" },
       ]},
-      { name: "Maldives", href: "/destinations/maldives", image: "/denmar3.jpeg", subDestinations: [
+      { name: "Maldives", href: "/destinations/maldives", image: "/top/maldives.jpg", subDestinations: [
         { name: "Male", href: "/destinations/maldives/male" },
       ]},
     ],
@@ -61,13 +61,13 @@ const groupedDestinations = [
   {
     region: "Europe",
     destinations: [
-      { name: "Europe", href: "/destinations/europe", image: "/denmar3.jpeg", subDestinations: [
+      { name: "Europe", href: "/destinations/europe", image: "/top/paris.jpg", subDestinations: [
         { name: "Paris", href: "/destinations/europe/paris" },
       ]},
-      { name: "Italy", href: "/destinations/italy", image: "/denmar2.jpeg", subDestinations: [
+      { name: "Italy", href: "/destinations/italy", image: "/top/italy.jpg", subDestinations: [
         { name: "Rome", href: "/destinations/italy/rome" },
       ]},
-      { name: "Turkey", href: "/destinations/turkey", image: "/denmar1.jpeg", subDestinations: [
+      { name: "Turkey", href: "/destinations/turkey", image: "/top/turkey.jpg", subDestinations: [
         { name: "Istanbul", href: "/destinations/turkey/istanbul" },
       ]},
     ],
