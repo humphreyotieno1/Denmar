@@ -6,22 +6,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 const bannerImages = [
   {
     id: 1,
-    image: "/denmar1.jpeg",
+    image: "/top/dubai.jpg",
     title: "Discover Amazing Destinations",
   },
   {
     id: 2,
-    image: "/denmar2.jpeg",
+    image: "/top/thailand.jpg",
     title: "Adventure Awaits You",
   },
   {
     id: 3,
-    image: "/denmar3.jpeg",
+    image: "/top/malaysia.jpg",
     title: "Rich Cultural Experiences",
   },
   {
     id: 4,
-    image: "/denmar2.jpeg",
+    image: "/top/singapore.jpg",
     title: "Urban Exploration",
   },
 ]

@@ -13,14 +13,11 @@ export function ShowYouWorldSection() {
               <h2 className="font-heading text-4xl md:text-5xl font-bold text-brand-primary mb-6">
                 LET US SHOW YOU THE WORLD
               </h2>
-              <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                At Denmar Tours & Travel, we believe that travel is more than just visiting new places—it's about
-                creating life-changing experiences that broaden your perspective and enrich your soul.
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                At Denmar Tours & Travel, we believe every journey should be unforgettable. As Kenya’s trusted partner for both corporate and global travel, we specialize in creating affordable, tailor-made packages designed around your needs. With a strong commitment to safety, value, and exceptional service, we ensure every trip is seamless, enjoyable, and truly memorable.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed">
-                With over a decade of experience in the travel industry, we've helped thousands of travelers discover
-                the beauty, culture, and wonder that our world has to offer. From exotic tropical paradises to bustling
-                metropolitan cities, we craft personalized journeys that match your dreams and exceed your expectations.
+                Let us turn your travel dreams into reality—whether it’s a corporate retreat, a family vacation, or an international adventure.
               </p>
             </div>
 
@@ -44,7 +41,7 @@ export function ShowYouWorldSection() {
                 <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 mb-3 mx-auto">
                   <Award className="h-6 w-6 text-blue-600" />
                 </div>
-                <div className="text-2xl font-bold text-brand-primary">15+</div>
+                <div className="text-2xl font-bold text-brand-primary">10+</div>
                 <div className="text-sm text-gray-600">Years Experience</div>
               </div>
             </div>
@@ -64,7 +61,7 @@ export function ShowYouWorldSection() {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/denmar.png"
+                src="/about/denmar.jpeg"
                 alt="Happy travelers exploring the world"
                 className="w-full h-[600px] object-cover"
               />
