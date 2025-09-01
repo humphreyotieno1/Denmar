@@ -192,7 +192,7 @@ export const deals: Deal[] = [
     discount: 27,
     validUntil: "2024-12-31",
     destinations: ["Kenya", "Masai Mara", "Amboseli"],
-    image: "/denmar1.jpeg",
+    image: "/top/tsavo.jpg",
     featured: true,
     category: "package",
     terms: [
@@ -221,7 +221,7 @@ export const deals: Deal[] = [
     discount: 20,
     validUntil: "2024-12-31",
     destinations: ["UAE", "Dubai"],
-    image: "/denmar2.jpeg",
+    image: "/top/dubai.jpg",
     featured: true,
     category: "package",
     terms: [
@@ -250,7 +250,7 @@ export const deals: Deal[] = [
     discount: 21,
     validUntil: "2024-12-31",
     destinations: ["Tanzania", "Zanzibar"],
-    image: "/denmar3.jpeg",
+    image: "/top/zanzibar.jpg",
     featured: true,
     category: "package",
     terms: [
@@ -279,7 +279,7 @@ export const deals: Deal[] = [
     discount: 19,
     validUntil: "2024-12-31",
     destinations: ["Thailand", "Bangkok", "Chiang Mai"],
-    image: "/denmar1.jpeg",
+    image: "/top/thailand.jpg",
     featured: false,
     category: "package",
     terms: [
