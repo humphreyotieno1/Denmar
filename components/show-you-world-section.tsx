@@ -46,7 +46,7 @@ export function ShowYouWorldSection() {
               </div>
             </div>
 
-            <Link href='/services'>
+            <Link href='/contact'>
             <Button
               size="lg"
               className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
@@ -61,7 +61,7 @@ export function ShowYouWorldSection() {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/about/denmar.jpeg"
+                src="/about/about.jpg"
                 alt="Happy travelers exploring the world"
                 className="w-full h-[600px] object-cover"
               />
@@ -74,8 +74,8 @@ export function ShowYouWorldSection() {
                   <Award className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold text-brand-primary">Award Winning</div>
-                  <div className="text-sm text-gray-600">Travel Agency 2024</div>
+                  <div className="font-semibold text-brand-primary">Denmar Tours & Travel</div>
+                  <div className="text-sm text-gray-600">Travel Agency</div>
                 </div>
               </div>
             </div>

@@ -80,7 +80,7 @@ export function StorySection() {
             </div>
             <div className="relative">
               <img
-                src="/denmar.png"
+                src="/about/customercare.jpg"
                 alt="Our dedicated travel team"
                 className="w-full h-80 object-cover rounded-xl shadow-lg"
               />
