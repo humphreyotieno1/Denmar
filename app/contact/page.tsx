@@ -27,14 +27,14 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
               {/* Left Column - Contact Form */}
               <div className="lg:col-span-3">
-                <div className="p-6 rounded-xl bg-white shadow-md">
+                <div className="p-6 rounded-xl">
                   <ContactForm />
                 </div>
               </div>
               
               {/* Right Column - Contact Info */}
               <div className="lg:col-span-2 lg:sticky lg:top-24 h-fit">
-                <div className="p-6 rounded-xl bg-white shadow-md">
+                <div className="p-6 rounded-xl">
                   <ContactInfo />
                 </div>
               </div>
