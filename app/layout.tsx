@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Poppins, Open_Sans } from "next/font/google"
 import "./globals.css"
+import { ToastProvider } from "@/components/ui/toast"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -92,7 +93,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${openSans.variable}`}>
       <body className="font-sans antialiased">
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   )

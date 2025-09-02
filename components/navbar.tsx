@@ -249,12 +249,12 @@ export function Navbar() {
             >
               About Us
             </Link>
-            <Link
+            {/* <Link
               href="/services"
               className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
             >
               Services
-            </Link>
+            </Link> */}
 
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -491,9 +491,9 @@ export function Navbar() {
             <MobileNavLink href="/about" className="text-lg font-bold" onClick={closeMobileMenu}>
               About Us
             </MobileNavLink>
-            <MobileNavLink href="/services" className="text-lg font-bold" onClick={closeMobileMenu}>
+            {/* <MobileNavLink href="/services" className="text-lg font-bold" onClick={closeMobileMenu}>
               Services
-            </MobileNavLink>
+            </MobileNavLink> */}
 
             <div className="mt-2">
               <button

@@ -1,8 +1,11 @@
+"use client"  
+
 import Link from "next/link"
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { FaTiktok } from 'react-icons/fa'
+import { toast } from "@/components/ui/toast"
 
 export function Footer() {
   return (
@@ -101,14 +104,37 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="font-heading text-lg font-semibold text-brand-accent">Stay Connected</h3>
             <p className="text-gray-300 text-sm">Subscribe to our newsletter for travel tips and exclusive deals.</p>
-            <div className="flex space-x-2">
+            
+            {/* Simple Newsletter Form for Footer */}
+            <div className="space-y-3">
               <Input
                 type="email"
                 placeholder="Your email"
                 className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                id="footer-email"
               />
-              <Button className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary">Subscribe</Button>
+              <Button 
+                className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary w-full"
+                onClick={() => {
+                  const email = (document.getElementById('footer-email') as HTMLInputElement)?.value
+                  if (email) {
+                    fetch('/api/newsletter', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ email, firstName: 'Guest' })
+                    }).then(() => {
+                      toast.success('Thank you for subscribing!')
+                      ;(document.getElementById('footer-email') as HTMLInputElement).value = ''
+                    }).catch(() => {
+                      toast.error('Failed to subscribe. Please try again.')
+                    })
+                  }
+                }}
+              >
+                Subscribe
+              </Button>
             </div>
+            
             <div className="flex space-x-4 pt-4">
               <Link href="https://www.facebook.com/denmartravel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
                 <Facebook className="h-5 w-5" />

@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Send, CheckCircle, Plus, Minus, Users, Baby } from "lucide-react"
+import { toast } from "@/components/ui/toast"
 
 const contactSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters").max(50, "First name must be less than 50 characters"),
@@ -72,16 +73,39 @@ export function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      console.log("Form submitted:", data)
-      setIsSubmitted(true)
-      reset()
-      setAdults(1)
-      setChildren(0)
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          destination: data.destination,
+          travelDateFrom: data.travelDateFrom,
+          travelDateTo: data.travelDateTo,
+          adults: data.adults,
+          children: data.children,
+          budget: data.budget,
+          message: data.message,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setIsSubmitted(true)
+        reset()
+        setAdults(1)
+        setChildren(0)
+      } else {
+        throw new Error(result.error || 'Failed to send message')
+      }
     } catch (error) {
       console.error("Form submission error:", error)
-      // You can add toast notification here
+      toast.error('Failed to send your message. Please try again or contact us directly.')
     } finally {
       setIsSubmitting(false)
     }
