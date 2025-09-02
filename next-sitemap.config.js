@@ -21,3 +21,20 @@ module.exports = {
     await config.transform(config, '/services'),
   ],
 }
+
+
+// /** @type {import('next-sitemap').IConfig} */
+// module.exports = {
+//   siteUrl: 'https://www.denmartravel.co.ke',
+//   generateRobotsTxt: true,
+//   generateIndexSitemap: false,   // 👈 keeps all URLs in one sitemap.xml
+//   exclude: ['/api/*', '/admin/*'], // optional: exclude system routes
+//   robotsTxtOptions: {
+//     policies: [
+//       {
+//         userAgent: '*',
+//         allow: '/',
+//       },
+//     ],
+//   },
+// }
