@@ -120,11 +120,11 @@ export function CountryGrid({
                     </div>
                     
                     {/* Rating badge */}
-                    {country.rating && (
+                    {country.featured && (
                       <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
                         <Star className="w-3 h-3 text-yellow-400 fill-current" />
                         <span className="text-xs text-white font-medium">
-                          {country.rating}
+                          Featured
                         </span>
                       </div>
                     )}
@@ -135,23 +135,20 @@ export function CountryGrid({
                       {country.description}
                     </p>
                     
-                    {/* Tags */}
+                    {/* Region Badge */}
                     <div className="flex flex-wrap gap-1 mb-3 flex-shrink-0">
-                      {(country.tags || []).slice(0, 3).map((tag) => (
-                        <Badge 
-                          key={tag} 
-                          variant="secondary" 
-                          className="text-xs px-2 py-1"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
+                      <Badge 
+                        variant="secondary" 
+                        className="text-xs px-2 py-1"
+                      >
+                        {country.region}
+                      </Badge>
                     </div>
                     
                     {/* Destinations count */}
                     <div className="flex items-center gap-2 text-sm text-gray-600 mb-3 flex-shrink-0">
                       <MapPin className="w-4 h-4 text-brand-accent" />
-                      <span>{country.destinationsCount} destinations</span>
+                      <span>{country.popularDestinations} destinations</span>
                     </div>
                     
                     {/* Action Button */}
