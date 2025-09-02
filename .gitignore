@@ -1,27 +1,120 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
+/.pnp
+.pnp.js
 
-# next.js
+# Next.js
 /.next/
 /out/
+/coverage
 
-# production
+# Production
 /build
 
-# debug
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
-.env*
+# Environment variables
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# vercel
+# Local development
+.DS_Store
+*.pem
+
+# Vercel
 .vercel
 
-# typescript
+# IDE and Editor
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Testing
+/coverage
+
+# Local development
+.cache/
+.temp/
+.tmp/
+
+# Misc
+.DS_Store
+*.pem
+
+# Sitemap (if generated during build)
+/public/sitemap.xml
+/public/robots.txt
+
+# Local development cache
+.cache/
+.temp/
+.tmp/
+
+# Logs
+logs
+*.log
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# parcel-bundler cache (https://parceljs.org/)
+.parcel-cache/
+
+# Next.js build output
+.next/
+
+# Production
+/build
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local development
+.DS_Store
+
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+
+# Local development
+.vercel
+
+# TypeScript
+*.tsbuildinfo

@@ -27,7 +27,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 2,
-    image: "/tablemt.jpg", // This should be 1920x1080px
+    image: "/hero2.jpg", // This should be 1920x1080px
     title: "Adventure Awaits",
     subtitle: "Experience thrilling adventures in stunning locations",
     cta: "Explore Adventures",
@@ -35,7 +35,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 3,
-    image: "/naivasha.jpg", // This should be 1920x1080px
+    image: "/hero3.jpg", // This should be 1920x1080px
     title: "Cultural Journeys",
     subtitle: "Immerse yourself in rich cultures and ancient traditions",
     cta: "Discover Culture",

@@ -1,5 +1,57 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable React Strict Mode for better development practices
+  reactStrictMode: true,
+  
+  // Enable production browser source maps for better debugging
+  productionBrowserSourceMaps: true,
+  
+  // Enable compression for better performance
+  compress: true,
+  
+  // Enable HTTP/2 server push
+  httpAgentOptions: {
+    keepAlive: true,
+  },
+  
+  // Configure image optimization
+  images: {
+    unoptimized: true, // Disable default optimization since we're using next-optimized-images
+    domains: ['denmartravel.co.ke', 'www.denmartravel.co.ke'],
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    formats: ['image/avif', 'image/webp'],
+  },
+  
+  // Add security headers
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+    ];
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -45,16 +97,6 @@ const nextConfig = {
       {
         source: '/destinations/paris',
         destination: '/destinations/france/paris',
-        permanent: true,
-      },
-      {
-        source: '/destinations/tokyo',
-        destination: '/destinations/japan/tokyo',
-        permanent: true,
-      },
-      {
-        source: '/destinations/santorini',
-        destination: '/destinations/greece/santorini',
         permanent: true,
       },
     ]
