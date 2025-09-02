@@ -137,7 +137,7 @@ export function CountryGrid({
                     
                     {/* Tags */}
                     <div className="flex flex-wrap gap-1 mb-3 flex-shrink-0">
-                      {country.tags.slice(0, 3).map((tag) => (
+                      {(country.tags || []).slice(0, 3).map((tag) => (
                         <Badge 
                           key={tag} 
                           variant="secondary" 
