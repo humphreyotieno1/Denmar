@@ -18,10 +18,10 @@ interface DealPoster {
 const dealPosters: DealPoster[] = [
   {
     id: 1,
-    image: "/top/amboseli.jpg",
-    title: "Safari Adventure Special",
-    subtitle: "Experience the wild beauty of Kenya",
-    discount: "30% OFF",
+    image: "/deal1.jpeg",
+    title: "Turkish Airlines",
+    subtitle: "Enjoy Massive Discounts & Flexible Ticket Fee",
+    discount: "Upto 40% OFF",
     href: "/deals"
   },
   {
@@ -84,7 +84,7 @@ export function DealsPopup() {
       // Auto-advance slides every 4 seconds
       const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % dealPosters.length)
-      }, 4000)
+      }, 6000)
       return () => clearInterval(interval)
     }
   }, [isOpen])

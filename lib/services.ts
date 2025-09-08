@@ -182,32 +182,31 @@ export const services: Service[] = [
 // Deals Data
 export const deals: Deal[] = [
   {
-    id: "kenya-safari-special",
-    title: "Kenya Safari Special",
-    slug: "kenya-safari-special",
-    description: "Experience the magic of Kenya with our exclusive safari package. Witness the Great Migration, spot the Big Five, and immerse yourself in African wildlife.",
-    shortDescription: "Exclusive Kenya safari with Big Five sightings",
+    id: "turkish-airlines",
+    title: "Turkish Airlines",
+    slug: "turkish-airlines",
+    description: "Enjoy Discounts on all flight network & Flexible Ticket Fee with Turkish Airlines",
+    shortDescription: "Massive Discounts & Flexible Ticket Fee",
     originalPrice: "$2,999",
     discountedPrice: "$2,199",
-    discount: 27,
-    validUntil: "2024-12-31",
-    destinations: ["Kenya", "Masai Mara", "Amboseli"],
-    image: "/top/tsavo.jpg",
+    discount: 40,
+    validUntil: "2026-08-30",
+    destinations: ["Turkey", "Istanbul", "Ankara"],
+    image: "/deal1.jpeg",
     featured: true,
-    category: "package",
+    category: "flight",
     terms: [
-      "Valid for travel between Jan-Mar 2025",
-      "Minimum 2 passengers",
-      "Non-refundable",
+      "Booking Period Till 30th December 2025",
+      "Travel Period Till 30th August 2026",
+      "Upto 40% off for all flight network",
       "Subject to availability"
     ],
     highlights: [
-      "7-day safari adventure",
-      "Luxury lodge accommodation",
-      "Professional guide",
-      "All meals included",
-      "Game drives included",
-      "Airport transfers"
+      "Upto 40% off for all flight network",
+      "Flexible ticket fee",
+      "Travel Period Till 30th August 2026",
+      "Booking Period Till 30th December 2025",
+      "Subject to availability"
     ]
   },
   {

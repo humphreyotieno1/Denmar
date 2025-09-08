@@ -157,7 +157,7 @@ export function DealsGrid() {
                   </div>
 
                   {/* Pricing */}
-                  <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                  {/* <div className="flex items-center justify-between mb-4 flex-shrink-0">
                     <div className="text-center">
                       <div className="text-sm text-gray-500 line-through">
                         {deal.originalPrice}
@@ -172,7 +172,7 @@ export function DealsGrid() {
                         ${parseInt(deal.originalPrice.replace(/[^0-9]/g, '')) - parseInt(deal.discountedPrice.replace(/[^0-9]/g, ''))}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Highlights */}
                   <div className="mb-4 flex-shrink-0">
