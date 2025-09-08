@@ -40,16 +40,13 @@ export interface Package {
   shortDescription: string
   duration: string
   price: string
-  originalPrice?: string
-  discount?: number
   includes: string[]
   excludes: string[]
+  terms: string[]
   itinerary: DayItinerary[]
   featured: boolean
   image: string
   category: 'budget' | 'standard' | 'luxury' | 'adventure' | 'cultural'
-  maxGroupSize: number
-  difficulty: 'easy' | 'moderate' | 'challenging'
   bestTime: string
 }
 
@@ -301,95 +298,82 @@ export const deals: Deal[] = [
 // Packages Data (Enhanced)
 export const packages: Package[] = [
   {
-    id: "mombasa-beach-paradise",
-    name: "Mombasa Beach Paradise",
-    slug: "mombasa-beach-paradise",
-    destinationSlug: "mombasa",
-    description: "Experience the ultimate beach getaway in Mombasa with pristine beaches, crystal-clear waters, and rich cultural heritage. Perfect for relaxation and adventure.",
-    shortDescription: "Ultimate beach getaway in Mombasa",
-    duration: "7 days / 6 nights",
-    price: "$1,299",
-    originalPrice: "$1,599",
-    discount: 19,
+    id: "dubai-holiday",
+    name: "5-Day Dubai Holiday with Your Kids",
+    slug: "dubai-holiday",
+    destinationSlug: "dubai",
+    description: "Experience the ultimate getaway in Dubai with luxurious beachfront resort, crystal-clear waters, and rich cultural heritage. Perfect for relaxation and adventure.",
+    shortDescription: "Travel to Dubai with your kids for a memorable holiday",
+    duration: "5 days / 4 nights",
+    price: "$1,330",
     includes: [
-      "Return flights from Nairobi",
-      "5-star beachfront resort",
-      "All meals included",
-      "Airport transfers",
-      "Beach activities",
-      "City tour with guide",
-      "Snorkeling equipment",
-      "Travel insurance"
+      "Return Economy Class Flight Tickets",
+      "5 Days Luxury Accommodation in Dubai",
+      "Return Airport Transfers",
+      "Dubai Half Day City Tour",
+      "Desert Safari with BBQ Dinner",
+      "Marina Dhow Cruise Dinner",
+      "Ski Dubai Classic Snow",
+      "All Taxes Except the Tourist Dirham Fee"
     ],
     excludes: [
-      "International flights",
-      "Personal expenses",
-      "Optional excursions",
+      "Visa Fee",
+      "Travel Insurance",
+      "Tips and gratuities",
+      "Optional activities",
       "Tips and gratuities"
+    ],
+    terms: [
+      "Valid for travel between 1st October - 20th December 2025",
+      "Flight Rates are subject to change & availability",
+      "Rates are per person sharing",
     ],
     itinerary: [
       {
         day: 1,
         title: "Arrival & Welcome",
-        description: "Arrive in Mombasa and transfer to your beachfront resort. Welcome dinner and orientation.",
+        description: "Arrive in Dubai and transfer to your hotel. Welcome dinner and orientation.",
         activities: ["Airport pickup", "Resort check-in", "Welcome dinner"],
-        accommodation: "Beachfront Resort",
+        accommodation: "Hotel",
         meals: ["Dinner"]
       },
       {
         day: 2,
-        title: "Beach Relaxation",
-        description: "Full day at the beach with optional water sports and beach activities.",
-        activities: ["Beach relaxation", "Water sports", "Beach volleyball"],
-        accommodation: "Beachfront Resort",
-        meals: ["Breakfast", "Lunch", "Dinner"]
+        title: "Dubai City Tour and Ski Dubai Classic Snow",
+        description: "Half day Dubai City Tour and Ski Dubai Classic Snow",
+        activities: ["Dubai City Tour", "Ski Dubai Classic Snow"],
+        accommodation: "Hotel",
+        meals: ["Breakfast"]
       },
       {
         day: 3,
-        title: "Mombasa City Tour",
-        description: "Explore the historic Old Town, Fort Jesus, and local markets with a professional guide.",
-        activities: ["Old Town tour", "Fort Jesus visit", "Market exploration"],
-        accommodation: "Beachfront Resort",
-        meals: ["Breakfast", "Lunch", "Dinner"]
+        title: "Desert Safari",
+        description: "Desert Safari with BBQ Dinner",
+        activities: ["Desert Safari", "BBQ Dinner"],
+        accommodation: "Hotel",
+        meals: ["Breakfast", "Dinner"]
       },
       {
         day: 4,
-        title: "Marine Adventure",
-        description: "Snorkeling adventure in the coral reefs and optional deep-sea fishing.",
-        activities: ["Snorkeling", "Coral reef exploration", "Fishing (optional)"],
-        accommodation: "Beachfront Resort",
-        meals: ["Breakfast", "Lunch", "Dinner"]
+        title: "Marina Dhow Cruise Dinner",
+        description: "Marina Dhow Cruise Dinner",
+        activities: ["Marina Dhow Cruise Dinner"],
+        accommodation: "Hotel",
+        meals: ["Breakfast", "Dinner"]
       },
       {
         day: 5,
-        title: "Cultural Experience",
-        description: "Visit local villages, learn about Swahili culture, and enjoy traditional music.",
-        activities: ["Village visit", "Cultural workshop", "Traditional music"],
-        accommodation: "Beachfront Resort",
-        meals: ["Breakfast", "Lunch", "Dinner"]
-      },
-      {
-        day: 6,
-        title: "Free Day",
-        description: "Relax at the resort or choose from optional activities like spa treatments or boat trips.",
-        activities: ["Resort relaxation", "Spa treatments (optional)", "Boat trips (optional)"],
-        accommodation: "Beachfront Resort",
-        meals: ["Breakfast", "Lunch", "Dinner"]
-      },
-      {
-        day: 7,
-        title: "Departure",
-        description: "Check out and transfer to airport for departure.",
-        activities: ["Check-out", "Airport transfer"],
+        title: "Check Out",
+        description: "Check Out and Transfer to Airport",
+        activities: ["Check Out", "Transfer to Airport"],
+        accommodation: "Hotel",
         meals: ["Breakfast"]
-      }
+      },
     ],
     featured: true,
-    image: "/top/mombasa.jpg",
+    image: "/package1.jpeg",
     category: "luxury",
-    maxGroupSize: 8,
-    difficulty: "easy",
-    bestTime: "December to March"
+    bestTime: "1st October - 20th December 2025"
   },
   {
     id: "diani-adventure-escape",
@@ -460,9 +444,13 @@ export const packages: Package[] = [
     featured: true,
     image: "/top/diani.jpg",
     category: "adventure",
-    maxGroupSize: 6,
-    difficulty: "moderate",
-    bestTime: "June to October"
+    bestTime: "June to October",
+    terms: [
+      "Valid for travel between 1st October - 20th December 2025",
+      "Minimum 2 passengers",
+      "Non-refundable",
+      "Subject to availability"
+    ]
   }
 ]
 

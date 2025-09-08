@@ -51,7 +51,7 @@ const destinations: Destination[] = [
     description: "Modern metropolis with world-class shopping, dining, and entertainment.",
     price: "From $1000",
     rating: 4.9,
-    badge: "New",
+    badge: "Popular",
     badgeColor: "bg-brand-success",
     href: "/destinations/uae/dubai",
   },
@@ -62,8 +62,8 @@ const destinations: Destination[] = [
     description: "Explore the diverse and rich culture of Africa with its ancient landmarks, modern cities, and vibrant nightlife.",
     price: "From $1000",
     rating: 4.7,
-    badge: "Romantic",
-    badgeColor: "bg-pink-500",
+    badge: "Cultural",
+    badgeColor: "bg-green-500",
     href: "/destinations/africa",
   },
   {
@@ -117,7 +117,7 @@ const destinations: Destination[] = [
     description: "Travel and get to experience the beauty of South Africa.",
     price: "From $1000",
     rating: 4.9,
-    badge: "New",
+    badge: "Featured",
     badgeColor: "bg-brand-success",
     href: "/destinations/south-africa",
   },
@@ -377,9 +377,9 @@ export function TopDestinationsSection() {
                       {destination.description}
                     </p>
                     <div className="flex items-center justify-between mt-4">
-                      <span className="text-xl font-bold text-brand-success">
+                      {/* <span className="text-xl font-bold text-brand-success">
                         {destination.price}
-                      </span>
+                      </span> */}
                       <Link href={destination.href}>  
                         <Button
                           className="bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold hover:shadow-md transition-all duration-200 transform hover:scale-105 active:scale-95"

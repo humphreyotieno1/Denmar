@@ -249,6 +249,12 @@ export function Navbar() {
             >
               About Us
             </Link>
+            <Link
+              href="/packages"
+              className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
+            >
+              Packages
+            </Link>
             {/* <Link
               href="/services"
               className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
@@ -490,6 +496,9 @@ export function Navbar() {
             </MobileNavLink>
             <MobileNavLink href="/about" className="text-lg font-bold" onClick={closeMobileMenu}>
               About Us
+            </MobileNavLink>
+            <MobileNavLink href="/packages" className="text-lg font-bold" onClick={closeMobileMenu}>
+              Packages
             </MobileNavLink>
             {/* <MobileNavLink href="/services" className="text-lg font-bold" onClick={closeMobileMenu}>
               Services
