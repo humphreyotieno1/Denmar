@@ -174,23 +174,11 @@ export default function DealPage({ params }: DealPageProps) {
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Deal Summary</h3>
                   
                   {/* Pricing */}
-                  <div className="mb-6 p-4 bg-white rounded-lg border">
-                    <div className="text-center mb-4">
-                      <div className="text-sm text-gray-500 line-through">
-                        {deal.originalPrice}
-                      </div>
-                      <div className="text-3xl font-bold text-brand-accent">
-                        {deal.discountedPrice}
-                      </div>
-                      <div className="text-sm text-green-600 font-medium">
-                        Save ${calculateSavings()}
-                      </div>
-                    </div>
-                    
+                  <div className="mb-6 p-4 bg-white rounded-lg border">    
                     <div className="text-center">
                       <Badge className={`${getCategoryColor(deal.category)} text-white border-0 text-sm font-bold`}>
                         <Percent className="w-3 h-3 mr-1" />
-                        {deal.discount}% OFF
+                        UP TO {deal.discount}% OFF
                       </Badge>
                     </div>
                   </div>
@@ -225,15 +213,7 @@ export default function DealPage({ params }: DealPageProps) {
                       Book This Deal
                     </Button>
                     </Link>
-
-                    {/* <Button 
-                      variant="outline" 
-                      className="w-full"
-                      size="lg"
-                    >
-                      
-                      Contact Sales
-                    </Button> */}
+                  
                   </div>
                 </div>
               </div>

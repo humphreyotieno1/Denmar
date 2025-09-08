@@ -333,9 +333,9 @@ export const packages: Package[] = [
         day: 1,
         title: "Arrival & Welcome",
         description: "Arrive in Dubai and transfer to your hotel. Welcome dinner and orientation.",
-        activities: ["Airport pickup", "Resort check-in", "Welcome dinner"],
+        activities: ["Meet and Assist at the Airport", "Transfer to Hotel", "Hotel check-in"],
         accommodation: "Hotel",
-        meals: ["Dinner"]
+        meals: [""]
       },
       {
         day: 2,

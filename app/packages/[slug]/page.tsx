@@ -251,12 +251,12 @@ export default function PackagePage({ params }: PackagePageProps) {
                             <span className="font-medium">{packageData.duration}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Group Size:</span>
-                            <span className="font-medium">Up to {packageData.maxGroupSize}</span>
+                            <span className="text-gray-600">Best Time:</span>
+                            <span className="font-medium">{packageData.bestTime}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Difficulty:</span>
-                            <span className="font-medium capitalize">{packageData.difficulty}</span>
+                            <span className="text-gray-600">Category:</span>
+                            <span className="font-medium capitalize">{packageData.category}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">Category:</span>
