@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // Welcome email to subscriber
     const welcomeEmail = {
       to: email,
-      from: 'info@denmartravel.co.ke',
+      from: 'info@mail.denmartravel.co.ke',
       subject: 'Welcome to Denmar Travel Newsletter! 🎉',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     // Notification email to your team
     const teamNotification = {
       to: 'info@denmartravel.co.ke',
-      from: 'info@denmartravel.co.ke',
+      from: 'info@mail.denmartravel.co.ke',
       subject: 'New Newsletter Subscriber',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     // Email to your team
     const teamEmail = {
       to: 'info@denmartravel.co.ke',
-      from: 'noreply@denmartravel.co.ke',
+      from: 'noreply@mail.denmartravel.co.ke',
       subject: `New Travel Inquiry: ${destination}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     // Auto-reply to customer
     const customerEmail = {
       to: email,
-      from: 'info@denmartravel.co.ke',
+      from: 'info@mail.denmartravel.co.ke',
       subject: 'Thank you for your inquiry - Denmar Travel',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
