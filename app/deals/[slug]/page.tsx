@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
+import Link from "next/link"
 
 interface DealPageProps {
   params: Promise<{ slug: string }>
@@ -216,19 +217,23 @@ export default function DealPage({ params }: DealPageProps) {
 
                   {/* CTA Buttons */}
                   <div className="space-y-3">
+                    <Link href="/contact">
                     <Button 
                       className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white"
                       size="lg"
                     >
                       Book This Deal
                     </Button>
-                    <Button 
+                    </Link>
+
+                    {/* <Button 
                       variant="outline" 
                       className="w-full"
                       size="lg"
                     >
+                      
                       Contact Sales
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>
