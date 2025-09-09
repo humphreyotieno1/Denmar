@@ -479,21 +479,25 @@ export default function PackagePage({ params }: PackagePageProps) {
               onWheel={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
             >
-              <div className="relative">
-                <Image
-                  src={packageData.image}
-                  alt={packageData.name}
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  className="max-w-none max-h-none object-contain rounded-lg shadow-2xl"
-                  style={{
-                    width: 'auto',
-                    height: 'auto',
-                    minWidth: '200px',
-                    minHeight: '200px'
-                  }}
-                />
+              <div className="min-w-full min-h-full flex items-center justify-center p-4">
+                <div className="relative">
+                  <Image
+                    src={packageData.image}
+                    alt={packageData.name}
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="w-auto h-auto object-contain rounded-lg shadow-2xl"
+                    style={{
+                      width: 'auto',
+                      height: 'auto',
+                      minWidth: '200px',
+                      minHeight: '200px',
+                      maxWidth: 'none',
+                      maxHeight: 'none'
+                    }}
+                  />
+                </div>
               </div>
             </div>
             
