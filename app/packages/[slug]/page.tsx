@@ -48,6 +48,37 @@ export default function PackagePage({ params }: PackagePageProps) {
     setRelatedPackages(related)
   }, [slug])
 
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isImageModalOpen) {
+      // Prevent scrolling on the body
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.top = '0'
+      document.body.style.left = '0'
+      document.body.style.right = '0'
+      document.body.style.bottom = '0'
+    } else {
+      // Restore scrolling
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
+      document.body.style.right = ''
+      document.body.style.bottom = ''
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
+      document.body.style.right = ''
+      document.body.style.bottom = ''
+    }
+  }, [isImageModalOpen])
+
   const breadcrumbItems = [
     { label: "Home", href: "/" },
     { label: "Packages", href: "/packages" },
@@ -412,23 +443,64 @@ export default function PackagePage({ params }: PackagePageProps) {
 
       {/* Image Modal */}
       {isImageModalOpen && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-4xl max-h-[90vh] w-full">
+        <div 
+          className="fixed inset-0 bg-black/90 z-50 overflow-hidden"
+          onClick={() => setIsImageModalOpen(false)}
+          onWheel={(e) => e.preventDefault()}
+          onTouchMove={(e) => e.preventDefault()}
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            overflow: 'hidden',
+            touchAction: 'none'
+          }}
+        >
+          {/* Modal content container */}
+          <div className="relative w-full h-full flex items-center justify-center p-4">
             <Button
               variant="secondary"
               size="sm"
-              className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white"
-              onClick={() => setIsImageModalOpen(false)}
+              className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white shadow-lg"
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsImageModalOpen(false)
+              }}
             >
               <X className="w-4 h-4" />
             </Button>
-            <Image
-              src={packageData.image}
-              alt={packageData.name}
-              width={1200}
-              height={800}
-              className="w-full h-full object-contain rounded-lg"
-            />
+            
+            {/* Scrollable image container */}
+            <div 
+              className="w-full h-full overflow-auto flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
+              <div className="relative">
+                <Image
+                  src={packageData.image}
+                  alt={packageData.name}
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  className="max-w-none max-h-none object-contain rounded-lg shadow-2xl"
+                  style={{
+                    width: 'auto',
+                    height: 'auto',
+                    minWidth: '200px',
+                    minHeight: '200px'
+                  }}
+                />
+              </div>
+            </div>
+            
+            {/* Click outside to close hint */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/70 text-sm pointer-events-none">
+              Click outside to close
+            </div>
           </div>
         </div>
       )}
