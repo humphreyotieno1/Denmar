@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://denmartours.com",
+    url: "https://denmartravel.co.ke",
     siteName: "Denmar Tours & Travel",
     title: "Denmar Tours & Travel - Your Dream Trip Awaits",
     description:
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     google: "google-site-verification-code",
   },
   alternates: {
-    canonical: "https://denmartours.com",
+    canonical: "https://denmartravel.co.ke",
   },
   generator: 'v0.dev'
 }

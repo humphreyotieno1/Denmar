@@ -258,10 +258,6 @@ export default function PackagePage({ params }: PackagePageProps) {
                             <span className="text-gray-600">Category:</span>
                             <span className="font-medium capitalize">{packageData.category}</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Category:</span>
-                            <span className="font-medium capitalize">{packageData.category}</span>
-                          </div>
                         </div>
                       </div>
                     </div>

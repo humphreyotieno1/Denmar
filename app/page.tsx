@@ -13,7 +13,7 @@ import { DealsPopup } from "@/components/deals-popup"
 export const metadata: Metadata = {
   title: "Denmar Tours & Travel - Your Dream Trip Awaits",
   description:
-    "Plan your dream vacation with Denmar Tours & Travel. Discover amazing destinations, affordable packages, and exceptional service for unforgettable travel experiences.",
+    "Discover affordable, tailor-made travel packages with Denmar Tours & Travel—covering Kenya safaris, global adventures, and more. Book your dream trip today with 24/7 support!",
   keywords: "travel agency, vacation packages, tours, flights, hotels, travel deals, destinations, travel planning",
   authors: [{ name: "Denmar Tours & Travel" }],
   creator: "Denmar Tours & Travel",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Denmar Tours & Travel - Your Dream Trip Awaits",
     description:
-      "Plan your dream vacation with Denmar Tours & Travel. Discover amazing destinations, affordable packages, and exceptional service.",
+      "Discover affordable, tailor-made travel packages with Denmar Tours & Travel—covering Kenya safaris, global adventures, and more. Book your dream trip today with 24/7 support!",
     images: ["/tablogo.png"],
   },
   icons: {

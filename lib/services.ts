@@ -46,7 +46,7 @@ export interface Package {
   itinerary: DayItinerary[]
   featured: boolean
   image: string
-  category: 'budget' | 'standard' | 'luxury' | 'adventure' | 'cultural'
+  category: 'budget' | 'standard' | 'luxury' | 'adventure' | 'cultural' | "holiday"
   bestTime: string
 }
 
@@ -376,80 +376,200 @@ export const packages: Package[] = [
     bestTime: "1st October - 20th December 2025"
   },
   {
-    id: "diani-adventure-escape",
-    name: "Diani Adventure Escape",
-    slug: "diani-adventure-escape",
-    destinationSlug: "diani",
-    description: "Thrilling adventure package in Diani with water sports, hiking, and cultural experiences. Perfect for active travelers seeking excitement.",
-    shortDescription: "Thrilling adventure in Diani",
-    duration: "5 days / 4 nights",
-    price: "$899",
+    id: "three-day-mombasa-getaway",
+    name: "Three Day Mombasa Getaway",
+    slug: "three-day-mombasa-getaway",
+    destinationSlug: "mombasa",
+    description: "Explore Mombasa with our three-day getaway package. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
+    shortDescription: "Thrilling adventure in Mombasa",
+    duration: "3 days / 2 nights",
+    price: "Ksh 18,000",
     includes: [
-      "Return flights from Nairobi",
-      "Adventure lodge accommodation",
-      "All meals included",
-      "Professional adventure guide",
-      "Water sports equipment",
-      "Hiking gear",
-      "Cultural activities",
-      "Travel insurance"
+      "2 Nights Accomodation",
+      "Meals as indicated on the poster",
+      "Access to hotel amenities",
+      "Government taxes"
     ],
     excludes: [
-      "International flights",
-      "Personal expenses",
-      "Optional activities",
-      "Tips and gratuities"
+      "Transport",
+      "Tips and Gratitudes",
+      "Extra night rates upon request",
+      "Kids rates provided upon request"
     ],
     itinerary: [
       {
         day: 1,
-        title: "Arrival & Orientation",
-        description: "Arrive in Diani and meet your adventure guide. Equipment fitting and safety briefing.",
-        activities: ["Airport pickup", "Lodge check-in", "Safety briefing"],
-        accommodation: "Adventure Lodge",
-        meals: ["Dinner"]
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/mombasapackage.jpeg",
+    category: "holiday",
+    bestTime: "15th September - 30th November 2025",
+    terms: [
+      "Valid for travel between 15th - 30th November 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "magical-holiday-zanzibar",
+    name: "Magical Holiday Zanzibar",
+    slug: "magical-holiday-zanzibar",
+    destinationSlug: "zanzibar",
+    description: "Explore Zanzibar with our magical holiday package. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
+    shortDescription: "Thrilling adventure in Zanzibar",
+    duration: "5 days / 4 nights",
+    price: "$1020",
+    includes: [
+      "4 Nights Accomodation",
+      "Return economy class flight tickets",
+      "Meal plan on half board basis",
+      "Mnemba Island Tour",
+      "Snorkelling + Safari Blu Tour",
+      "Prison Island Tour + Stone Town Tour",
+      "All Taxes except infrastructure tax"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "Arrival & Welcome",
+        description: "Arrive in Zanzibar and transfer to your hotel. Welcome dinner and orientation.",
+        activities: ["Meet and Assist at the Airport", "Transfer to Hotel", "Hotel check-in", "Welcome Dinner", "Orientation"],
+        accommodation: "Hotel",
+        meals: ["Breakfast", "Dinner"]
       },
       {
         day: 2,
-        title: "Water Sports Day",
-        description: "Full day of water sports including kayaking, paddleboarding, and snorkeling.",
-        activities: ["Kayaking", "Paddleboarding", "Snorkeling"],
-        accommodation: "Adventure Lodge",
-        meals: ["Breakfast", "Lunch", "Dinner"]
+        title: "Mnemba Island Tour",
+        description: "Mnemba Island Tour",
+        activities: ["Mnemba Island Tour"],
+        accommodation: "Hotel",
+        meals: ["Breakfast", "Dinner"]
       },
       {
         day: 3,
-        title: "Hiking Adventure",
-        description: "Guided hiking through Shimba Hills with wildlife spotting and scenic views.",
-        activities: ["Hiking", "Wildlife spotting", "Scenic photography"],
-        accommodation: "Adventure Lodge",
-        meals: ["Breakfast", "Lunch", "Dinner"]
+        title: "Snorkelling + Safari Blu Tour",
+        description: "Snorkelling + Safari Blu Tour",
+        activities: ["Snorkelling + Safari Blu Tour"],
+        accommodation: "Hotel",
+        meals: ["Breakfast", "Dinner"]
       },
       {
         day: 4,
-        title: "Cultural Immersion",
-        description: "Visit local communities, learn traditional crafts, and enjoy local cuisine.",
-        activities: ["Community visit", "Craft workshop", "Local cuisine"],
-        accommodation: "Adventure Lodge",
-        meals: ["Breakfast", "Lunch", "Dinner"]
+        title: "Prison Island Tour + Stone Town Tour",
+        description: "Prison Island Tour + Stone Town Tour",
+        activities: ["Prison Island Tour + Stone Town Tour"],
+        accommodation: "Hotel",
+        meals: ["Breakfast", "Dinner"]
       },
       {
         day: 5,
         title: "Departure",
-        description: "Check out and transfer to airport for departure.",
-        activities: ["Check-out", "Airport transfer"],
-        meals: ["Breakfast"]
+        description: "Departure from Zanzibar",
+        activities: ["Departure from Zanzibar"],
+        accommodation: "Hotel",
+        meals: [""]
       }
     ],
     featured: true,
-    image: "/top/diani.jpg",
-    category: "adventure",
-    bestTime: "June to October",
+    image: "/packages/zanzibarpackage.jpeg",
+    category: "holiday",
+    bestTime: "1st November - 30th November 2025",
     terms: [
-      "Valid for travel between 1st October - 20th December 2025",
-      "Minimum 2 passengers",
-      "Non-refundable",
-      "Subject to availability"
+      "Valid for travel between 1st November - 30th November 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "three-day-mombasa-with-sgr",
+    name: "Three Day Mombasa with SGR",
+    slug: "three-day-mombasa-with-sgr",
+    destinationSlug: "mombasa",
+    description: "Explore Mombasa with SGR. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
+    shortDescription: "Thrilling adventure in Mombasa",
+    duration: "3 days / 2 nights",
+    price: "Ksh 20,000",
+    includes: [
+      "2 Nights Accomodation",
+      "Meals as indicated on the poster",
+      "Return Economy Class SGR Tickets",
+      "Access to hotel amenities",
+      "Government taxes"
+    ],
+    excludes: [
+      "Transport",
+      "Tips and Gratitudes",
+      "Extra night rates upon request",
+      "Kids rates provided upon request"
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/mombasawithsgrpackage.jpeg",
+    category: "holiday",
+    bestTime: "15th September - 30th November 2025",
+    terms: [
+      "Valid for travel between 15th - 30th November 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "self-drive-malindi-watamu-package",
+    name: "Self Drive Malindi Watamu Package",
+    slug: "self-drive-malindi-watamu-package",
+    destinationSlug: "malindi-watamu",
+    description: "Explore Malindi and Watamu with our self-drive package. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
+    shortDescription: "Thrilling adventure in Malindi and Watamu",
+    duration: "3 days / 2 nights",
+    price: "Ksh 21,250",
+    includes: [
+      "2 Nights Accomodation",
+      "Meals as indicated on the poster",
+      "Access to hotel amenities",
+      "Government taxes"
+    ],
+    excludes: [
+      "Transport",
+      "Tips and Gratitudes",
+      "Extra night rates upon request",
+      "Kids rates provided upon request"
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/malindiwatamupackage.jpeg",
+    category: "holiday",
+    bestTime: "15th September - 30th November 2025",
+    terms: [
+      "Valid for travel between 15th - 30th November 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
     ]
   }
 ]
