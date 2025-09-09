@@ -120,6 +120,18 @@ export function PackagesSection() {
           ))}
         </div>
 
+        
+        {/* Button Section */}
+        <div className="flex justify-center mt-12 mb-12">
+          <Button variant="secondary" className="w-[200px] px-6 py-3 bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95">
+            <Link href="/packages">
+              View All Packages
+            </Link>
+          </Button>
+        </div>
+        
+        
+
         {/* CTA Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
