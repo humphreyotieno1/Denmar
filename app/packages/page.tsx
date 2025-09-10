@@ -89,7 +89,7 @@ export default function PackagesPage() {
     }
 
     return filtered
-  }, [searchQuery, selectedCountry, sortBy])
+  }, [searchQuery, selectedCountry, selectedCategory, sortBy])
 
   // Pagination
   const totalPages = Math.ceil(filteredPackages.length / pageSize)
@@ -226,6 +226,7 @@ export default function PackagesPage() {
                   onClick={() => {
                     setSearchQuery("")
                     setSelectedCountry("all")
+                    setSelectedCategory("all")
                     setSortBy("featured")
                   }}
                   variant="outline"

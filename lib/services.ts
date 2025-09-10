@@ -8,7 +8,7 @@ export interface Service {
   features: string[]
   price?: string
   duration?: string
-  category: 'travel' | 'accommodation' | 'transportation' | 'activities' | 'planning'
+  category: 'travel' | 'accommodation' | 'transportation' | 'activities' | 'planning' | 'adventure'
   featured: boolean
   image?: string
 }
@@ -47,7 +47,7 @@ export interface Package {
   itinerary: DayItinerary[]
   featured: boolean
   image: string
-  category: 'budget' | 'standard' | 'luxury' | 'adventure' | 'cultural' | "holiday"
+  category: 'family & kids' | 'group & corporate' | 'honeymoon & anniversaries' | 'festive' | 'adventure'
   bestTime: string
 }
 
@@ -374,7 +374,7 @@ export const packages: Package[] = [
     ],
     featured: true,
     image: "/package1.jpeg",
-    category: "luxury",
+    category: "family & kids",
     bestTime: "1st October - 20th December 2025"
   },
   {
@@ -411,7 +411,7 @@ export const packages: Package[] = [
     ],
     featured: true,
     image: "/packages/mombasapackage.jpeg",
-    category: "holiday",
+    category: "adventure",
     bestTime: "15th September - 30th November 2025",
     terms: [
       "Valid for travel between 15th - 30th November 2025",
@@ -485,7 +485,7 @@ export const packages: Package[] = [
     ],
     featured: true,
     image: "/packages/zanzibarpackage.jpeg",
-    category: "holiday",
+    category: "adventure",
     bestTime: "1st November - 30th November 2025",
     terms: [
       "Valid for travel between 1st November - 30th November 2025",
@@ -528,7 +528,7 @@ export const packages: Package[] = [
     ],
     featured: true,
     image: "/packages/mombasawithsgrpackage.jpeg",
-    category: "holiday",
+    category: "adventure",
     bestTime: "15th September - 30th November 2025",
     terms: [
       "Valid for travel between 15th - 30th November 2025",
@@ -570,7 +570,7 @@ export const packages: Package[] = [
     ],
     featured: true,
     image: "/packages/malindiwatamupackage.jpeg",
-    category: "holiday",
+    category: "adventure",
     bestTime: "15th September - 30th November 2025",
     terms: [
       "Valid for travel between 15th - 30th November 2025",
