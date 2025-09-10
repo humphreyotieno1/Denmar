@@ -36,6 +36,7 @@ export interface Package {
   name: string
   slug: string
   destinationSlug: string
+  country: string
   description: string
   shortDescription: string
   duration: string
@@ -302,6 +303,7 @@ export const packages: Package[] = [
     name: "5-Day Dubai Holiday with Your Kids",
     slug: "dubai-holiday",
     destinationSlug: "dubai",
+    country: "UAE",
     description: "Experience the ultimate getaway in Dubai with luxurious beachfront resort, crystal-clear waters, and rich cultural heritage. Perfect for relaxation and adventure.",
     shortDescription: "Travel to Dubai with your kids for a memorable holiday",
     duration: "5 days / 4 nights",
@@ -380,6 +382,7 @@ export const packages: Package[] = [
     name: "Three Day Mombasa Getaway",
     slug: "three-day-mombasa-getaway",
     destinationSlug: "mombasa",
+    country: "Kenya",
     description: "Explore Mombasa with our three-day getaway package. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
     shortDescription: "Thrilling adventure in Mombasa",
     duration: "3 days / 2 nights",
@@ -421,6 +424,7 @@ export const packages: Package[] = [
     name: "Magical Holiday Zanzibar",
     slug: "magical-holiday-zanzibar",
     destinationSlug: "zanzibar",
+    country: "Tanzania",
     description: "Explore Zanzibar with our magical holiday package. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
     shortDescription: "Thrilling adventure in Zanzibar",
     duration: "5 days / 4 nights",
@@ -494,6 +498,7 @@ export const packages: Package[] = [
     name: "Three Day Mombasa with SGR",
     slug: "three-day-mombasa-with-sgr",
     destinationSlug: "mombasa",
+    country: "Kenya",
     description: "Explore Mombasa with SGR. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
     shortDescription: "Thrilling adventure in Mombasa",
     duration: "3 days / 2 nights",
@@ -536,6 +541,7 @@ export const packages: Package[] = [
     name: "Self Drive Malindi Watamu Package",
     slug: "self-drive-malindi-watamu-package",
     destinationSlug: "malindi-watamu",
+    country: "Kenya",
     description: "Explore Malindi and Watamu with our self-drive package. Enjoy water sports, cultural experiences, and relaxation at a luxurious lodge.",
     shortDescription: "Thrilling adventure in Malindi and Watamu",
     duration: "3 days / 2 nights",

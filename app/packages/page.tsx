@@ -17,10 +17,17 @@ import { Search, Filter, SortAsc, SortDesc } from "lucide-react"
 
 export default function PackagesPage() {
   const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCountry, setSelectedCountry] = useState("all")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [sortBy, setSortBy] = useState("featured")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 9
+
+  // Get unique countries
+  const countries = useMemo(() => {
+    const uniqueCountries = [...new Set(packages.map(pkg => pkg.country))]
+    return uniqueCountries
+  }, [])
 
   // Get unique categories
   const categories = useMemo(() => {
@@ -39,6 +46,11 @@ export default function PackagesPage() {
         pkg.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         pkg.shortDescription.toLowerCase().includes(searchQuery.toLowerCase())
       )
+    }
+
+    // Country filter
+    if (selectedCountry !== "all") {
+      filtered = filtered.filter(pkg => pkg.country === selectedCountry)
     }
 
     // Category filter
@@ -77,7 +89,7 @@ export default function PackagesPage() {
     }
 
     return filtered
-  }, [searchQuery, selectedCategory, sortBy])
+  }, [searchQuery, selectedCountry, sortBy])
 
   // Pagination
   const totalPages = Math.ceil(filteredPackages.length / pageSize)
@@ -140,6 +152,21 @@ export default function PackagesPage() {
                   />
                 </div>
 
+                {/* Country Filter */}
+                <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Countries" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Countries</SelectItem>
+                    {countries.map(country => (
+                      <SelectItem key={country} value={country}>
+                        {country.charAt(0).toUpperCase() + country.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
                 {/* Category Filter */}
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger>
@@ -156,7 +183,7 @@ export default function PackagesPage() {
                 </Select>
 
                 {/* Sort */}
-                <Select value={sortBy} onValueChange={setSortBy}>
+                {/* <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger>
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
@@ -166,7 +193,7 @@ export default function PackagesPage() {
                     <SelectItem value="price-high">Price: High to Low</SelectItem>
                     <SelectItem value="duration">Duration</SelectItem>
                   </SelectContent>
-                </Select>
+                </Select> */}
 
                 {/* Results Count */}
                 <div className="flex items-center justify-center">
@@ -198,7 +225,7 @@ export default function PackagesPage() {
                 <Button 
                   onClick={() => {
                     setSearchQuery("")
-                    setSelectedCategory("all")
+                    setSelectedCountry("all")
                     setSortBy("featured")
                   }}
                   variant="outline"
