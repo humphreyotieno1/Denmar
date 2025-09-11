@@ -200,7 +200,7 @@ export function ContactForm() {
               <Input
                 id="phone"
                 {...register("phone")}
-                placeholder="Enter your phone number"
+                placeholder="Enter phone number(+254xxxxxxxxx)"
                 className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
                   errors.phone ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
                 }`}
