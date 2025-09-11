@@ -1,8 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
-import sgMail from '@sendgrid/mail'
+import nodemailer from 'nodemailer'
 
-// Initialize SendGrid with API key
-sgMail.setApiKey(process.env.SENDGRID_API_KEY!)
+// Create SMTP transporter for hosting.com email
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    host: 'mail.denmartravel.co.ke',
+    port: 587, // TLS port
+    secure: false, // Use TLS (not SSL)
+    auth: {
+      user: process.env.SMTP_USER!,
+      pass: process.env.SMTP_PASS!,
+    },
+    tls: {
+      rejectUnauthorized: false
+    },
+    connectionTimeout: 60000, // 60 seconds
+    greetingTimeout: 30000, // 30 seconds
+    socketTimeout: 60000, // 60 seconds
+    // debug: true,
+    // logger: true
+  })
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,10 +47,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Create transporter
+    const transporter = createTransporter()
+
     // Email to your team
     const teamEmail = {
+      from: process.env.SMTP_USER!, // Your GoDaddy email
       to: 'info@denmartravel.co.ke',
-      from: 'noreply@mail.denmartravel.co.ke',
       subject: `New Travel Inquiry: ${destination}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -52,7 +73,7 @@ export async function POST(request: NextRequest) {
             <p><strong>Destination:</strong> ${destination}</p>
             <p><strong>Travel Dates:</strong> ${travelDateFrom} to ${travelDateTo}</p>
             <p><strong>Travelers:</strong> ${adults} adults, ${children} children</p>
-            <p><strong>Budget Range:</strong> ${budget || 'Not specified'}</p>
+            <p><strong>Budget Range:</strong> $${budget || 'Not specified'}</p>
           </div>
           
           <div style="background: rgba(158, 184, 138, 0.72); padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -71,8 +92,8 @@ export async function POST(request: NextRequest) {
 
     // Auto-reply to customer
     const customerEmail = {
+      from: process.env.SMTP_USER!,
       to: email,
-      from: 'info@mail.denmartravel.co.ke',
       subject: 'Thank you for your inquiry - Denmar Travel',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -120,7 +141,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Send both emails
-    await sgMail.send([teamEmail, customerEmail])
+    await transporter.sendMail(teamEmail)
+    await transporter.sendMail(customerEmail)
 
     return NextResponse.json(
       { 
@@ -131,7 +153,7 @@ export async function POST(request: NextRequest) {
     )
 
   } catch (error) {
-    console.error('Contact form error:', error)
+    console.error('SMTP error:', error)
     return NextResponse.json(
       { 
         error: 'Failed to send your inquiry. Please try again or contact us directly.' 

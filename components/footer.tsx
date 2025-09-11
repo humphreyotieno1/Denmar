@@ -1,5 +1,6 @@
 "use client"  
 
+import { useState } from "react"
 import Link from "next/link"
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,35 @@ import { FaTiktok } from 'react-icons/fa'
 import { toast } from "@/components/ui/toast"
 
 export function Footer() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubscribe = async () => {
+    const email = (document.getElementById('footer-email') as HTMLInputElement)?.value
+    if (email) {
+      setIsLoading(true)
+      try {
+        const response = await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, firstName: 'Guest' })
+        })
+        
+        const data = await response.json()
+        
+        if (data.success) {
+          toast.success(data.message)
+          ;(document.getElementById('footer-email') as HTMLInputElement).value = ''
+        } else {
+          toast.error(data.message || 'Failed to subscribe. Please try again.')
+        }
+      } catch {
+        toast.error('Failed to subscribe. Please try again.')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+  }
+
   return (
     <footer className="bg-brand-primary text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -112,26 +142,14 @@ export function Footer() {
                 placeholder="Your email"
                 className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
                 id="footer-email"
+                disabled={isLoading}
               />
               <Button 
                 className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary w-full"
-                onClick={() => {
-                  const email = (document.getElementById('footer-email') as HTMLInputElement)?.value
-                  if (email) {
-                    fetch('/api/newsletter', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ email, firstName: 'Guest' })
-                    }).then(() => {
-                      toast.success('Thank you for subscribing!')
-                      ;(document.getElementById('footer-email') as HTMLInputElement).value = ''
-                    }).catch(() => {
-                      toast.error('Failed to subscribe. Please try again.')
-                    })
-                  }
-                }}
+                onClick={handleSubscribe}
+                disabled={isLoading}
               >
-                Subscribe
+                {isLoading ? 'Subscribing...' : 'Subscribe'}
               </Button>
             </div>
             

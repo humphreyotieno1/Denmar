@@ -1,8 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
-import sgMail from '@sendgrid/mail'
+import nodemailer from 'nodemailer'
 
-// Initialize SendGrid with API key
-sgMail.setApiKey(process.env.SENDGRID_API_KEY!)
+// Create SMTP transporter for hosting.com email
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    host: 'mail.denmartravel.co.ke',
+    port: 587, // TLS port
+    secure: false, // Use TLS (not SSL)
+    auth: {
+      user: process.env.SMTP_USER!,
+      pass: process.env.SMTP_PASS!,
+    },
+    tls: {
+      rejectUnauthorized: false
+    },
+    connectionTimeout: 60000, // 60 seconds
+    greetingTimeout: 30000, // 30 seconds
+    socketTimeout: 60000, // 60 seconds
+    // debug: true,
+    // logger: true
+  })
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,15 +30,37 @@ export async function POST(request: NextRequest) {
     // Validate email
     if (!email || !email.includes('@')) {
       return NextResponse.json(
-        { error: 'Please provide a valid email address' },
+        { success: false, message: 'Please provide a valid email address' },
         { status: 400 }
       )
     }
 
+    // Check if environment variables are set
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('SMTP environment variables not set:', {
+        SMTP_USER: process.env.SMTP_USER ? 'Set' : 'Not set',
+        SMTP_PASS: process.env.SMTP_PASS ? 'Set' : 'Not set'
+      })
+      return NextResponse.json(
+        { success: false, message: 'Email service not configured. Please contact support.' },
+        { status: 500 }
+      )
+    }
+
+    console.log('SMTP Configuration:', {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS ? '***hidden***' : 'Not set',
+      host: 'mail.denmartravel.co.ke',
+      port: 587
+    })
+
+    // Create transporter
+    const transporter = createTransporter()
+
     // Welcome email to subscriber
     const welcomeEmail = {
+      from: process.env.SMTP_USER!,
       to: email,
-      from: 'info@mail.denmartravel.co.ke',
       subject: 'Welcome to Denmar Travel Newsletter! 🎉',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -75,7 +115,7 @@ export async function POST(request: NextRequest) {
               <strong>The Denmar Travel Team</strong>
             </p>
             <p style="color: #94a3b8; font-size: 12px; margin-top: 10px;">
-              You can unsubscribe at any time by clicking the unsubscribe link in our emails.
+              Thank you for subscribing to our newsletter!
             </p>
           </div>
         </div>
@@ -84,8 +124,8 @@ export async function POST(request: NextRequest) {
 
     // Notification email to your team
     const teamNotification = {
+      from: process.env.SMTP_USER!,
       to: 'info@denmartravel.co.ke',
-      from: 'info@mail.denmartravel.co.ke',
       subject: 'New Newsletter Subscriber',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -110,7 +150,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Send both emails
-    await sgMail.send([welcomeEmail, teamNotification])
+    await transporter.sendMail(welcomeEmail)
+    await transporter.sendMail(teamNotification)
 
     return NextResponse.json(
       { 
@@ -121,10 +162,11 @@ export async function POST(request: NextRequest) {
     )
 
   } catch (error) {
-    console.error('Newsletter signup error:', error)
+    console.error('Newsletter subscription error:', error)
     return NextResponse.json(
       { 
-        error: 'Failed to subscribe. Please try again or contact us directly.' 
+        success: false,
+        message: 'Failed to subscribe. Please try again or contact us directly.' 
       },
       { status: 500 }
     )
