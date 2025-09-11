@@ -577,6 +577,177 @@ export const packages: Package[] = [
       "Rates are per person sharing",
       "Rates are subject to change and availabiltiy",
     ]
+  },
+  {
+    id: "budget-christmas-zanzibar",
+    name: "Budget Christmas Holiday in Zanzibar",
+    slug: "budget-christmas-zanzibar",
+    destinationSlug: "zanzibar",
+    country: "Tanzania",
+    description: "Enjoy a budget christmas holiday tailored for you at a pocket friendly cost.",
+    shortDescription: "Festive season in Zanzibar",
+    duration: "5 days / 4 nights",
+    price: "$1,099",
+    includes: [
+      "4 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Meal plan on half board basis",
+      "Snorkeling excursion + Safari Blu Tour",
+      "Mnemba Island Tour",
+      "Prison Island Tour + Stone Town Tour",
+      "All taxes except infrastructure tax"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/xmaszanzibar.jpg",
+    category: "festive",
+    bestTime: "21st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 21st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "capetown-christmas-mega-trip",
+    name: "Capetown Christmas Mega Trip",
+    slug: "capetown-christmas-mega-trip",
+    destinationSlug: "capetown",
+    country: "South Africa",
+    description: "Experience the ultimate Capetown Christmas Mega Trip with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Capetown",
+    duration: "5 days / 4 nights",
+    price: "$1,699",
+    includes: [
+      "4 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Daily Buffet at the hotel",
+      "Capetown guided city tour",
+      "Table Mountain and Waterfront Tour",
+      "Full Day to Stellenbosch, Franschhoek & Paarl",
+      "Full day Cape Town Peninsula Tour"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/xmascapetown.jpg",
+    category: "festive",
+    bestTime: "21st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 21st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "krissi-ni-mombasa",
+    name: "Budget Christmas Deal - Krissi ni Mombasa",
+    slug: "krissi-ni-mombasa",
+    destinationSlug: "mombasa",
+    country: "Kenya",
+    description: "Experience the ultimate Mombasa Christmas with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Mombasa",
+    duration: "4 days / 3 nights",
+    price: "Ksh 37,800",
+    includes: [
+      "3 Nights Luxury Accomodation",
+      "Return Economy Class SGR Tickets",
+      "Return Private Transfers to Station",
+      "Meals as indicated on poster",
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+      "Extra night rates upon request",
+      "Kids rates are provided upon request"
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/xmasmombasa.jpg",
+    category: "festive",
+    bestTime: "21st December - 28th December 2025",
+    terms: [
+      "Valid for travel between 21st December - 28th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "dubai-christmas",
+    name: "Christmas in Dubai",
+    slug: "dubai-christmas",
+    destinationSlug: "dubai",
+    country: "UAE",
+    description: "Experience the ultimate Dubai Christmas with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Dubai",
+    duration: "5 days / 4 nights",
+    price: "$1,250",
+    includes: [
+      "Based on 2pax minimum",
+      "4 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Daily Buffet Breakfast at the hotel",
+      "Dubai Half Day Guided City Tour(English speaking tour)",
+      "Desert safari with Tanura Dance, Belly Dance + BBQ Dinner",
+      "Marina Dhow Cruise, Belly Dance + Dinner & Soft Drink",
+      "All taxes, levies excluding tourist Dirham"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/xmascapetown.jpg",
+    category: "festive",
+    bestTime: "21st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 21st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
   }
 ]
 

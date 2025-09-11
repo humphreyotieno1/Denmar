@@ -42,6 +42,8 @@ export function ContactInfo() {
               Call/ Whatsapp: +254 791 841 346
               <br />
               Call/ Whatsapp: +254 113 039 737
+              <br />
+              Call/ Whatsapp: +254 113 025 613
             </p>
           </div>
         </div>
@@ -59,6 +61,8 @@ export function ContactInfo() {
               Bookings: sales@denmartravel.co.ke
               <br />
               Bookings: sales2@denmartravel.co.ke
+              <br />
+              Bookings: sales3@denmartravel.co.ke
               <br />
               Bookings: holidays@denmartravel.co.ke
               <br />
