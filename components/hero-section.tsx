@@ -19,7 +19,7 @@ interface HeroSlide {
 const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    image: "/header.jpg", // This should be 1920x1080px
+    image: "/hero/header.jpg", // This should be 1920x1080px
     title: "The Bold and Daring",
     subtitle: "Escape to breathtaking destinations around the world",
     cta: "Plan Your Dream Trip",
@@ -27,7 +27,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 2,
-    image: "/hero2.jpg", // This should be 1920x1080px
+    image: "/hero/hero2.jpg", // This should be 1920x1080px
     title: "Adventure Awaits",
     subtitle: "Experience thrilling adventures in stunning locations",
     cta: "Explore Adventures",
@@ -35,12 +35,28 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 3,
-    image: "/hero3.jpg", // This should be 1920x1080px
+    image: "/hero/hero3.jpg", // This should be 1920x1080px
     title: "Cultural Journeys",
     subtitle: "Immerse yourself in rich cultures and ancient traditions",
     cta: "Discover Culture",
     ctaLink: "/destinations",
   },
+  {
+    id: 4,
+    image: "/hero/capetownholiday.jpg",
+    title: "Capetown Holiday",
+    subtitle: "Ultimate Capetown luxury experience",
+    cta: "Discover Capetown",
+    ctaLink: "/destinations",
+  },
+  {
+    id: 5,
+    image: "/hero/thailandholiday.jpg",
+    title: "Thailand Holiday",
+    subtitle: "Ultimate Thailand luxury experience",
+    cta: "Discover Thailand",
+    ctaLink: "/destinations",
+  }
 ]
 
 export function HeroSection() {

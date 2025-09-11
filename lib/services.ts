@@ -190,7 +190,7 @@ export const deals: Deal[] = [
     discount: 40,
     validUntil: "2026-08-30",
     destinations: ["Turkey", "Istanbul", "Ankara"],
-    image: "/deal1.jpeg",
+    image: "/deals/turkishairlines.jpeg",
     featured: true,
     category: "flight",
     terms: [

@@ -18,7 +18,7 @@ interface DealPoster {
 const dealPosters: DealPoster[] = [
   {
     id: 1,
-    image: "/deal1.jpeg",
+    image: "/deals/turkishairlines.jpeg",
     title: "Turkish Airlines",
     subtitle: "Enjoy Massive Discounts & Flexible Ticket Fee",
     discount: "Upto 40% OFF",
@@ -26,20 +26,28 @@ const dealPosters: DealPoster[] = [
   },
   {
     id: 2,
-    image: "/top/diani.jpg",
-    title: "Beach Paradise Getaway",
-    subtitle: "Relax on pristine white sand beaches",
+    image: "/deals/christmas.jpg",
+    title: "Christmas Special",
+    subtitle: "Ultimate Christmas luxury experience",
     discount: "25% OFF",
     href: "/deals"
   },
-  {
-    id: 3,
-    image: "/top/mombasa.jpg",
-    title: "Coastal Escape Package",
-    subtitle: "Discover the magic of the Indian Ocean",
-    discount: "20% OFF",
-    href: "/deals"
-  }
+  // {
+  //   id: 3,
+  //   image: "/deals/capetownholiday.jpg",
+  //   title: "Capetown Holiday",
+  //   subtitle: "Ultimate Capetown luxury experience",
+  //   discount: "20% OFF",
+  //   href: "/deals"
+  // },
+  // {
+  //   id: 4,
+  //   image: "/deals/thailandholiday.jpg",
+  //   title: "Thailand Holiday",
+  //   subtitle: "Ultimate Thailand luxury experience",
+  //   discount: "20% OFF",
+  //   href: "/deals"
+  // }
 ]
 
 export function DealsPopup() {
