@@ -740,7 +740,7 @@ export const packages: Package[] = [
       }
     ],
     featured: true,
-    image: "/packages/xmascapetown.jpg",
+    image: "/packages/xmasdubai.jpg",
     category: "festive",
     bestTime: "21st December - 27th December 2025",
     terms: [
