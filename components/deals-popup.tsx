@@ -22,7 +22,7 @@ const dealPosters: DealPoster[] = [
     title: "Turkish Airlines",
     subtitle: "Enjoy Massive Discounts & Flexible Ticket Fee",
     discount: "Upto 40% OFF",
-    href: "/deals"
+    href: "/deals/turkish-airlines"
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const dealPosters: DealPoster[] = [
     title: "Christmas Special",
     subtitle: "Ultimate Christmas luxury experience",
     discount: "25% OFF",
-    href: "/deals"
+    href: "/packages"
   },
   // {
   //   id: 3,
