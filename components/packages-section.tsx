@@ -1,17 +1,32 @@
 "use client"
 
-import React from "react"
+import React, { useCallback } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Star, MapPin, Clock, DollarSign, ArrowRight } from "lucide-react"
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight, DollarSign } from "lucide-react"
 import { packages } from "@/lib/services"
+import useEmblaCarousel from 'embla-carousel-react'
 
 export function PackagesSection() {
-  const featuredPackages = packages.filter(pkg => pkg.featured).slice(0, 3)
+  const featuredPackages = packages.filter(pkg => pkg.featured).slice(0, 6)
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true,
+    align: 'start',
+    slidesToScroll: 1,
+    containScroll: 'trimSnaps'
+  })
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev()
+  }, [emblaApi])
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext()
+  }, [emblaApi])
 
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
@@ -32,145 +47,116 @@ export function PackagesSection() {
           </p>
         </motion.div>
 
-        {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {featuredPackages.map((pkg, index: number) => (
-            <motion.div
-              key={pkg.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="h-full"
-            >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col">
-                <div className="relative h-56 overflow-hidden flex-shrink-0">
-                  <Image
-                    src={pkg.image}
-                    alt={pkg.name}
-                    fill
-                    className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  
-                  {/* Featured Badge */}
-                  {pkg.featured && (
-                    <Badge className="absolute top-3 left-3 bg-brand-accent text-white border-0">
-                      Featured
-                    </Badge>
-                  )}
-
-                  {/* Category Badge */}
-                  <div className="absolute top-3 right-3">
-                    <Badge variant="secondary" className="bg-white/90 text-gray-800 border-0 capitalize">
-                      {pkg.category}
-                    </Badge>
-                  </div>
-
-                  {/* Duration */}
-                  <div className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
-                    <Clock className="w-3 h-3 inline mr-1" />
-                    {pkg.duration}
-                  </div>
-                </div>
-
-                <CardContent className="p-5 space-y-4 flex-1 flex flex-col">
-                  <div className="space-y-2 flex-shrink-0">
-                    <h3 className="text-lg font-bold text-gray-900 line-clamp-2">
-                      {pkg.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm line-clamp-2">
-                      {pkg.shortDescription}
-                    </p>
-                  </div>
-
-                  {/* Best Time */}
-                  <div className="flex items-center gap-2 text-sm text-gray-600 flex-shrink-0">
-                    <MapPin className="w-4 h-4 text-brand-accent" />
-                    <span>Best time: {pkg.bestTime}</span>
-                  </div>
-
-                  {/* Price */}
-                  <div className="flex items-center justify-between flex-shrink-0">
-                    <div className="flex items-center gap-1">
-                      <span className="text-xl font-bold text-green-600">
-                        From {pkg.price}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 text-sm text-gray-600">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span>Featured</span>
-                    </div>
-                  </div>
-
-                  {/* Action Button */}
-                  <Button
-                    asChild
-                    className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95 mt-auto flex-shrink-0"
+        {/* Carousel Container */}
+        <div className="relative">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex -mx-3">
+              {featuredPackages.map((pkg, index: number) => (
+                <div key={pkg.id} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] px-3">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="h-full pb-6"
                   >
-                    <Link href={`/packages/${pkg.slug}`}>
-                      View Package Details
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                    <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col">
+                      <div className="relative h-56 overflow-hidden flex-shrink-0">
+                        <Image
+                          src={pkg.image}
+                          alt={pkg.name}
+                          fill
+                          className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        
+                        {/* Featured Badge */}
+                        {pkg.featured && (
+                          <Badge className="absolute top-3 left-3 bg-brand-accent text-white border-0">
+                            Featured
+                          </Badge>
+                        )}
 
-        
-        {/* Button Section */}
-        <div className="flex justify-center mt-12 mb-12">
-          <Button variant="secondary" className="w-[200px] px-6 py-3 bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95">
-            <Link href="/packages">
-              View All Packages
-            </Link>
-          </Button>
-        </div>
-        
-        
+                        {/* Category Badge */}
+                        <div className="absolute top-3 right-3">
+                          <Badge variant="secondary" className="bg-white/90 text-gray-800 border-0 capitalize">
+                            {pkg.category}
+                          </Badge>
+                        </div>
 
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center"
-        >
-          <div className="bg-gradient-to-r from-brand-accent to-brand-success rounded-xl p-6 text-white">
-            <h3 className="text-xl font-bold mb-3">
-              Ready to Start Your Journey?
-            </h3>
-            <p className="mb-5 opacity-90">
-              Explore our complete collection of travel packages
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Button 
-                size="sm" 
-                variant="secondary"
-                className="bg-white text-brand-accent hover:bg-gray-100 text-sm"
-                asChild
-              >
-                <Link href="/destinations">
-                  Browse Destinations
-                </Link>
-              </Button>
-              <Button 
-                size="sm" 
-                variant="outline"
-                className="border-white text-brand-accent hover:bg-white hover:text-brand-accent text-sm"
-                asChild
-              >
-                <Link href="/deals">
-                  View Deals
-                </Link>
-              </Button>
+                        {/* Duration */}
+                        <div className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
+                          <Clock className="w-3 h-3 inline mr-1" />
+                          {pkg.duration}
+                        </div>
+                      </div>
+
+                      <CardContent className="p-5 space-y-4 flex-1 flex flex-col">
+                        <div className="space-y-2 flex-shrink-0">
+                          <h3 className="text-lg font-bold text-gray-900 line-clamp-2">
+                            {pkg.name}
+                          </h3>
+                          <p className="text-gray-600 text-sm line-clamp-2">
+                            {pkg.shortDescription}
+                          </p>
+                        </div>
+
+                        {/* Best Time */}
+                        <div className="flex items-center gap-2 text-sm text-gray-600 flex-shrink-0">
+                          <MapPin className="w-4 h-4 text-brand-accent" />
+                          <span>Best time: {pkg.bestTime}</span>
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex items-center justify-between flex-shrink-0 mt-auto">
+                          <div className="flex items-center">
+                            {/* <DollarSign className="w-4 h-4 text-brand-accent mr-1" /> */}
+                            <span className="text-lg font-bold text-green-600">
+                              From {pkg.price.toLocaleString()}
+                            </span>
+                            <span className="text-sm text-gray-500 ml-1">/person</span>
+                          </div>
+                          <Link 
+                            href={`/packages/${pkg.slug}`}
+                            className="inline-flex items-center text-sm font-medium text-brand-accent hover:text-brand-primary transition-colors"
+                          >
+                            View Details <ChevronRight className="w-4 h-4 ml-1" />
+                          </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </div>
+              ))}
             </div>
           </div>
-        </motion.div>
+          
+          {/* Navigation Buttons */}
+          <button 
+            onClick={scrollPrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button 
+            onClick={scrollNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* View All Button */}
+        <div className="text-center mt-8">
+          <Link href="/packages">
+            <Button variant="outline" className="border-brand-accent text-brand-accent hover:bg-brand-accent/90">
+              View All Packages
+            </Button>
+          </Link>
+        </div>
       </div>
     </section>
   )

@@ -47,7 +47,7 @@ export interface Package {
   itinerary: DayItinerary[]
   featured: boolean
   image: string
-  category: 'family & kids' | 'group & corporate' | 'honeymoon & anniversaries' | 'festive' | 'adventure'
+  category: 'family & kids' | 'group & corporate' | 'honeymoon & anniversaries' | 'festive' | 'adventure' | 'business'
   bestTime: string
 }
 
@@ -378,6 +378,49 @@ export const packages: Package[] = [
     bestTime: "1st October - 20th December 2025"
   },
   {
+    id: "capetown-christmas-mega-trip",
+    name: "Capetown Christmas Mega Trip",
+    slug: "capetown-christmas-mega-trip",
+    destinationSlug: "capetown",
+    country: "South Africa",
+    description: "Experience the ultimate Capetown Christmas Mega Trip with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Capetown",
+    duration: "5 days / 4 nights",
+    price: "$1,699",
+    includes: [
+      "4 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Daily Buffet at the hotel",
+      "Capetown guided city tour",
+      "Table Mountain and Waterfront Tour",
+      "Full Day to Stellenbosch, Franschhoek & Paarl",
+      "Full day Cape Town Peninsula Tour"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/xmascapetown.jpg",
+    category: "festive",
+    bestTime: "21st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 21st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
     id: "three-day-mombasa-getaway",
     name: "Three Day Mombasa Getaway",
     slug: "three-day-mombasa-getaway",
@@ -489,6 +532,96 @@ export const packages: Package[] = [
     bestTime: "1st November - 30th November 2025",
     terms: [
       "Valid for travel between 1st November - 30th November 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "8-days-business-trip-canton-fair",
+    name: "8 Days Business Trip Canton Fair",
+    slug: "8-days-business-trip-canton-fair",
+    destinationSlug: "canton-fair",
+    country: "China",
+    description: "Explore Canton Fair with our 8-day business trip package. Enjoy Bayun Cable Ride, Canton Fair Tour, and a luxurious hotel stay.",
+    shortDescription: "Thrilling adventure in Canton Fair",
+    duration: "8 days / 7 nights",
+    price: "$2,450",
+    includes: [
+      "7 Nights Accomodation in a 4 star Hotel in China",
+      "Return economy class flight tickets",
+      "Visa Processing Documentation",
+      "Welcome Dinner in China",
+      "B2B Meeting with Suppliers",
+      "Guidance on shipping process",
+      "Metro cards",
+      "Bayun Cable Ride",
+      "Canton Fair Registration and Transfers",
+      "Return Private Airport Transfers",
+      "Daily Buffet breakfast",
+      "Domestic flights / High Speed Train to YIWU"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/cantonfair.jpeg",
+    category: "business",
+    bestTime: "1st September - 30th November 2025",
+    terms: [
+      "Valid for travel between 1st September - 30th November 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "5-days-istanbul-holiday",
+    name: "5 Days Istanbul Holiday",
+    slug: "5-days-istanbul-holiday",
+    destinationSlug: "istanbul",
+    country: "Turkey",
+    description: "Explore Istanbul with our 5-day holiday package. Enjoy Prince's Island Tour, Masukiya Tour and a luxurious hotel stay.",
+    shortDescription: "Thrilling adventure in Istanbul",
+    duration: "5 days / 4 nights",
+    price: "$1,650",
+    includes: [
+      "4 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Meal plan on bed and breakfast basis",
+      "Prince's Island Tour with Local Lunch",
+      "Bosphorus Cruise Dinner with show + drinks",
+      "Full day Sapanca & Masukiya Tour with lunch",
+      "All taxes except infrastructure tax"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/packages/turkey-istanbul.jpeg",
+    category: "adventure",
+    bestTime: "1st September - 30th November 2025",
+    terms: [
+      "Valid for travel between 1st September - 30th November 2025",
       "Rates are per person sharing",
       "Rates are subject to change and availabiltiy",
     ]
@@ -621,49 +754,7 @@ export const packages: Package[] = [
       "Rates are subject to change and availabiltiy",
     ]
   },
-  {
-    id: "capetown-christmas-mega-trip",
-    name: "Capetown Christmas Mega Trip",
-    slug: "capetown-christmas-mega-trip",
-    destinationSlug: "capetown",
-    country: "South Africa",
-    description: "Experience the ultimate Capetown Christmas Mega Trip with luxurious accommodation, world-class activities, and a festive atmosphere.",
-    shortDescription: "Festive season in Capetown",
-    duration: "5 days / 4 nights",
-    price: "$1,699",
-    includes: [
-      "4 Nights Accomodation",
-      "Return Economy Class Flight Tickets",
-      "Return Private Airport Transfers",
-      "Daily Buffet at the hotel",
-      "Capetown guided city tour",
-      "Table Mountain and Waterfront Tour",
-      "Full Day to Stellenbosch, Franschhoek & Paarl",
-      "Full day Cape Town Peninsula Tour"
-    ],
-    excludes: [
-      "Tips and Gratitudes",
-    ],
-    itinerary: [
-      {
-        day: 1,
-        title: "",
-        description: "",
-        activities: [""],
-        accommodation: "",
-        meals: [""]
-      }
-    ],
-    featured: true,
-    image: "/packages/xmascapetown.jpg",
-    category: "festive",
-    bestTime: "21st December - 27th December 2025",
-    terms: [
-      "Valid for travel between 21st December - 27th December 2025",
-      "Rates are per person sharing",
-      "Rates are subject to change and availabiltiy",
-    ]
-  },
+
   {
     id: "krissi-ni-mombasa",
     name: "Budget Christmas Deal - Krissi ni Mombasa",
