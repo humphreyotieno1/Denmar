@@ -9,6 +9,7 @@ import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
 import type { Metadata } from "next"
 import { DealsPopup } from "@/components/deals-popup"
+import { ChristmasPackages } from "@/components/xmass-packages"
 
 export const metadata: Metadata = {
   title: "Denmar Tours & Travel - Your Dream Trip Awaits",
@@ -62,6 +63,7 @@ export default function HomePage() {
         <WhyUsSection />
         <TopDestinationsSection />
         <PackagesSection />
+        <ChristmasPackages />
         <ReadyToPlanSection />
       </main>
 
