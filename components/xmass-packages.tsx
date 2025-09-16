@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Star, MapPin, Clock, ChevronLeft, ChevronRight, DollarSign } from "lucide-react"
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight, DollarSign, Sparkles } from "lucide-react"
 import { packages } from "@/lib/services"
 import useEmblaCarousel from 'embla-carousel-react'
 
@@ -28,8 +28,83 @@ export function ChristmasPackages() {
     if (emblaApi) emblaApi.scrollNext()
   }, [emblaApi])
 
+  // Snowflakes component with more dynamic movement
+  const Snowflakes = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(40)].map((_, i) => {
+        const size = Math.random() * 12 + 8; // 8px to 20px
+        const delay = Math.random() * 10; // 0s to 10s
+        const duration = 8 + Math.random() * 15; // 8s to 23s
+        const startX = Math.random() * 100; // 0% to 100%
+        const drift = (Math.random() - 0.5) * 60; // -30px to 30px
+        
+        return (
+          <div
+            key={i}
+            className="absolute text-white/60 animate-float"
+            style={{
+              left: `${startX}%`,
+              animationDelay: `${delay}s`,
+              animationDuration: `${duration}s`,
+              fontSize: `${size}px`,
+              '--twinkle-delay': `${Math.random() * 5}s`,
+              '--twinkle-duration': `${3 + Math.random() * 4}s`,
+              '--drift': `${drift}px`,
+            } as React.CSSProperties}
+          >
+            {['❄', '❅', '❆', '✻', '✼'][Math.floor(Math.random() * 5)]}
+          </div>
+        );
+      })}
+    </div>
+  )
+
+  // Twinkling lights component with more dynamic movement
+  const TwinklingLights = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(30)].map((_, i) => {
+        const size = 4 + Math.random() * 4; // 4px to 8px
+        const delay = Math.random() * 8; // 0s to 8s
+        const duration = 2 + Math.random() * 4; // 2s to 6s
+        const color = ['#ff6b6b', '#ff8e8e', '#ffd166', '#06d6a0', '#118ab2', '#ef476f', '#ffd166', '#06d6a0', '#118ab2'][
+          Math.floor(Math.random() * 9)
+        ];
+        
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full animate-twinkle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${size}px`,
+              height: `${size}px`,
+              background: color,
+              boxShadow: `0 0 ${size * 2}px ${size / 2}px ${color}40`,
+              animationDelay: `${delay}s`,
+              animationDuration: `${duration}s`,
+              transform: 'translateZ(0)',
+              willChange: 'transform, opacity, box-shadow',
+            }}
+          />
+        );
+      })}
+    </div>
+  )
+
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-red-50/20 via-white/30 to-green-50/20 pointer-events-none"></div>
+      <div 
+        className="absolute inset-0 opacity-5 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 10% 20%, #ff6b6b22 0%, #ffd16622 20%, #06d6a022 40%, #118ab222 60%, #073b4c22 80%)',
+          backgroundSize: '200% 200%',
+          animation: 'gradientShift 15s ease infinite',
+        }}
+      ></div>
+      <Snowflakes />
+      <TwinklingLights />
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -42,7 +117,7 @@ export function ChristmasPackages() {
           <h2 className="font-heading text-3xl font-bold text-brand-primary mb-3">
             FESTIVE SEASON PACKAGES
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-black max-w-2xl mx-auto">
             Christmas Packages do not get any better. Explore with us during the festive season.
           </p>
         </motion.div>
