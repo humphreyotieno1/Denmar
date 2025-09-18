@@ -923,6 +923,170 @@ export const packages: Package[] = [
       "Rates are per person sharing",
       "Rates are subject to change and availabiltiy",
     ]
+  },
+  {
+    id: "best-xmas-vacation-seychelles",
+    name: "Best Christmas Vacation in Seychelles",
+    slug: "best-xmas-vacation-seychelles",
+    destinationSlug: "seychelles",
+    country: "Seychelles",
+    description: "Experience the ultimate Seychelles Christmas with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Seychelles",
+    duration: "5 days / 4 nights",
+    price: "$2,785",
+    includes: [
+      "4 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Meals on half board basis",
+      "Access to hotel facilities(WiFi and Pool)",
+      "All taxes inclusive"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/christmas/seychelles.jpg",
+    category: "festive",
+    bestTime: "1st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 1st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "malindi-watamu-xmass",
+    name: "Malindi and Watamu Christmas",
+    slug: "malindi-watamu-xmass",
+    destinationSlug: "malindi",
+    country: "Kenya",
+    description: "Experience the ultimate Malindi and Watamu Christmas with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Malindi and Watamu",
+    duration: "4 days / 3 nights",
+    price: "Ksh 47,500",
+    includes: [
+      "3 Nights Accomodation",
+      "SGR Economy class tickets",
+      "Access to hotel amenities",
+      "Kids and festive activities"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/christmas/malindi.jpg",
+    category: "festive",
+    bestTime: "1st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 1st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "twendeni-amboseli",
+    name: "Twendeni Amboseli",
+    slug: "twendeni-amboseli",
+    destinationSlug: "amboseli",
+    country: "Kenya",
+    description: "Experience the ultimate Twendeni Amboseli with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Twendeni Amboseli",
+    duration: "3 days / 2 nights",
+    price: "Ksh 35,700",
+    includes: [
+      "Transport in a 4x4 Safari Cruiser",
+      "2 Nights accomodation",
+      "Meals on full board basis",
+      "Access to hotel amenities",
+      "Christmas supplements"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+      "Extra nights",
+      "Kids rates"
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/christmas/amboseli.jpg",
+    category: "festive",
+    bestTime: "23rd December - 4th January 2026",
+    terms: [
+      "Valid for travel between 23rd December - 4th January 2026",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "safiri-tsavo-xmas-new-year",
+    name: "Safiri Tsavo Christmas New Year",
+    slug: "safiri-tsavo-xmas-new-year",
+    destinationSlug: "tsavo",
+    country: "Kenya",
+    description: "Experience the ultimate Safiri Tsavo Christmas New Year with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Safiri Tsavo",
+    duration: "3 days / 2 nights",
+    price: "Ksh 43,325",
+    includes: [
+      "2 Nights Accomodation",
+      "Transport in a cruiser",
+      "Meals on full board basis",
+      "Access to hotel amenities",
+      "Christmas supplements"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+      "Extra nights",
+      "Kids rates"
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/christmas/tsavo.jpg",
+    category: "festive",
+    bestTime: "23rd December - 4th January 2026",
+    terms: [
+      "Valid for travel between 23rd December - 4th January 2026",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
   }
 ]
 
