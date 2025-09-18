@@ -411,7 +411,7 @@ export const packages: Package[] = [
       }
     ],
     featured: true,
-    image: "/packages/xmascapetown.jpg",
+    image: "/christmas/capetown.jpg",
     category: "festive",
     bestTime: "21st December - 27th December 2025",
     terms: [
@@ -745,7 +745,7 @@ export const packages: Package[] = [
       }
     ],
     featured: true,
-    image: "/packages/xmaszanzibar.jpg",
+    image: "/christmas/zanzibar.jpg",
     category: "festive",
     bestTime: "21st December - 27th December 2025",
     terms: [
@@ -787,7 +787,7 @@ export const packages: Package[] = [
       }
     ],
     featured: true,
-    image: "/packages/xmasmombasa.jpg",
+    image: "/christmas/mombasa.jpg",
     category: "festive",
     bestTime: "21st December - 28th December 2025",
     terms: [
@@ -831,11 +831,95 @@ export const packages: Package[] = [
       }
     ],
     featured: true,
-    image: "/packages/xmasdubai.jpg",
+    image: "/christmas/dubai.jpg",
     category: "festive",
     bestTime: "21st December - 27th December 2025",
     terms: [
       "Valid for travel between 21st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "xmas-new-year-singapore",
+    name: "Christmas and New Year in Singapore",
+    slug: "xmas-new-year-singapore",
+    destinationSlug: "singapore",
+    country: "Singapore",
+    description: "Experience the ultimate Singapore Christmas with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Singapore",
+    duration: "5 days / 4 nights",
+    price: "$1,945",
+    includes: [
+      "4 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Daily Buffet Breakfast at the hotel",
+      "Sentosa(cable car 2-way, sea aquarium, wines of time)",
+      "Visit to the Universal Studios",
+      "Marina Bay sands skypark observation deck"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/christmas/singapore.jpg",
+    category: "festive",
+    bestTime: "1st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 1st December - 27th December 2025",
+      "Rates are per person sharing",
+      "Rates are subject to change and availabiltiy",
+    ]
+  },
+  {
+    id: "mauritius-budget-christmas",
+    name: "Budget Christmas in Mauritius",
+    slug: "mauritius-budget-christmas",
+    destinationSlug: "mauritius",
+    country: "Mauritius",
+    description: "Experience the ultimate Mauritius Christmas with luxurious accommodation, world-class activities, and a festive atmosphere.",
+    shortDescription: "Festive season in Mauritius",
+    duration: "From (5 days, 4 nights) to (6 days, 5 nights)",
+    price: "$1,800",
+    includes: [
+      "4/5 Nights Accomodation",
+      "Return Economy Class Flight Tickets",
+      "Return Private Airport Transfers",
+      "Meals on Bed and Breakfast basis",
+      "Full day catamaran cruise plus lunch",
+      "South Tour full day with lunch",
+      "All taxes included"
+    ],
+    excludes: [
+      "Tips and Gratitudes",
+    ],
+    itinerary: [
+      {
+        day: 1,
+        title: "",
+        description: "",
+        activities: [""],
+        accommodation: "",
+        meals: [""]
+      }
+    ],
+    featured: true,
+    image: "/christmas/mauritius.jpg",
+    category: "festive",
+    bestTime: "1st December - 27th December 2025",
+    terms: [
+      "Valid for travel between 1st December - 27th December 2025",
       "Rates are per person sharing",
       "Rates are subject to change and availabiltiy",
     ]
