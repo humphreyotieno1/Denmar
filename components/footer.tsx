@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { FaTiktok } from 'react-icons/fa'
 import { toast } from "@/components/ui/toast"
+import { trackNewsletterSignup, trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics"
 
 export function Footer() {
   const [isLoading, setIsLoading] = useState(false)
@@ -25,6 +26,8 @@ export function Footer() {
         const data = await response.json()
         
         if (data.success) {
+          // Track successful newsletter signup
+          trackNewsletterSignup(email, 'footer')
           toast.success(data.message)
           ;(document.getElementById('footer-email') as HTMLInputElement).value = ''
         } else {
@@ -36,6 +39,14 @@ export function Footer() {
         setIsLoading(false)
       }
     }
+  }
+
+  const handlePhoneClick = (phoneNumber: string) => {
+    trackPhoneClick(phoneNumber, 'footer')
+  }
+
+  const handleWhatsAppClick = () => {
+    trackWhatsAppClick('Contact from footer')
   }
 
   return (
@@ -59,7 +70,13 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Phone className="h-4 w-4 text-brand-accent" />
-                <span className="text-gray-300">+254 793 041 888</span>
+                <a 
+                  href="tel:+254793041888" 
+                  className="text-gray-300 hover:text-brand-accent transition-colors"
+                  onClick={() => handlePhoneClick('+254793041888')}
+                >
+                  +254 793 041 888
+                </a>
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Mail className="h-4 w-4 text-brand-accent" />

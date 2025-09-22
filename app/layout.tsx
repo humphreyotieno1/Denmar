@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Poppins, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { ToastProvider } from "@/components/ui/toast"
+import Script from "next/script"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -77,7 +78,7 @@ export const metadata: Metadata = {
     creator: "@denmartours",
   },
   verification: {
-    google: "google-site-verification-code",
+    google: "e6SBUs9A3eNWIHMPfU5wunAran6HCfBxRaSfwTmjENs",
   },
   alternates: {
     canonical: "https://denmartravel.co.ke",
@@ -92,7 +93,33 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} ${openSans.variable}`}>
+      <head>
+        {/* Google Tag Manager */}
+        <Script
+          id="gtm-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+            `,
+          }}
+        />
+      </head>
       <body className="font-sans antialiased">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        
         <ToastProvider>
           {children}
         </ToastProvider>
