@@ -94,32 +94,26 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${openSans.variable}`}>
       <head>
-        {/* Google Tag Manager */}
+        {/* Google tag (gtag.js) */}
         <Script
-          id="gtm-script"
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-X34BY22BDQ"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="gtag-init"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-K3TQC7Z8');
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-X34BY22BDQ');
             `,
           }}
         />
       </head>
       <body className="font-sans antialiased">
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=GTM-K3TQC7Z8`}
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        
         <ToastProvider>
           {children}
         </ToastProvider>
