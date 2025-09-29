@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label"
 import { Send, CheckCircle, Plus, Minus, Users, Baby } from "lucide-react"
 import { toast } from "@/components/ui/toast"
+import { trackContactFormSubmission } from "@/lib/facebook-pixel"
 
 const contactSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters").max(50, "First name must be less than 50 characters"),
@@ -100,6 +101,8 @@ export function ContactForm() {
         reset()
         setAdults(1)
         setChildren(0)
+        // Track Facebook Pixel event
+        trackContactFormSubmission('contact')
       } else {
         throw new Error(result.error || 'Failed to send message')
       }

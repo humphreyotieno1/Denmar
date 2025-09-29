@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { FaTiktok } from 'react-icons/fa'
 import { toast } from "@/components/ui/toast"
 import { trackNewsletterSignup, trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics"
+import { trackNewsletterSignup as trackFacebookNewsletter, trackPhoneClick as trackFacebookPhone, trackWhatsAppClick as trackFacebookWhatsApp } from "@/lib/facebook-pixel"
 
 export function Footer() {
   const [isLoading, setIsLoading] = useState(false)
@@ -28,6 +29,7 @@ export function Footer() {
         if (data.success) {
           // Track successful newsletter signup
           trackNewsletterSignup(email, 'footer')
+          trackFacebookNewsletter()
           toast.success(data.message)
           ;(document.getElementById('footer-email') as HTMLInputElement).value = ''
         } else {
@@ -43,10 +45,12 @@ export function Footer() {
 
   const handlePhoneClick = (phoneNumber: string) => {
     trackPhoneClick(phoneNumber, 'footer')
+    trackFacebookPhone(phoneNumber)
   }
 
   const handleWhatsAppClick = () => {
     trackWhatsAppClick('Contact from footer')
+    trackFacebookWhatsApp()
   }
 
   return (

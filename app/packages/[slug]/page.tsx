@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
+import { trackPackageView } from "@/lib/facebook-pixel"
 
 interface PackagePageProps {
   params: Promise<{ slug: string }>
@@ -39,6 +40,9 @@ export default function PackagePage({ params }: PackagePageProps) {
     }
     
     setPackageData(pkg)
+    
+    // Track Facebook Pixel event for package view
+    trackPackageView(pkg.name, pkg.price)
     
     // Get related packages (same category, excluding current)
     const related = packages
