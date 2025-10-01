@@ -267,7 +267,7 @@ export function TopDestinationsSection() {
 
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                     <span className="text-xs text-gray-500">
-                      From <span className="font-semibold text-brand-success">{destination.price}</span>
+                      <span className="font-semibold text-brand-success">{destination.price}</span>
                     </span>
                     <Link
                       href={destination.href}
