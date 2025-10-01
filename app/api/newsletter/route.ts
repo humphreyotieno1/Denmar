@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { email, firstName } = body
+    const normalizedEmail = email.toLowerCase()
 
     // Validate email
     if (!email || !email.includes('@')) {
@@ -37,32 +38,30 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if email already exists
-    const existingSubscriber = await prisma.newsletterSubscriber.findUnique({
-      where: { email: email.toLowerCase() }
+    let subscriber = await prisma.newsletterSubscriber.findUnique({
+      where: { email: normalizedEmail }
     })
 
-    if (existingSubscriber) {
-      if (existingSubscriber.status === 'active') {
+    if (subscriber) {
+      if (subscriber.status === 'active') {
         return NextResponse.json(
           { success: false, message: 'This email is already subscribed to our newsletter.' },
           { status: 400 }
         )
-      } else {
-        // Reactivate unsubscribed user
-        await prisma.newsletterSubscriber.update({
-          where: { email: email.toLowerCase() },
-          data: { 
-            status: 'active',
-            unsubscribedAt: null,
-            subscribedAt: new Date()
-          }
-        })
       }
-    } else {
-      // Create new subscriber
-      await prisma.newsletterSubscriber.create({
+
+      subscriber = await prisma.newsletterSubscriber.update({
+        where: { email: normalizedEmail },
         data: {
-          email: email.toLowerCase(),
+          status: 'active',
+          unsubscribedAt: null,
+          subscribedAt: new Date()
+        }
+      })
+    } else {
+      subscriber = await prisma.newsletterSubscriber.create({
+        data: {
+          email: normalizedEmail,
           status: 'active',
           ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
           userAgent: request.headers.get('user-agent') || 'unknown'
@@ -89,12 +88,7 @@ export async function POST(request: NextRequest) {
       port: 587
     })
 
-    // Get subscriber token for unsubscribe link
-    const subscriber = await prisma.newsletterSubscriber.findUnique({
-      where: { email: email.toLowerCase() }
-    })
-
-    const unsubscribeUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://denmartravel.co.ke'}/unsubscribe?token=${subscriber?.unsubscribeToken}`
+    const unsubscribeUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://denmartravel.co.ke'}/unsubscribe?token=${subscriber.unsubscribeToken}`
 
     // Create transporter
     const transporter = createTransporter()
