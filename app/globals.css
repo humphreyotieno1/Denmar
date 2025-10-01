@@ -201,7 +201,7 @@
 
   /* Added heading font utility */
   .font-heading {
-    font-family: var(--font-poppins);
+    font-family: var(--font-open-sans);
   }
 
   /* Added custom animations for hero section */

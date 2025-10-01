@@ -1,13 +1,14 @@
 "use client"
 
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { Menu, X, ChevronDown, ChevronRight, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import Image from "next/image"
+import { ChevronDown, ChevronRight, Menu, Search, X } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 import { TopBanner } from "./top-banner"
+import { usePathname } from "next/navigation"
 
 // Grouped destinations for better organization
 const groupedDestinations = [
@@ -112,11 +113,43 @@ export function Navbar() {
   const [destinationsSearchQuery, setDestinationsSearchQuery] = useState("")
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
-  const dropdownRef = useRef<HTMLDivElement>(null)
   const globalSearchRef = useRef<HTMLDivElement>(null)
+  const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null)
+  const [isMegaMenuVisible, setIsMegaMenuVisible] = useState(false)
+  const [focusWithinMegaMenu, setFocusWithinMegaMenu] = useState(false)
+  const desktopMenuRef = useRef<HTMLDivElement>(null)
 
   // Memoize grouped destinations to prevent re-renders
   const memoizedDestinations = useMemo(() => groupedDestinations, [])
+  const featuredColumns = useMemo(
+    () =>
+      memoizedDestinations.map((group) => ({
+        title: group.region,
+        items: group.destinations,
+      })),
+    [memoizedDestinations]
+  )
+
+  const featuredHighlights = useMemo(
+    () => [
+      {
+        title: "African Safaris",
+        description: "Tailor-made safari adventures across Kenya, Tanzania, and South Africa.",
+        href: "/destinations/kenya",
+      },
+      {
+        title: "Middle East Wonders",
+        description: "Luxurious city escapes and desert experiences from Dubai to Qatar.",
+        href: "/destinations/uae/dubai",
+      },
+      {
+        title: "European Classics",
+        description: "Romantic getaways and cultural tours across Europe’s timeless capitals.",
+        href: "/destinations/europe",
+      },
+    ],
+    []
+  )
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
@@ -142,6 +175,14 @@ export function Navbar() {
       ) {
         setIsGlobalSearchOpen(false)
         setGlobalSearchQuery("")
+      }
+
+      if (
+        desktopMenuRef.current &&
+        !desktopMenuRef.current.contains(event.target as Node)
+      ) {
+        setActiveDesktopDropdown(null)
+        setIsMegaMenuVisible(false)
       }
     }
 
@@ -171,11 +212,15 @@ export function Navbar() {
           setIsGlobalSearchOpen(false)
           setGlobalSearchQuery("")
         }
+        setActiveDesktopDropdown(null)
+        setIsMegaMenuVisible(false)
       }
     }
     document.addEventListener("keydown", handleKeyDown)
     return () => document.removeEventListener("keydown", handleKeyDown)
   }, [isMobileMenuOpen, isGlobalSearchOpen])
+
+  const pathname = usePathname()
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
@@ -219,149 +264,96 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50">
       <TopBanner />
       <nav
-        className={`bg-white transition-all duration-300 ${
-          isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : ""
-        }`}
+        className={cn(
+          "relative bg-white border-b border-[#d6c98f]/60",
+          "shadow-[0_10px_24px_rgba(60,50,20,0.08)]"
+        )}
       >
-      <div className="max-w-7xl mx-auto px-4 py-0 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center" onClick={closeMobileMenu}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20 gap-6">
+          <Link
+            href="/"
+            className="flex items-center"
+            onClick={closeMobileMenu}
+          >
             <Image
               src="/denmar.png"
               alt="Denmar Travel Logo"
-              width={150}
-              height={150}
+              width={120}
+              height={48}
               className="object-contain"
               priority
             />
           </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
-            >
+          <div
+            className="hidden lg:flex flex-1 items-center justify-center gap-8"
+            ref={desktopMenuRef}
+          >
+            <DesktopNavLink href="/" isActive={pathname === "/"}>
               Home
-            </Link>
-            <Link
-              href="/about"
-              className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
+            </DesktopNavLink>
+            <DesktopNavLink href="/about" isActive={pathname.startsWith("/about")}
             >
-              About Us
-            </Link>
-            <Link
+              Our Company
+            </DesktopNavLink>
+            <DesktopDropdown
+              label="Destinations"
+              isActive={activeDesktopDropdown === "destinations" && isMegaMenuVisible}
+              isCurrent={pathname.startsWith("/destinations")}
+              onOpen={() => {
+                setActiveDesktopDropdown("destinations")
+                setIsMegaMenuVisible(true)
+              }}
+              onClose={() => {
+                setActiveDesktopDropdown(null)
+                setIsMegaMenuVisible(false)
+              }}
+              onFocusChange={(value) => setFocusWithinMegaMenu(value)}
+            />
+            <DesktopNavLink
               href="/packages"
-              className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
+              isActive={pathname.startsWith("/packages") || pathname.startsWith("/deals")}
             >
               Packages
-            </Link>
-            {/* <Link
-              href="/services"
-              className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
-            >
-              Services
-            </Link> */}
-
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                className="flex items-center space-x-1 text-gray-700 hover:text-brand-success transition-colors font-bold text-lg focus:outline-none focus:ring-2 focus:ring-brand-success rounded"
-                aria-expanded={isDestinationsOpen}
-                aria-controls="destinations-menu"
-              >
-                <span>Destinations</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                ref={dropdownRef}
-                align="center"
-                className="w-80 mt-2 bg-white rounded-lg shadow-lg p-4 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
-                id="destinations-menu"
-              >
-                {memoizedDestinations.map((group) => (
-                  <div key={group.region} className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2 mb-2">
-                      {group.region}
-                    </h3>
-                    {group.destinations.map((destination) => (
-                      <div key={destination.name} className="mb-2">
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href={destination.href}
-                            className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-success"
-                          >
-                            <Image
-                              src={destination.image}
-                              alt={`${destination.name} preview`}
-                              width={80}
-                              height={80}
-                              className="rounded-md object-cover"
-                              loading="lazy"
-                            />
-                            <div className="flex-1">
-                              <span className="text-md font-semibold block">{destination.name}</span>
-                              {destination.subDestinations && destination.subDestinations.length > 0 && (
-                                <div className="text-xs text-gray-500 mt-1">
-                                  {destination.subDestinations.slice(0, 2).map(sub => sub.name).join(", ")}
-                                  {destination.subDestinations.length > 2 && "..."}
-                                </div>
-                              )}
-                            </div>
-                          </Link>
-                        </DropdownMenuItem>
-                        {destination.subDestinations && destination.subDestinations.length > 0 && (
-                          <div className="ml-4 space-y-1">
-                            {destination.subDestinations.map((subDest) => (
-                              <DropdownMenuItem key={subDest.name} asChild>
-                                <Link
-                                  href={subDest.href}
-                                  className="flex items-center space-x-2 p-1 hover:bg-gray-50 rounded text-sm text-gray-600 hover:text-gray-900 transition-colors"
-                                >
-                                  <ChevronRight className="w-3 h-3 text-gray-400" />
-                                  <span>{subDest.name}</span>
-                                </Link>
-                              </DropdownMenuItem>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <Link
-              href="/deals"
-              className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
-            >
+            </DesktopNavLink>
+            <DesktopNavLink href="/deals" isActive={pathname === "/deals"}>
               Deals
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-700 hover:text-brand-success transition-colors font-bold text-lg"
+            </DesktopNavLink>
+            <DesktopNavLink href="/contact" isActive={pathname.startsWith("/contact")}
             >
               Contact Us
-            </Link>
+            </DesktopNavLink>
           </div>
 
-          <div className="flex items-center space-x-4">
-            {/* Global Search Button */}
+          <div className="hidden lg:flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={toggleGlobalSearch}
-              className="hidden md:flex items-center space-x-2 text-gray-700 hover:text-brand-success"
-              aria-label="Global search"
+              className="flex items-center gap-2 text-[#3d3a2c] hover:text-brand-success"
+              aria-label="Open search"
             >
               <Search className="h-5 w-5" />
-              <span className="hidden lg:inline">Search</span>
+              <span className="uppercase tracking-[0.2em] text-[11px]">Search</span>
             </Button>
+          </div>
 
+          <div className="lg:hidden flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleGlobalSearch}
+              className="text-[#3d3a2c] hover:text-brand-success"
+              aria-label="Open search"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
             <Button
               ref={menuButtonRef}
               variant="ghost"
               size="sm"
-              className="md:hidden"
+              className="p-2"
               onClick={toggleMobileMenu}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
@@ -428,26 +420,121 @@ export function Navbar() {
         </div>
       )}
 
+      {activeDesktopDropdown === "destinations" && isMegaMenuVisible && (
+        <div
+          className="absolute left-0 right-0 top-[calc(100%+1px)] bg-white shadow-2xl border-t border-[#d6c98f]/60"
+          onMouseEnter={() => setIsMegaMenuVisible(true)}
+          onMouseLeave={() => {
+            if (!focusWithinMegaMenu) {
+              setIsMegaMenuVisible(false)
+              setActiveDesktopDropdown(null)
+            }
+          }}
+  >
+    <div
+      className="max-w-6xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10"
+      onFocusCapture={() => setFocusWithinMegaMenu(true)}
+      onBlurCapture={() => setFocusWithinMegaMenu(false)}
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredColumns.map((column) => (
+                <div key={column.title}>
+                  <h4 className="uppercase text-xs tracking-[0.3em] text-[#787159] mb-4">
+                    {column.title}
+                  </h4>
+                  <ul className="space-y-3">
+                    {column.items.map((destination) => (
+                      <li key={destination.name}>
+                        <Link
+                          href={destination.href}
+                    className="group flex items-start gap-3"
+                          onClick={() => {
+                            setActiveDesktopDropdown(null)
+                            setIsMegaMenuVisible(false)
+                          }}
+                        >
+                          <span className="mt-1 text-[#d4a441]">›</span>
+                          <div>
+                            <span className="block text-sm font-medium text-[#3d3a2c] group-hover:text-brand-success transition-colors">
+                              {destination.name}
+                            </span>
+                            {destination.subDestinations?.length ? (
+                              <span className="block text-xs text-[#948d74]">
+                                {destination.subDestinations.map((sub) => sub.name).join(" · ")}
+                              </span>
+                            ) : null}
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+      <div className="hidden sm:block bg-[#f9f5e5] rounded-xl overflow-hidden shadow-inner">
+        <div className="relative h-44">
+          <Image
+            src="/top/dubai.jpg"
+            alt="Featured Destination"
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 300px, 100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          <div className="absolute bottom-4 left-4 right-4 text-white">
+            <p className="uppercase text-xs tracking-[0.4em] mb-1">Dream Getaways</p>
+            <p className="text-sm font-semibold">Escape to Dubai this season with exclusive rates</p>
+          </div>
+        </div>
+        <div className="p-5 space-y-5">
+          <p className="uppercase text-xs tracking-[0.3em] text-[#a88734]">
+            Featured Experiences
+          </p>
+          {featuredHighlights.map((highlight) => (
+            <Link
+              key={highlight.title}
+              href={highlight.href}
+              className="group block rounded-lg p-3 hover:bg-white/70 transition-colors"
+              onClick={() => {
+                setActiveDesktopDropdown(null)
+                setIsMegaMenuVisible(false)
+              }}
+            >
+              <p className="text-sm font-semibold text-[#3d3a2c] group-hover:text-brand-success">
+                {highlight.title}
+              </p>
+              <p className="text-xs text-[#8c856c] mt-1 leading-relaxed">
+                {highlight.description}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+          </div>
+        </div>
+      )}
+
       <div
         ref={mobileMenuRef}
-        className={`fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+        className={cn(
+          "fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-2xl z-50 transform transition-transform duration-300 lg:hidden",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        )}
       >
-        <div className="h-full flex flex-col overflow-y-auto">
-          <div className="p-4 border-b">
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-bold">Menu</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={closeMobileMenu}
-                className="p-1"
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-[#d6c98f]/50 bg-[#f7f4ea]">
+            <span className="text-sm font-semibold tracking-[0.2em] text-[#3d3a2c] uppercase">
+              Menu
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-[#3d3a2c]"
+              onClick={closeMobileMenu}
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </Button>
           </div>
 
           <nav className="flex-1 p-4 space-y-4">
@@ -491,37 +578,32 @@ export function Navbar() {
               </div>
             )}
 
-            <MobileNavLink href="/" className="text-lg font-bold" onClick={closeMobileMenu}>
+            <MobileNavLink href="/" onClick={closeMobileMenu}>
               Home
             </MobileNavLink>
-            <MobileNavLink href="/about" className="text-lg font-bold" onClick={closeMobileMenu}>
-              About Us
+            <MobileNavLink href="/about" onClick={closeMobileMenu}>
+              Our Company
             </MobileNavLink>
-            <MobileNavLink href="/packages" className="text-lg font-bold" onClick={closeMobileMenu}>
+            <MobileNavLink href="/packages" onClick={closeMobileMenu}>
               Packages
             </MobileNavLink>
-            {/* <MobileNavLink href="/services" className="text-lg font-bold" onClick={closeMobileMenu}>
-              Services
-            </MobileNavLink> */}
-
             <div className="mt-2">
               <button
-                className="flex items-center justify-between w-full px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 text-lg font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-brand-success"
+                className="flex items-center justify-between w-full px-3 py-3 text-sm font-medium text-[#3d3a2c] hover:bg-[#f7f4ea] rounded-md focus:outline-none focus:ring-2 focus:ring-brand-success"
                 onClick={toggleDestinations}
                 aria-expanded={isDestinationsOpen}
                 aria-controls="mobile-destinations-menu"
               >
-                <span className="text-lg font-bold">Destinations</span>
+                <span className="text-sm font-semibold uppercase tracking-[0.18em]">Destinations</span>
                 <ChevronRight
-                  className={`h-5 w-5 transition-transform duration-200 ${
-                    isDestinationsOpen ? "rotate-90" : ""
-                  }`}
+                  className={cn("h-5 w-5 transition-transform duration-200", isDestinationsOpen ? "rotate-90" : "")}
                 />
               </button>
               <div
-                className={`pl-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ${
+                className={cn(
+                  "pl-4 mt-2 space-y-2 overflow-hidden transition-all duration-300",
                   isDestinationsOpen ? "max-h-[70vh]" : "max-h-0"
-                }`}
+                )}
                 id="mobile-destinations-menu"
               >
                 {/* Mini Search for Destinations */}
@@ -605,10 +687,10 @@ export function Navbar() {
               </div>
             </div>
 
-            <MobileNavLink href="/deals" className="text-lg font-bold" onClick={closeMobileMenu}>
+            <MobileNavLink href="/deals" onClick={closeMobileMenu}>
               Deals
             </MobileNavLink>
-            <MobileNavLink href="/contact" className="text-lg font-bold" onClick={closeMobileMenu}>
+            <MobileNavLink href="/contact" onClick={closeMobileMenu}>
               Contact Us
             </MobileNavLink>
           </nav>
@@ -627,11 +709,99 @@ export function Navbar() {
   )
 }
 
+function DesktopNavLink({
+  href,
+  isActive = false,
+  children,
+  className,
+}: {
+  href: string
+  isActive?: boolean
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "group relative inline-flex flex-col items-center gap-1 uppercase tracking-[0.25em] text-[11px] text-[#3d3a2c] transition-colors",
+        isActive ? "text-brand-success" : "hover:text-brand-success",
+        className
+      )}
+    >
+      <span>{children}</span>
+      <span
+        className={cn(
+          "block h-0.5 w-full bg-brand-success origin-center scale-x-0 transition-transform duration-300",
+          isActive ? "scale-x-100" : "group-hover:scale-x-100"
+        )}
+      />
+    </Link>
+  )
+}
+
+function DesktopDropdown({
+  label,
+  isActive,
+  isCurrent,
+  onOpen,
+  onClose,
+  onFocusChange,
+}: {
+  label: string
+  isActive: boolean
+  isCurrent?: boolean
+  onOpen: () => void
+  onClose: () => void
+  onFocusChange: (value: boolean) => void
+}) {
+  return (
+    <div className="relative inline-flex flex-col items-center gap-1">
+      <button
+        className={cn(
+          "group flex items-center gap-2",
+          "uppercase tracking-[0.25em] text-[11px] text-[#3d3a2c] transition-colors",
+          isCurrent ? "text-brand-success" : "hover:text-brand-success"
+        )}
+        onMouseEnter={onOpen}
+        onFocus={() => {
+          onOpen()
+          onFocusChange(true)
+        }}
+        onMouseLeave={() => {
+          if (!isActive) {
+            onClose()
+          }
+        }}
+        onBlur={() => {
+          onFocusChange(false)
+          onClose()
+        }}
+      >
+        <span>{label}</span>
+        <ChevronDown
+          className={cn(
+            "h-3.5 w-3.5 transition-transform duration-200 text-[#3d3a2c]",
+            isActive ? "rotate-180 text-brand-success" : "",
+            isCurrent && "text-brand-success"
+          )}
+        />
+      </button>
+      <span
+        className={cn(
+          "block h-0.5 w-full bg-brand-success origin-center scale-x-0 transition-transform duration-300",
+          isCurrent ? "scale-x-100" : isActive ? "scale-x-100" : "group-hover:scale-x-100"
+        )}
+      />
+    </div>
+  )
+}
+
 function MobileNavLink({
   href,
   onClick,
   children,
-  className = "",
+  className,
 }: {
   href: string
   onClick: () => void
@@ -642,7 +812,10 @@ function MobileNavLink({
     <Link
       href={href}
       onClick={onClick}
-      className={`block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100 hover:text-brand-success transition-colors ${className}`}
+      className={cn(
+        "block px-3 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#3d3a2c] hover:bg-[#f7f4ea] rounded-md",
+        className
+      )}
     >
       {children}
     </Link>
