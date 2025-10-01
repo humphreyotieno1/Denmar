@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
+import { prisma } from '@/lib/db'
 
 // Create SMTP transporter for hosting.com email
 const createTransporter = () => {
@@ -46,6 +47,19 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Store contact submission in database
+    await prisma.contactSubmission.create({
+      data: {
+        name: `${firstName} ${lastName}`,
+        email: email.toLowerCase(),
+        phone: phone || null,
+        country: destination || null,
+        message: `Destination: ${destination}\nTravel Dates: ${travelDateFrom} to ${travelDateTo}\nTravelers: ${adults} adults, ${children} children\nBudget: $${budget || 'Not specified'}\n\nMessage:\n${message}`,
+        ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+        userAgent: request.headers.get('user-agent') || 'unknown'
+      }
+    })
 
     // Create transporter
     const transporter = createTransporter()

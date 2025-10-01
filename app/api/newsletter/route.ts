@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
+import { prisma } from '@/lib/db'
 
 // Create SMTP transporter for hosting.com email
 const createTransporter = () => {
@@ -35,6 +36,40 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check if email already exists
+    const existingSubscriber = await prisma.newsletterSubscriber.findUnique({
+      where: { email: email.toLowerCase() }
+    })
+
+    if (existingSubscriber) {
+      if (existingSubscriber.status === 'active') {
+        return NextResponse.json(
+          { success: false, message: 'This email is already subscribed to our newsletter.' },
+          { status: 400 }
+        )
+      } else {
+        // Reactivate unsubscribed user
+        await prisma.newsletterSubscriber.update({
+          where: { email: email.toLowerCase() },
+          data: { 
+            status: 'active',
+            unsubscribedAt: null,
+            subscribedAt: new Date()
+          }
+        })
+      }
+    } else {
+      // Create new subscriber
+      await prisma.newsletterSubscriber.create({
+        data: {
+          email: email.toLowerCase(),
+          status: 'active',
+          ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+          userAgent: request.headers.get('user-agent') || 'unknown'
+        }
+      })
+    }
+
     // Check if environment variables are set
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
       console.error('SMTP environment variables not set:', {
@@ -53,6 +88,13 @@ export async function POST(request: NextRequest) {
       host: 'mail.denmartravel.co.ke',
       port: 587
     })
+
+    // Get subscriber token for unsubscribe link
+    const subscriber = await prisma.newsletterSubscriber.findUnique({
+      where: { email: email.toLowerCase() }
+    })
+
+    const unsubscribeUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://denmartravel.co.ke'}/unsubscribe?token=${subscriber?.unsubscribeToken}`
 
     // Create transporter
     const transporter = createTransporter()
@@ -116,6 +158,9 @@ export async function POST(request: NextRequest) {
             </p>
             <p style="color: #94a3b8; font-size: 12px; margin-top: 10px;">
               Thank you for subscribing to our newsletter!
+            </p>
+            <p style="color: #94a3b8; font-size: 11px; margin-top: 15px;">
+              No longer interested? <a href="${unsubscribeUrl}" style="color: #64748b; text-decoration: underline;">Unsubscribe</a>
             </p>
           </div>
         </div>

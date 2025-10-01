@@ -1,0 +1,29 @@
+# Database Connection (MySQL via cPanel)
+# Format: mysql://[USER]:[PASSWORD]@[HOST]:[PORT]/[DATABASE]
+DATABASE_URL="mysql://your_cpanel_user:your_password@localhost:3306/your_database_name"
+
+# SMTP Configuration (hosting.com email)
+SMTP_USER="info@denmartravel.co.ke"
+SMTP_PASS="your_email_password"
+
+# Application URLs
+NEXT_PUBLIC_BASE_URL="https://denmartravel.co.ke"
+NEXT_PUBLIC_SITE_URL="https://www.denmartravel.co.ke"
+
+# Google Analytics
+NEXT_PUBLIC_GA_ID="G-X34BY22BDQ"
+
+# Google Tag Manager (optional)
+NEXT_PUBLIC_GTM_ID="GTM-K3TQC7Z8"
+
+# Facebook Pixel
+NEXT_PUBLIC_FB_PIXEL_ID="703970893854987"
+
+# Google Maps API Key (optional)
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="your_google_maps_api_key"
+
+# Social Media
+NEXT_PUBLIC_TWITTER_USERNAME="DenmarTravel"
+NEXT_PUBLIC_FACEBOOK_PAGE="denmartravel"
+NEXT_PUBLIC_INSTAGRAM_USERNAME="denmar_travel"
+
