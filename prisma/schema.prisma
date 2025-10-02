@@ -40,3 +40,33 @@ model ContactSubmission {
   @@index([submittedAt])
   @@map("contact_submissions")
 }
+
+/// AiDocument model temporarily removed for baseline migration
+model AiDocument {
+  id          String   @id @default(cuid())
+  source      String
+  slug        String?
+  title       String
+  type        String
+  content     String
+  metadata    Json
+  embedding   Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type])
+  @@index([slug])
+  @@index([source])
+  @@map("ai_documents")
+}
+
+model AiConversation {
+  id         String          @id @default(cuid())
+  sessionId  String          @unique
+  messages   Json
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  handoffs   Json?
+
+  @@map("ai_conversations")
+}

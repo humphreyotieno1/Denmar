@@ -4,6 +4,7 @@ import { Poppins, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { ToastProvider } from "@/components/ui/toast"
 import Script from "next/script"
+import { AiChatWidget } from "@/components/ai-chat-widget"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -141,6 +142,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <ToastProvider>
           {children}
+          <AiChatWidget />
         </ToastProvider>
       </body>
     </html>
