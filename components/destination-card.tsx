@@ -1,9 +1,9 @@
 "use client"
 
+import type { ElementType, ReactNode } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, Star, Clock, DollarSign, Tag } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { MapPin, Star, Clock, Tag, CalendarDays, Info } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
@@ -15,10 +15,22 @@ interface DestinationCardProps {
   index?: number
 }
 
+const DetailRow = ({ icon: Icon, children }: { icon: ElementType; children: ReactNode }) => (
+  <div className="flex items-start gap-2 text-sm text-gray-600">
+    <Icon className="mt-0.5 h-4 w-4 text-brand-accent" />
+    <span>{children}</span>
+  </div>
+)
+
 export function DestinationCard({ destination, countrySlug, index = 0 }: DestinationCardProps) {
   const formatPrice = (price: number) => {
     return `From $${price.toLocaleString()}`
   }
+
+  const primaryHighlight = destination.highlights[0]
+  const secondaryHighlight = destination.highlights[1]
+  const tertiaryHighlight = destination.highlights[2]
+  const displayTags = destination.tags.slice(0, 3)
 
   return (
     <motion.div
@@ -27,100 +39,79 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="h-full"
     >
-      <Link href={`/destinations/${countrySlug}/${destination.slug}`} className="h-full block">
-        <Card className="group h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg flex flex-col">
-          <div className="relative h-56 overflow-hidden flex-shrink-0">
-            <Image
-              src={destination.heroImage}
-              alt={destination.name}
-              fill
-              className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            {destination.featured && (
-              <Badge className="absolute top-3 left-3 bg-brand-accent text-white border-0">
-                Featured
-              </Badge>
-            )}
-            <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
-              <Star className="w-3 h-3 text-yellow-400 fill-current" />
-              <span className="text-xs text-white font-medium">
-                {destination.rating}
-              </span>
-            </div>
-            <div className="absolute bottom-3 left-3 text-white">
-              <h3 className="text-lg font-bold">{destination.name}</h3>
-            </div>
+      <motion.article
+        className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl"
+        initial={{ opacity: 1 }}
+      >
+        <div className="relative h-56 overflow-hidden">
+          <Image
+            src={destination.heroImage}
+            alt={destination.name}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+          {destination.featured && (
+            <Badge className="absolute left-4 top-4 bg-brand-accent text-white border-0 shadow-lg">
+              Featured
+            </Badge>
+          )}
+          <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-white/85 px-2 py-1 text-xs font-semibold text-[#3d3a2c] shadow">
+            <Star className="h-3.5 w-3.5 text-yellow-500" />
+            {destination.rating.toFixed(1)}
           </div>
-          <CardContent className="p-4 flex-1 flex flex-col">
-            <p className="text-gray-600 text-sm line-clamp-2 mb-3 flex-shrink-0">
-              {destination.summary}
+          <div className="absolute bottom-4 left-4 text-white">
+            <span className="uppercase text-[10px] tracking-[0.3em] text-white/70">Inspiration</span>
+            <h3 className="text-lg font-semibold md:text-xl">{destination.name}</h3>
+          </div>
+        </div>
+
+        <div className="flex flex-1 flex-col gap-6 p-6">
+          <div className="space-y-3">
+            {!!displayTags.length && (
+              <div className="flex flex-wrap gap-2">
+                {displayTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant="secondary"
+                    className="rounded-full border-0 bg-brand-accent/10 px-3 py-1 text-[11px] uppercase tracking-[0.25em] text-brand-accent"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
+            <p className="text-sm text-gray-600 line-clamp-3">{destination.summary}</p>
+          </div>
+
+          <div className="flex-1 space-y-3">
+            <DetailRow icon={Star}>
+              Rated {destination.rating.toFixed(1)} ({destination.reviews.toLocaleString()} reviews)
+            </DetailRow>
+            <DetailRow icon={Clock}>{destination.duration}</DetailRow>
+            <DetailRow icon={CalendarDays}>{`Best time: ${destination.bestTime}`}</DetailRow>
+            {primaryHighlight && <DetailRow icon={Tag}>{primaryHighlight}</DetailRow>}
+            {secondaryHighlight && <DetailRow icon={Info}>{secondaryHighlight}</DetailRow>}
+            {tertiaryHighlight && <DetailRow icon={MapPin}>{tertiaryHighlight}</DetailRow>}
+          </div>
+
+          <div className="mt-auto flex flex-col gap-4">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">
+              {formatPrice(destination.priceFrom)} per person
+            </span>
+            <Button
+              asChild
+              className="w-full rounded-full bg-brand-primary text-white shadow-md transition-transform duration-200 hover:scale-105 hover:bg-brand-primary/90 active:scale-95"
+            >
+              <Link href={`/destinations/${countrySlug}/${destination.slug}`}>Explore Destination</Link>
+            </Button>
+            <p className="text-xs text-gray-500">
+              Tailor this escape with our travel specialists for your ideal dates.
             </p>
-            
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1 mb-3 flex-shrink-0">
-              {destination.tags.slice(0, 3).map((tag) => (
-                <Badge 
-                  key={tag} 
-                  variant="secondary" 
-                  className="text-xs px-2 py-1"
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-
-            {/* Highlights */}
-            <div className="mb-3 flex-shrink-0">
-              <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
-                <Tag className="w-4 h-4" />
-                <span className="font-medium">Highlights:</span>
-              </div>
-              <p className="text-xs text-gray-500 line-clamp-1">
-                {destination.highlights.slice(0, 2).join(", ")}
-              </p>
-            </div>
-
-            {/* Info Row */}
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-3 flex-shrink-0">
-              <div className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                <span>{destination.duration}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                <span>{destination.bestTime}</span>
-              </div>
-            </div>
-
-            {/* Price and Action */}
-            <div className="flex items-center justify-between mt-auto flex-shrink-0">
-              <div className="flex items-center gap-1">
-                <DollarSign className="w-4 h-4 text-green-600" />
-                <span className="font-bold text-green-600">
-                  {formatPrice(destination.priceFrom)}
-                </span>
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="group-hover:bg-brand-accent group-hover:text-white transition-colors"
-              >
-                View Details
-              </Button>
-            </div>
-
-            {/* Reviews */}
-            <div className="mt-3 pt-3 border-t border-gray-100 flex-shrink-0">
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <span>{destination.reviews.toLocaleString()} reviews</span>
-                <span>Best time: {destination.bestTime.split('(')[0].trim()}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </Link>
+          </div>
+        </div>
+      </motion.article>
     </motion.div>
   )
 }

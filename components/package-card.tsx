@@ -31,7 +31,7 @@ export function PackageCard({ pkg, index = 0, className = "" }: PackageCardProps
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay: index * 0.08 }}
-      className={`group overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl ${className}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl ${className}`}
     >
       <div className="relative h-56 overflow-hidden">
         <Image
@@ -52,13 +52,13 @@ export function PackageCard({ pkg, index = 0, className = "" }: PackageCardProps
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 p-6">
-        <div>
+      <div className="flex flex-1 flex-col gap-6 p-6">
+        <div className="space-y-2">
           <h3 className="text-lg font-semibold text-brand-primary md:text-xl">{pkg.name}</h3>
-          <p className="mt-2 text-sm text-gray-600 line-clamp-2">{pkg.shortDescription}</p>
+          <p className="text-sm text-gray-600 line-clamp-2">{pkg.shortDescription}</p>
         </div>
 
-        <div className="space-y-2">
+        <div className="flex-1 space-y-2">
           <DetailRow icon={UtensilsCrossed}>{highlights[0] ?? "All inclusive getaway"}</DetailRow>
           <DetailRow icon={Clock}>{pkg.duration}</DetailRow>
           <DetailRow icon={CalendarDays}>{`Best time: ${pkg.bestTime}`}</DetailRow>
@@ -66,7 +66,7 @@ export function PackageCard({ pkg, index = 0, className = "" }: PackageCardProps
           {pkg.terms[0] && <DetailRow icon={Info}>{pkg.terms[0]}</DetailRow>}
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="mt-auto flex flex-col gap-4">
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">
             From {pkg.price} per person
           </span>

@@ -7,13 +7,17 @@ import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { DestinationCard } from "@/components/destination-card"
-import { getCountryBySlug, getDestinationBySlug, getDestinationsByCountry, getPackagesByDestination } from "@/lib/destinations"
+import { getCountryBySlug, getDestinationBySlug, getDestinationsByCountry } from "@/lib/destinations"
+import { packages as allPackages } from "@/lib/services"
 import { useState, useEffect, use } from "react"
 import type { Metadata } from "next"
-import { Star, MapPin, Clock, DollarSign, Calendar, Users, CheckCircle } from "lucide-react"
+import { Star, MapPin, Clock, DollarSign, Calendar, Users, CheckCircle, Info } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import Image from "next/image"
+import { motion } from "framer-motion"
+import Link from "next/link"
 
 interface DestinationPageProps {
   params: Promise<{ country: string; slug: string }>
@@ -45,7 +49,7 @@ export default function DestinationPage({ params }: DestinationPageProps) {
     setCountry(countryData)
     setDestination(destinationData)
     
-    const packagesData = getPackagesByDestination(destinationData.slug)
+    const packagesData = allPackages.filter((pkg) => pkg.destinationSlug === destinationData.slug)
     const relatedDestinationsData = getDestinationsByCountry(countrySlug)
       .filter(d => d.slug !== destinationData.slug)
       .slice(0, 3)
@@ -84,10 +88,13 @@ export default function DestinationPage({ params }: DestinationPageProps) {
         {/* Hero Section */}
         <section className="relative h-96">
           <div className="absolute inset-0">
-            <img
+            <Image
               src={destination.heroImage}
               alt={destination.name}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-black/50" />
           </div>
@@ -140,7 +147,6 @@ export default function DestinationPage({ params }: DestinationPageProps) {
                     <div className="text-sm text-gray-600">Duration</div>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <DollarSign className="w-6 h-6 text-green-600 mx-auto mb-2" />
                     <div className="text-lg font-bold text-green-600">
                       {formatPrice(destination.priceFrom)}
                     </div>
@@ -192,11 +198,13 @@ export default function DestinationPage({ params }: DestinationPageProps) {
                   <h3 className="font-heading text-2xl font-bold text-gray-900 mb-4">Gallery</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {destination.images.slice(0, 6).map((image: string, index: number) => (
-                      <div key={index} className="aspect-square rounded-lg overflow-hidden">
-                        <img
+                      <div key={index} className="relative aspect-square overflow-hidden rounded-lg">
+                        <Image
                           src={image}
                           alt={`${destination.name} - Image ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                          fill
+                          className="object-cover transition-transform duration-300 hover:scale-110"
+                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                         />
                       </div>
                     ))}
@@ -262,49 +270,95 @@ export default function DestinationPage({ params }: DestinationPageProps) {
 
         {/* Packages Section */}
         {packages.length > 0 && (
-          <section className="py-16 px-4 bg-gray-50">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">Travel Packages</h2>
-                <p className="text-xl text-gray-600">
-                  Choose from our carefully curated packages for {destination.name}
+          <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white py-20">
+            <div className="absolute inset-0 opacity-40 mix-blend-multiply bg-[radial-gradient(circle_at_top,_rgba(212,164,65,0.15),_transparent_60%),_radial-gradient(circle_at_bottom,_rgba(32,57,80,0.12),_transparent_55%)]" />
+            <div className="relative z-10 mx-auto max-w-7xl px-4">
+              <div className="mx-auto max-w-3xl text-center">
+                <span className="inline-flex items-center gap-2 rounded-full bg-brand-accent/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.4em] text-brand-accent">Signature Itineraries</span>
+                <h2 className="mt-6 font-heading text-3xl font-bold text-brand-primary sm:text-4xl">
+                  Travel packages curated for {destination.name}
+                </h2>
+                <p className="mt-4 text-base text-gray-600 sm:text-lg">
+                  Handpicked stays, transfers, and experiences tailored to the best of {destination.name}. Tap a package to personalise it with our specialists.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {packages.map((pkg) => (
-                  <Card key={pkg.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="mb-4">
+              <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {packages.map((pkg, index) => {
+                  const highlightA = pkg.includes[0]
+                  const highlightB = pkg.includes[1]
+                  const highlightC = pkg.includes[2]
+
+                  return (
+                    <motion.article
+                      key={pkg.id}
+                      initial={{ opacity: 0, y: 24 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: index * 0.08 }}
+                      className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <Image
+                          src={pkg.image ?? destination.heroImage}
+                          alt={pkg.name}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          priority={index === 0}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
                         {pkg.featured && (
-                          <Badge className="mb-2 bg-brand-accent text-white">Featured</Badge>
+                          <Badge className="absolute left-4 top-4 bg-brand-accent text-white border-0 shadow-lg">Featured</Badge>
                         )}
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
-                        <p className="text-gray-600 text-sm">{pkg.duration}</p>
-                      </div>
-                      
-                      <div className="mb-4">
-                        <span className="text-2xl font-bold text-green-600">{pkg.price}</span>
+                        <div className="absolute bottom-4 left-4 text-white">
+                          <span className="uppercase text-[10px] tracking-[0.3em] text-white/70">Signature itinerary</span>
+                          <h3 className="text-lg font-semibold md:text-xl">{pkg.name}</h3>
+                        </div>
                       </div>
 
-                      <div className="mb-6">
-                        <h4 className="font-medium text-gray-900 mb-2">What's Included:</h4>
-                        <ul className="space-y-1">
-                          {pkg.includes.map((item: string, index: number) => (
-                            <li key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                              <CheckCircle className="w-4 h-4 text-green-600" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <div className="flex flex-1 flex-col gap-6 p-6">
+                        <div className="space-y-2">
+                          <p className="text-sm uppercase tracking-[0.25em] text-brand-accent">{pkg.duration}</p>
+                          <p className="text-sm text-gray-600">Everything arranged for your {pkg.duration.toLowerCase()} escape.</p>
+                        </div>
 
-                      <Button className="w-full bg-brand-accent hover:bg-brand-accent/90">
-                        View Details
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+                        <div className="flex-1 space-y-3">
+                          {highlightA && (
+                            <div className="flex items-start gap-2 text-sm text-gray-600">
+                              <CheckCircle className="mt-0.5 h-4 w-4 text-brand-accent" />
+                              <span>{highlightA}</span>
+                            </div>
+                          )}
+                          {highlightB && (
+                            <div className="flex items-start gap-2 text-sm text-gray-600">
+                              <Info className="mt-0.5 h-4 w-4 text-brand-accent" />
+                              <span>{highlightB}</span>
+                            </div>
+                          )}
+                          {highlightC && (
+                            <div className="flex items-start gap-2 text-sm text-gray-600">
+                              <MapPin className="mt-0.5 h-4 w-4 text-brand-accent" />
+                              <span>{highlightC}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="mt-auto flex flex-col gap-4">
+                          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">
+                            {pkg.price} per person
+                          </span>
+                          <Button asChild className="w-full rounded-full bg-brand-primary text-white shadow-md transition-transform duration-200 hover:scale-105 hover:bg-brand-primary/90 active:scale-95">
+                            <Link href={`/packages/${pkg.slug}`}>View Details</Link>
+                          </Button>
+                          <p className="text-xs text-gray-500">
+                            Need something different? We can customize this journey to match your dates and interests.
+                          </p>
+                        </div>
+                      </div>
+                    </motion.article>
+                  )
+                })}
               </div>
             </div>
           </section>

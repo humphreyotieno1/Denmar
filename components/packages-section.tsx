@@ -59,7 +59,7 @@ export function PackagesSection() {
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     className="h-full pb-6"
                   >
-                    <article className="group h-full overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl">
                       <div className="relative h-56">
                         <Image
                           src={pkg.image}
@@ -84,17 +84,19 @@ export function PackagesSection() {
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-4 p-6">
-                        <div>
+                      <div className="flex flex-1 flex-col gap-6 p-6">
+                        <div className="space-y-2">
                           <h3 className="text-lg font-semibold text-brand-primary line-clamp-2 md:text-xl">
                             {pkg.name}
                           </h3>
-                          <p className="mt-2 text-sm text-gray-600 line-clamp-2">{pkg.shortDescription}</p>
+                          <p className="text-sm text-gray-600 line-clamp-2">{pkg.shortDescription}</p>
                         </div>
 
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <MapPin className="h-4 w-4 text-brand-accent" />
-                          <span>Best time: {pkg.bestTime}</span>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <MapPin className="h-4 w-4 text-brand-accent" />
+                            <span>Best time: {pkg.bestTime}</span>
+                          </div>
                         </div>
 
                         <div className="mt-auto flex flex-col gap-4">

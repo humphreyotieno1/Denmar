@@ -9,7 +9,7 @@ import { ContactMap } from "@/components/contact-map"
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen overflow-x-hidden flex flex-col">
+    <div className="min-h-screen overflow-x-hidden flex flex-col mt-4">
       <TopBanner />
       <Navbar />
 

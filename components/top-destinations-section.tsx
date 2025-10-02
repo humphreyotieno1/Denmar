@@ -235,7 +235,7 @@ export function TopDestinationsSection() {
             {destinations.map((destination, index) => (
               <motion.article
                 key={destination.id}
-                className="group w-[280px] flex-shrink-0 snap-start overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl sm:w-[300px] md:w-[320px]"
+                className="group flex h-[360px] w-[280px] flex-shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl sm:h-[420px] sm:w-[300px] md:h-[440px] md:w-[320px]"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -254,18 +254,18 @@ export function TopDestinationsSection() {
                   </Badge>
                 </div>
 
-                <div className="flex flex-col gap-4 p-6">
-                  <div>
+                <div className="flex flex-1 flex-col gap-4 p-6">
+                  <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.35em] text-gray-400">
                       <MapPin className="h-4 w-4 text-brand-accent" />
                       <span>{destination.name}</span>
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed text-gray-600 line-clamp-4">
+                    <p className="flex-1 text-sm leading-relaxed text-gray-600 line-clamp-4">
                       {destination.description}
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                  <div className="mt-auto flex items-center justify-between border-t border-gray-200 pt-4">
                     <span className="text-xs text-gray-500">
                       <span className="font-semibold text-brand-success">{destination.price}</span>
                     </span>

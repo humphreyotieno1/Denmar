@@ -4,12 +4,18 @@ import React, { useCallback } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Star, MapPin, Clock, ChevronLeft, ChevronRight, DollarSign, Sparkles } from "lucide-react"
+import { CalendarDays, Clock, ChevronLeft, ChevronRight, Info, Plus, Sparkles, UtensilsCrossed } from "lucide-react"
 import { packages } from "@/lib/services"
 import useEmblaCarousel from 'embla-carousel-react'
+
+const DetailRow = ({ icon: Icon, children }: { icon: React.ElementType; children: React.ReactNode }) => (
+  <div className="flex items-start gap-2">
+    <Icon className="mt-0.5 h-4 w-4 text-brand-accent" />
+    <span>{children}</span>
+  </div>
+)
 
 export function ChristmasPackages() {
   const featuredPackages = packages.filter(pkg => pkg.category === 'festive').slice(0, 6)
@@ -135,72 +141,62 @@ export function ChristmasPackages() {
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     className="h-full pb-6"
                   >
-                    <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col">
-                      <div className="relative h-56 overflow-hidden flex-shrink-0">
+                    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                      <div className="relative h-56">
                         <Image
                           src={pkg.image}
                           alt={pkg.name}
                           fill
-                          className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                        
-                        {/* Featured Badge */}
                         {pkg.featured && (
-                          <Badge className="absolute top-3 left-3 bg-brand-accent text-white border-0">
+                          <Badge className="absolute left-4 top-4 bg-brand-accent text-white border-0 shadow-lg">
                             Featured
                           </Badge>
                         )}
-
-                        {/* Category Badge */}
-                        <div className="absolute top-3 right-3">
-                          <Badge variant="secondary" className="bg-white/90 text-gray-800 border-0 capitalize">
+                        <div className="absolute right-4 top-4">
+                          <Badge variant="secondary" className="border-0 bg-white/90 text-gray-800 capitalize">
                             {pkg.category}
                           </Badge>
                         </div>
-
-                        {/* Duration */}
-                        <div className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
-                          <Clock className="w-3 h-3 inline mr-1" />
+                        <div className="absolute bottom-4 left-4 rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white">
                           {pkg.duration}
                         </div>
                       </div>
 
-                      <CardContent className="p-5 space-y-4 flex-1 flex flex-col">
-                        <div className="space-y-2 flex-shrink-0">
-                          <h3 className="text-lg font-bold text-gray-900 line-clamp-2">
+                      <div className="flex flex-1 flex-col gap-6 p-6">
+                        <div className="space-y-2">
+                          <h3 className="text-lg font-semibold text-brand-primary line-clamp-2 md:text-xl">
                             {pkg.name}
                           </h3>
-                          <p className="text-gray-600 text-sm line-clamp-2">
-                            {pkg.shortDescription}
-                          </p>
+                          <p className="text-sm text-gray-600 line-clamp-2">{pkg.shortDescription}</p>
                         </div>
 
-                        {/* Best Time */}
-                        <div className="flex items-center gap-2 text-sm text-gray-600 flex-shrink-0">
-                          <MapPin className="w-4 h-4 text-brand-accent" />
-                          <span>Best time: {pkg.bestTime}</span>
+                        <div className="flex-1 space-y-2 text-sm text-gray-600">
+                          <DetailRow icon={UtensilsCrossed}>
+                            {pkg.includes[0] ?? "Festive dining experiences"}
+                          </DetailRow>
+                          <DetailRow icon={Clock}>{pkg.duration}</DetailRow>
+                          <DetailRow icon={CalendarDays}>{`Best time: ${pkg.bestTime}`}</DetailRow>
+                          {pkg.includes[1] && <DetailRow icon={Plus}>{pkg.includes[1]}</DetailRow>}
+                          {pkg.terms[0] && <DetailRow icon={Info}>{pkg.terms[0]}</DetailRow>}
                         </div>
 
-                        {/* Price */}
-                        <div className="flex items-center justify-between flex-shrink-0 mt-auto">
-                          <div className="flex items-center">
-                            {/* <DollarSign className="w-4 h-4 text-brand-accent mr-1" /> */}
-                            <span className="text-lg font-bold text-green-600">
-                              From {pkg.price.toLocaleString()}
-                            </span>
-                            <span className="text-sm text-gray-500 ml-1">/person</span>
-                          </div>
-                          <Link 
-                            href={`/packages/${pkg.slug}`}
-                            className="inline-flex items-center text-sm font-medium text-brand-accent hover:text-brand-primary transition-colors"
+                        <div className="mt-auto flex flex-col gap-4">
+                          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">
+                            From {pkg.price} per person
+                          </span>
+                          <Button
+                            asChild
+                            className="w-full rounded-full bg-brand-primary text-white shadow-md transition-transform duration-200 hover:scale-105 hover:bg-brand-primary/90 active:scale-95"
                           >
-                            View Details <ChevronRight className="w-4 h-4 ml-1" />
-                          </Link>
+                            <Link href={`/packages/${pkg.slug}`}>Book Now</Link>
+                          </Button>
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </article>
                   </motion.div>
                 </div>
               ))}

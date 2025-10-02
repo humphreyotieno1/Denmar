@@ -1,6 +1,6 @@
 export function DealsHero() {
   return (
-    <section className="relative py-20 bg-gradient-to-r from-brand-accent to-orange-500 text-brand-primary">
+    <section className="relative mt-4 py-20 bg-gradient-to-r from-brand-accent to-orange-500 text-brand-primary">
       <div className="absolute inset-0 bg-black/10" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="font-heading text-4xl md:text-6xl font-bold mb-6">SPECIAL DEALS</h1>

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { TopBanner } from "./top-banner"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 // Grouped destinations for better organization
 const groupedDestinations = [
@@ -118,6 +118,7 @@ export function Navbar() {
   const [isMegaMenuVisible, setIsMegaMenuVisible] = useState(false)
   const [focusWithinMegaMenu, setFocusWithinMegaMenu] = useState(false)
   const desktopMenuRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   // Memoize grouped destinations to prevent re-renders
   const memoizedDestinations = useMemo(() => groupedDestinations, [])
@@ -301,6 +302,7 @@ export function Navbar() {
               label="Destinations"
               isActive={activeDesktopDropdown === "destinations" && isMegaMenuVisible}
               isCurrent={pathname.startsWith("/destinations")}
+              href="/destinations"
               onOpen={() => {
                 setActiveDesktopDropdown("destinations")
                 setIsMegaMenuVisible(true)
@@ -310,6 +312,11 @@ export function Navbar() {
                 setIsMegaMenuVisible(false)
               }}
               onFocusChange={(value) => setFocusWithinMegaMenu(value)}
+              onNavigate={() => {
+                setActiveDesktopDropdown(null)
+                setIsMegaMenuVisible(false)
+                router.push("/destinations")
+              }}
             />
             <DesktopNavLink
               href="/packages"
@@ -744,36 +751,51 @@ function DesktopDropdown({
   label,
   isActive,
   isCurrent,
+  href,
   onOpen,
   onClose,
   onFocusChange,
+  onNavigate,
 }: {
   label: string
   isActive: boolean
   isCurrent?: boolean
+  href?: string
   onOpen: () => void
   onClose: () => void
   onFocusChange: (value: boolean) => void
+  onNavigate?: () => void
 }) {
   return (
     <div className="relative inline-flex flex-col items-center gap-1">
-      <button
+      <Link
+        href={href ?? "#"}
         className={cn(
           "group flex items-center gap-2",
           "uppercase tracking-[0.25em] text-[11px] text-[#3d3a2c] transition-colors",
           isCurrent ? "text-brand-success" : "hover:text-brand-success"
         )}
-        onMouseEnter={onOpen}
-        onFocus={() => {
+        onMouseEnter={(event) => {
+          onOpen()
+          event.preventDefault()
+        }}
+        onClick={(event) => {
+          event.preventDefault()
+          onNavigate?.()
+        }}
+        onFocus={(event) => {
+          event.preventDefault()
           onOpen()
           onFocusChange(true)
         }}
-        onMouseLeave={() => {
+        onMouseLeave={(event) => {
+          event.preventDefault()
           if (!isActive) {
             onClose()
           }
         }}
-        onBlur={() => {
+        onBlur={(event) => {
+          event.preventDefault()
           onFocusChange(false)
           onClose()
         }}
@@ -786,7 +808,7 @@ function DesktopDropdown({
             isCurrent && "text-brand-success"
           )}
         />
-      </button>
+      </Link>
       <span
         className={cn(
           "block h-0.5 w-full bg-brand-success origin-center scale-x-0 transition-transform duration-300",

@@ -15,7 +15,7 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {
   return (
-    <nav className={`flex items-center space-x-2 text-sm text-gray-600 ${className}`} aria-label="Breadcrumb">
+    <nav className={`flex items-center mt-4 space-x-2 text-sm text-gray-600 ${className}`} aria-label="Breadcrumb">
       <Link 
         href="/" 
         className="flex items-center hover:text-brand-accent transition-colors"
