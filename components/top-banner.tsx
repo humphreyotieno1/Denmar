@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Facebook, Instagram, Twitter, Youtube, Phone, Mail, X } from "lucide-react"
+import { FaTiktok } from "react-icons/fa"
 
 export function TopBanner() {
   const [showPromo, setShowPromo] = useState(true)
@@ -48,16 +49,19 @@ export function TopBanner() {
               Follow Us
             </span>
             <SocialLink href="https://facebook.com/denmartravel" label="Facebook">
-              <Facebook className="h-4 w-4" strokeWidth={1.6} />
+              <Facebook className="h-4 w-4" target="_blank" strokeWidth={1.6} />
             </SocialLink>
-            <SocialLink href="https://instagram.com/denmartravel" label="Instagram">
-              <Instagram className="h-4 w-4" strokeWidth={1.6} />
+            <SocialLink href="https://instagram.com/denmar_travel" label="Instagram">
+              <Instagram className="h-4 w-4" target="_blank" strokeWidth={1.6} />
             </SocialLink>
-            <SocialLink href="https://twitter.com/denmartravel" label="Twitter">
-              <Twitter className="h-4 w-4" strokeWidth={1.6} />
+            <SocialLink href="https://x.com/DenmarTravel" label="Twitter">
+              <Twitter className="h-4 w-4" target="_blank" strokeWidth={1.6} />
             </SocialLink>
-            <SocialLink href="https://youtube.com" label="YouTube">
-              <Youtube className="h-4 w-4" strokeWidth={1.6} />
+            <SocialLink href="https://www.youtube.com/c/dennisGathitu/videos" label="YouTube">
+              <Youtube className="h-4 w-4" target="_blank" strokeWidth={1.6} />
+            </SocialLink>
+            <SocialLink href="https://www.tiktok.com/@denmar_travel" label="TikTok">
+              <FaTiktok className="h-4 w-4" target="_blank" strokeWidth={1.6} />
             </SocialLink>
           </div>
         </div>
@@ -76,7 +80,7 @@ function SocialLink({
   children: React.ReactNode
 }) {
   return (
-    <Link href={href} aria-label={label} className="hover:text-white transition-colors">
+    <Link href={href} aria-label={label} className="hover:text-white transition-colors" target="_blank">
       {children}
     </Link>
   )

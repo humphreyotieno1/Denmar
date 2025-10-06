@@ -32,22 +32,14 @@ const dealPosters: DealPoster[] = [
     discount: "25% OFF",
     href: "/packages"
   },
-  // {
-  //   id: 3,
-  //   image: "/deals/capetownholiday.jpg",
-  //   title: "Capetown Holiday",
-  //   subtitle: "Ultimate Capetown luxury experience",
-  //   discount: "20% OFF",
-  //   href: "/deals"
-  // },
-  // {
-  //   id: 4,
-  //   image: "/deals/thailandholiday.jpg",
-  //   title: "Thailand Holiday",
-  //   subtitle: "Ultimate Thailand luxury experience",
-  //   discount: "20% OFF",
-  //   href: "/deals"
-  // }
+  {
+    id:3,
+    image: "/deals/customerservice.jpeg",
+    title: "Customer Service Week",
+    subtitle: "Happy Customer Service Week",
+    discount: "Customer Service",
+    href: "/contact"
+  }
 ]
 
 export function DealsPopup() {
