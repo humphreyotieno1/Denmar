@@ -1,17 +1,44 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { Prisma } from "@prisma/client"
+import type { AiDocument } from "@prisma/client"
 import { cosineSimilarity } from "@/lib/vector"
 import { summarizeForChat, createSystemPrompt } from "@/lib/ai/utils"
-import { Anthropic } from "@anthropic-ai/sdk"
+import OpenAI from "openai"
 import { randomUUID } from "crypto"
 
-const anthropic = process.env.ANTHROPIC_API_KEY
-  ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-  : null
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null
 
 const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL ?? "info@denmartravel.co.ke"
 const SUPPORT_WHATSAPP = process.env.SUPPORT_WHATSAPP ?? "+254793041888"
+
+const DEFAULT_COMPANY_CONTEXT: Array<{
+  similarity: number
+  title: string
+  content: string
+  source: string
+  type: string
+  metadata: AiDocument["metadata"]
+}> = [
+  {
+    similarity: 1,
+    title: "About Denmar Travel",
+    content:
+      "Denmar Travel is a concierge travel company based in Kenya that curates premium itineraries, group getaways, and tailor-made experiences across Africa and beyond.",
+    source: "company",
+    type: "company_profile",
+    metadata: {},
+  },
+  {
+    similarity: 0.95,
+    title: "Support and Feedback",
+    content:
+      `For trip planning help or feedback you can email ${SUPPORT_EMAIL}, message us on WhatsApp at ${SUPPORT_WHATSAPP}, or book a consultation with our travel specialists.`,
+    source: "company",
+    type: "support_info",
+    metadata: {},
+  },
+]
 
 const FALLBACK_MESSAGE = `I'm not completely sure about that, but our travel team would love to help. You can email us at ${SUPPORT_EMAIL} or WhatsApp us at ${SUPPORT_WHATSAPP}.`
 
@@ -42,9 +69,14 @@ export async function POST(request: Request) {
 
     const latestEmbedding = normalizeVector(await summarizeForChat(latestUserMessage))
 
-    const aiDocuments = await prisma.aiDocument.findMany({
-      take: 40,
-    })
+    let aiDocuments: AiDocument[] = []
+    try {
+      aiDocuments = await prisma.aiDocument.findMany({
+        take: 40,
+      })
+    } catch (error) {
+      console.error("Failed to load AI documents", error)
+    }
 
     const scoredDocuments = aiDocuments
       .map((doc) => {
@@ -66,38 +98,34 @@ export async function POST(request: Request) {
         metadata: doc.metadata,
       }))
 
-    const systemPrompt = createSystemPrompt(relevantContext, SUPPORT_EMAIL, SUPPORT_WHATSAPP)
+    const combinedContext = [...DEFAULT_COMPANY_CONTEXT, ...relevantContext]
+
+    const systemPrompt = createSystemPrompt(combinedContext, SUPPORT_EMAIL, SUPPORT_WHATSAPP)
 
     let assistantReply = ""
 
-    if (anthropic) {
+    if (openai) {
       try {
-        const recent = messages.slice(-6)
-        const ordered = recent[0]?.role === "assistant" ? recent.slice(1) : recent
-        const anthropicMessages = ordered.map((msg) => ({
-          role: msg.role === "assistant" ? "assistant" : "user",
-          content: [{ type: "text", text: msg.content }],
+        const recent = messages.slice(-8)
+        const baseMessages = recent.map((msg) => ({
+          role: msg.role === "assistant" ? ("assistant" as const) : ("user" as const),
+          content: msg.content,
         }))
 
-        if (anthropicMessages.length === 0 || anthropicMessages[0].role !== "user") {
-          anthropicMessages.unshift({
-            role: "user",
-            content: [{ type: "text", text: latestUserMessage }],
-          })
+        if (baseMessages.length === 0 || baseMessages[0].role !== "user") {
+          baseMessages.unshift({ role: "user", content: latestUserMessage })
         }
 
-        const completion = await anthropic.messages.create({
-          model: "claude-3-5-sonnet-latest",
-          max_tokens: 800,
+        const completion = await openai.chat.completions.create({
+          model: "gpt-4o-mini",
           temperature: 0.6,
-          system: systemPrompt,
-          messages: anthropicMessages,
+          max_tokens: 600,
+          messages: [{ role: "system", content: systemPrompt }, ...baseMessages],
         })
 
-        const replyBlock = completion.content?.find((item) => item.type === "text")
-        assistantReply = (replyBlock && "text" in replyBlock ? replyBlock.text : undefined)?.trim() ?? ""
+        assistantReply = completion.choices[0]?.message?.content?.trim() ?? ""
       } catch (error: any) {
-        console.error("Anthropic Chat Completion failed", error)
+        console.error("OpenAI Chat Completion failed", error)
       }
     }
 
