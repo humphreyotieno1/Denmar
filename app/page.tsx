@@ -12,10 +12,10 @@ import { DealsPopup } from "@/components/deals-popup"
 import { ChristmasPackages } from "@/components/xmass-packages"
 
 export const metadata: Metadata = {
-  title: "Denmar Tours & Travel - Your Dream Trip Awaits",
+  title: "Best Travel Agency in Kenya - Kenya Safari Tour Operator | Denmar Travel",
   description:
-    "Discover affordable, tailor-made travel packages with Denmar Tours & Travel—covering Kenya safaris, global adventures, and more. Book your dream trip today with 24/7 support!",
-  keywords: "travel agency, vacation packages, tours, flights, hotels, travel deals, destinations, travel planning",
+    "Kenya's premier travel agency offering affordable Kenya tour packages, luxury Kenya safaris, Masai Mara tours, and customized Kenya holidays. Best tour company in Kenya with 500+ satisfied clients. Book your Kenya travel package today!",
+  keywords: "travel agency in Kenya, tour company in Kenya, Kenya safari tour operator, Kenya tour packages, Kenya holidays, best tour companies in Kenya, Kenya travel agency Nairobi, Kenya safari agency, luxury safari Kenya, Masai Mara safari packages, affordable Kenya tours",
   authors: [{ name: "Denmar Tours & Travel" }],
   creator: "Denmar Tours & Travel",
   publisher: "Denmar Tours & Travel",

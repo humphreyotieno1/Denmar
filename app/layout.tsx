@@ -24,12 +24,12 @@ const openSans = Open_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://denmartravel.co.ke/"),
   title: {
-    default: "Denmar Tours & Travel - Your Dream Trip Awaits",
+    default: "Best Travel Agency in Kenya - Kenya Safari Tour Operator | Denmar",
     template: "%s | Denmar Tours & Travel",
   },
   description:
-    "Discover amazing destinations with Denmar Tours & Travel. Affordable prices, safety first, tailored trips, and 24/7 support for your perfect vacation.",
-  keywords: "travel agency, vacation packages, tours, flights, hotels, travel deals, destinations, travel planning",
+    "Kenya's premier travel agency offering affordable Kenya tour packages, luxury Kenya safaris, Masai Mara tours, and customized Kenya holidays. Best tour company in Kenya with trusted service.",
+  keywords: "travel agency in Kenya, tour company in Kenya, Kenya safari tour operator, Kenya tour packages, Kenya holidays, best tour companies in Kenya, Kenya travel agency Nairobi, Kenya safari, Masai Mara safari",
   authors: [{ name: "Denmar Tours & Travel" }],
   creator: "Denmar Tours & Travel",
   publisher: "Denmar Tours & Travel",
@@ -59,23 +59,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://denmartravel.co.ke",
     siteName: "Denmar Tours & Travel",
-    title: "Denmar Tours & Travel - Your Dream Trip Awaits",
+    title: "Best Travel Agency in Kenya - Kenya Safari Tours",
     description:
-      "Discover amazing destinations with Denmar Tours & Travel. Affordable prices, safety first, tailored trips, and 24/7 support.",
+      "Kenya's premier travel agency specializing in Kenya safaris, Masai Mara tours, and customized Kenya holidays. Book your Kenya safari package today!",
     images: [
       {
         url: "/tablogo.png",
         width: 1200,
         height: 630,
-        alt: "Denmar Tours & Travel - Amazing Destinations",
+        alt: "Denmar Tours & Travel - Kenya's Best Travel Agency",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Denmar Tours & Travel - Your Dream Trip Awaits",
+    title: "Best Travel Agency in Kenya - Kenya Safari Tours",
     description:
-      "Discover amazing destinations with Denmar Tours & Travel. Affordable prices, safety first, tailored trips, and 24/7 support.",
+      "Kenya's premier travel agency specializing in Kenya safaris, Masai Mara tours, and customized Kenya holidays.",
     images: ["/tablogo.png"],
     creator: "@denmartours",
   },

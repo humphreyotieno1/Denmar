@@ -7,9 +7,9 @@ import { DealsGrid } from "@/components/deals-grid"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Special Travel Deals & Offers - Book Now",
-  description: "Discover exclusive travel deals and special offers from Denmar Tours & Travel. Save on Kenya safaris, beach holidays, city breaks, and more. Book your dream vacation today!",
-  keywords: "travel deals, Kenya travel offers, safari deals, beach holiday offers, travel discounts, special offers, cheap travel packages, last minute deals",
+  title: "Best Kenya Travel Deals & Safari Package Offers | Denmar Travel",
+  description: "Exclusive Kenya travel deals and Masai Mara safari offers from Kenya's best travel agency. Save on Kenya tour packages, affordable Kenya safaris, beach holidays, and luxury Kenya tours. Book your Kenya holiday today with special discounts!",
+  keywords: "Kenya travel deals, Kenya safari offers, affordable Kenya tours, Masai Mara deals, Kenya tour discounts, best Kenya travel packages, Kenya holiday deals, cheap Kenya safaris, Kenya travel specials",
   openGraph: {
     title: "Special Travel Deals & Offers - Book Now",
     description: "Discover exclusive travel deals and special offers from Denmar Tours & Travel. Book your dream vacation today!",

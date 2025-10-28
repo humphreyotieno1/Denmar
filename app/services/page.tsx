@@ -7,9 +7,9 @@ import { ServicesGrid } from "@/components/services-grid"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Travel Services - Flight Booking, Hotels, Tours & More",
-  description: "Comprehensive travel services from Denmar Tours & Travel. We offer flight booking, hotel reservations, car rental, travel insurance, visa assistance, and customized tour packages. Your one-stop travel solution.",
-  keywords: "travel services, flight booking, hotel reservations, car rental, travel insurance, visa assistance, tour packages, travel agent services",
+  title: "Kenya Travel Services - Flight Booking, Safari Tours, Hotels | Denmar",
+  description: "Complete Kenya travel services from Denmar Tours & Travel. Kenya safari tours, Masai Mara packages, flight booking, hotel reservations, Kenya travel insurance, visa assistance, and customized Kenya tour packages. Kenya's one-stop travel solution.",
+  keywords: "Kenya travel services, Kenya safari tours, Masai Mara packages, Kenya flight booking, Kenya hotel reservations, Kenya travel insurance, Kenya visa assistance, Kenya tour packages, affordable Kenya tours, Kenya travel agent",
   openGraph: {
     title: "Travel Services - Flight Booking, Hotels, Tours & More",
     description: "Comprehensive travel services from Denmar Tours & Travel. Your one-stop travel solution.",

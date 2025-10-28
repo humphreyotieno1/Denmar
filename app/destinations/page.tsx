@@ -9,9 +9,9 @@ import { Suspense } from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Travel Destinations - Explore Amazing Places Worldwide",
-  description: "Discover incredible travel destinations worldwide with Denmar Tours & Travel. From Kenya safaris to beach paradises, city breaks to cultural adventures, find your perfect destination.",
-  keywords: "travel destinations, Kenya safaris, beach holidays, Dubai travel, Thailand tours, Zanzibar holidays, travel places, vacation destinations",
+  title: "Kenya Destinations - Masai Mara, Amboseli, Diani Beach Tours | Denmar",
+  description: "Explore amazing Kenya destinations with Denmar Tours & Travel - Masai Mara safaris, Amboseli tours, Diani beach holidays, Mount Kenya climbing, Lake Nakuru safaris. Book your Kenya travel package today.",
+  keywords: "Kenya destinations, Masai Mara safari packages, Amboseli National Park tours, Diani beach holidays, Mount Kenya climbing, Kenya travel packages, Kenya safari agency, Tsavo National Park tours, Lamu island holidays",
   openGraph: {
     title: "Travel Destinations - Explore Amazing Places Worldwide",
     description: "Discover incredible travel destinations worldwide with Denmar Tours & Travel. Find your perfect destination today.",

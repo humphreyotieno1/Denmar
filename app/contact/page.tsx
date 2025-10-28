@@ -9,9 +9,9 @@ import { ContactMap } from "@/components/contact-map"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Contact Us - Get in Touch with Denmar Travel",
-  description: "Contact Denmar Tours & Travel for travel inquiries, bookings, or questions. We're here to help plan your perfect trip. Reach us via phone, email, WhatsApp, or visit our Nairobi office.",
-  keywords: "contact Denmar Travel, travel inquiries, book travel, WhatsApp travel agent, phone +254 793 041 888, Nairobi travel agency, travel booking",
+  title: "Contact Kenya's Best Travel Agency - Book Your Kenya Safari | Denmar",
+  description: "Contact Kenya's leading travel agency for your dream Kenya safari. Get quotes for Kenya tour packages, Masai Mara safaris, and customized Kenya holidays. Located in Nairobi - Kenya's premier tour company. Call +254 793 041 888 or WhatsApp now!",
+  keywords: "travel agency Nairobi, book safari in Kenya, Kenya tour booking, Kenya travel planner, Kenya safari prices, Kenya travel deals, contact Kenya travel agency, tour operator Nairobi",
   openGraph: {
     title: "Contact Us - Get in Touch with Denmar Travel",
     description: "Contact Denmar Tours & Travel for travel inquiries, bookings, or questions. We're here to help plan your perfect trip.",

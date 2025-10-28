@@ -16,10 +16,20 @@ export async function generateMetadata({
     }
   }
 
+  // Special handling for Kenya to maximize local SEO
+  const isKenya = countrySlug === "kenya"
+  const kenyaKeywords = isKenya 
+    ? "Kenya destinations, Kenya travel, Kenya tours, Kenya safari, Masai Mara, Amboseli, Diani Beach, Kenya travel packages, best Kenya destinations"
+    : `${country.name} travel, ${country.name} tours, ${country.name} destinations`
+  
   return {
-    title: `${country.name} Travel Guide - Denmar Tours & Travel`,
-    description: `${country.summary}. Explore ${country.name} with Denmar Tours & Travel - your trusted travel partner for ${country.region} adventures.`,
-    keywords: `${country.name} travel, ${country.name} tours, ${country.name} destinations, ${country.region} travel, ${country.name} holiday packages`,
+    title: isKenya 
+      ? `${country.name} Travel Guide & Tour Packages | Best Kenya Destinations | Denmar`
+      : `${country.name} Travel Guide - Denmar Tours & Travel`,
+    description: isKenya
+      ? `${country.summary}. Discover amazing Kenya destinations including Masai Mara, Amboseli, Diani Beach, and Lake Nakuru with Kenya's best travel agency. Book your Kenya tour package today!`
+      : `${country.summary}. Explore ${country.name} with Denmar Tours & Travel - your trusted travel partner for ${country.region} adventures.`,
+    keywords: kenyaKeywords,
     openGraph: {
       title: `${country.name} Travel Guide - Denmar Tours & Travel`,
       description: country.summary,

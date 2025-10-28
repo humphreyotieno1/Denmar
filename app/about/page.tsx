@@ -9,9 +9,9 @@ import { TestimonialsSection } from "@/components/testimonials-section"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "About Us - Denmar Tours & Travel",
-  description: "Learn about Denmar Tours & Travel, Kenya's premier travel agency specializing in safaris, beach holidays, and tailor-made travel experiences. Your dream trip awaits with our expert team.",
-  keywords: "Denmar Travel, travel agency Kenya, about us, travel company, Kenya tours, expert travel planning, travel specialists",
+  title: "About Us - Kenya's Best Travel Agency | Denmar Tours & Travel",
+  description: "Denmar Tours & Travel is Kenya's premier destination management company (DMC Kenya) specializing in customized Kenya tours, Masai Mara safaris, luxury travel experiences, and beach holidays. Trusted Kenya holiday planner with 10+ years experience.",
+  keywords: "destination management company Kenya, DMC Kenya, Kenya tour packages, best tour companies in Kenya, Kenya holiday planners, luxury safari Kenya, Kenya travel experts, Kenya tour operator, Kenya travel agency, Kenya safari company",
   openGraph: {
     title: "About Us - Denmar Tours & Travel",
     description: "Learn about Denmar Tours & Travel, Kenya's premier travel agency specializing in safaris, beach holidays, and tailor-made travel experiences.",
