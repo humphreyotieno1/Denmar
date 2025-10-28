@@ -6,6 +6,18 @@ import { DestinationsBanner } from "@/components/destinations-banner"
 import { CountryGrid } from "@/components/country-grid"
 import { countries } from "@/lib/destinations"
 import { Suspense } from "react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Travel Destinations - Explore Amazing Places Worldwide",
+  description: "Discover incredible travel destinations worldwide with Denmar Tours & Travel. From Kenya safaris to beach paradises, city breaks to cultural adventures, find your perfect destination.",
+  keywords: "travel destinations, Kenya safaris, beach holidays, Dubai travel, Thailand tours, Zanzibar holidays, travel places, vacation destinations",
+  openGraph: {
+    title: "Travel Destinations - Explore Amazing Places Worldwide",
+    description: "Discover incredible travel destinations worldwide with Denmar Tours & Travel. Find your perfect destination today.",
+    images: ["/tablogo.png"],
+  },
+}
 
 export default function DestinationsPage() {
   return (

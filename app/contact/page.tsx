@@ -6,6 +6,18 @@ import { ContactHero } from "@/components/contact-hero"
 import { ContactForm } from "@/components/contact-form"
 import { ContactInfo } from "@/components/contact-info"
 import { ContactMap } from "@/components/contact-map"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Contact Us - Get in Touch with Denmar Travel",
+  description: "Contact Denmar Tours & Travel for travel inquiries, bookings, or questions. We're here to help plan your perfect trip. Reach us via phone, email, WhatsApp, or visit our Nairobi office.",
+  keywords: "contact Denmar Travel, travel inquiries, book travel, WhatsApp travel agent, phone +254 793 041 888, Nairobi travel agency, travel booking",
+  openGraph: {
+    title: "Contact Us - Get in Touch with Denmar Travel",
+    description: "Contact Denmar Tours & Travel for travel inquiries, bookings, or questions. We're here to help plan your perfect trip.",
+    images: ["/tablogo.png"],
+  },
+}
 
 export default function ContactPage() {
   return (
