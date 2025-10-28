@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "prisma generate && next build",
-    "postbuild": "next-sitemap",
+    "postbuild": "npm run generate-sitemap",
     "generate-sitemap": "ts-node scripts/generate-sitemap.ts",
     "ingest:ai": "ts-node scripts/ingest-ai-documents.ts",
     "dev": "next dev",

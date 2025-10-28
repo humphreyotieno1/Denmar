@@ -10,7 +10,7 @@ const { deals, packages, services } = require('../lib/services.ts');
 
 // Site configuration
 const siteConfig = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://denmartravel.co.ke',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.denmartravel.co.ke',
 };
 
 async function generateSites() {
