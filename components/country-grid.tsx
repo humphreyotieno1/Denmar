@@ -104,13 +104,15 @@ export function CountryGrid({
                     
                     <Image
                       src={country.heroImage}
-                      alt={country.name}
+                      alt={`${country.name} travel destinations - ${country.summary}`}
                       fill
                       className={`object-cover object-center transition-opacity duration-300 ${
                         loadedImages.has(country.heroImage) ? "opacity-100" : "opacity-0"
                       }`}
                       onLoad={() => setLoadedImages(prev => new Set(prev).add(country.heroImage))}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      loading={index < 8 ? 'eager' : 'lazy'}
+                      priority={index < 4}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     

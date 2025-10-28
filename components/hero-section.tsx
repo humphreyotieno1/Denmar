@@ -161,12 +161,13 @@ export function HeroSection() {
           <div className="absolute inset-0">
             <Image
               src={slide.image}
-              alt={`${slide.title} ${slide.highlight ?? ""}`}
+              alt={`${slide.eyebrow} - ${slide.title} ${slide.highlight ?? ""} travel experience with Denmar Tours`}
               fill
               priority={index === 0}
               className="object-cover object-center"
               sizes="100vw"
               quality={90}
+              loading={index === 0 ? 'eager' : 'lazy'}
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/30" />

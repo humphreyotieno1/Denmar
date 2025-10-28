@@ -63,10 +63,12 @@ export function PackagesSection() {
                       <div className="relative h-56">
                         <Image
                           src={pkg.image}
-                          alt={pkg.name}
+                          alt={`${pkg.name} travel package - ${pkg.category} holiday for ${pkg.duration}`}
                           fill
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          loading={index < 6 ? 'eager' : 'lazy'}
+                          priority={index < 3}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         {pkg.featured && (

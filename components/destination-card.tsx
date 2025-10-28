@@ -46,10 +46,12 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
         <div className="relative h-56 overflow-hidden">
           <Image
             src={destination.heroImage}
-            alt={destination.name}
+            alt={`${destination.name} travel destination - ${destination.summary}`}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading={index < 6 ? 'eager' : 'lazy'}
+            priority={index < 6}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
           {destination.featured && (

@@ -5,6 +5,7 @@ import "./globals.css"
 import { ToastProvider } from "@/components/ui/toast"
 import Script from "next/script"
 import { AiChatWidget } from "@/components/ai-chat-widget"
+import { FooterSchema } from "@/components/footer-schema"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -140,6 +141,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="font-sans antialiased">
+        <FooterSchema />
         <ToastProvider>
           {children}
           <AiChatWidget />
