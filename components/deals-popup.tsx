@@ -9,9 +9,9 @@ import Link from "next/link"
 interface DealPoster {
   id: number
   image: string
-  title: string
-  subtitle: string
-  discount: string
+  title?: string
+  subtitle?: string
+  discount?: string
   href: string
 }
 
@@ -26,20 +26,20 @@ const dealPosters: DealPoster[] = [
   },
   {
     id: 2,
-    image: "/deals/christmas.jpg",
-    title: "Christmas Special",
-    subtitle: "Ultimate Christmas luxury experience",
-    discount: "25% OFF",
-    href: "/packages"
+    image: "/deals/singapore.jpg",
+    title: "",
+    subtitle: "",
+    discount: "",
+    href: "/deals/best-hotels-singapore"
   },
-  {
-    id:3,
-    image: "/deals/customerservice.jpeg",
-    title: "Customer Service Week",
-    subtitle: "Happy Customer Service Week",
-    discount: "Customer Service",
-    href: "/contact"
-  }
+  // {
+  //   id: 3,
+  //   image: "/deals/christmas.jpg",
+  //   title: "Christmas Special",
+  //   subtitle: "Ultimate Christmas luxury experience",
+  //   discount: "25% OFF",
+  //   href: "/packages"
+  // }
 ]
 
 export function DealsPopup() {
@@ -115,18 +115,18 @@ export function DealsPopup() {
       />
       
       {/* Popup Content */}
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className="relative bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-3xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden">
         {/* Close Button */}
         <button
           onClick={closePopup}
-          className="absolute top-4 right-4 z-20 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20 bg-white/90 hover:bg-white rounded-full p-1.5 sm:p-2 shadow-lg transition-all duration-200 hover:scale-110"
           aria-label="Close popup"
         >
-          <X className="h-6 w-6 text-gray-700" />
+          <X className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
         </button>
 
         {/* Carousel */}
-        <div className="relative h-96 sm:h-[500px]">
+        <div className="relative h-[400px] sm:h-[500px] md:h-[600px]">
           {dealPosters.map((poster, index) => (
             <div
               key={poster.id}
@@ -138,30 +138,36 @@ export function DealsPopup() {
             >
               <Image
                 src={poster.image}
-                alt={poster.title}
+                alt={poster.title || `Deal ${index + 1} Image`}
                 fill
                 className="object-cover"
                 priority={index === 0}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
               
               {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 text-white z-20">
                 <div className="max-w-2xl">
-                  <div className="inline-block bg-brand-accent text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                    {poster.discount}
-                  </div>
-                  <h2 className="text-2xl sm:text-4xl font-bold mb-3">
-                    {poster.title}
-                  </h2>
-                  <p className="text-lg sm:text-xl opacity-90 mb-6">
-                    {poster.subtitle}
-                  </p>
+                  {poster.discount && (
+                    <div className="inline-block bg-brand-accent text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-2 sm:mb-4">
+                      {poster.discount}
+                    </div>
+                  )}
+                  {poster.title && (
+                    <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-2 sm:mb-3">
+                      {poster.title}
+                    </h2>
+                  )}
+                  {poster.subtitle && (
+                    <p className="text-sm sm:text-lg md:text-xl opacity-90 mb-4 sm:mb-6">
+                      {poster.subtitle}
+                    </p>
+                  )}
                   <Button
                     asChild
                     size="lg"
-                    className="bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold px-6 py-3 text-lg transform hover:scale-105 transition-all duration-200"
+                    className="bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg transform hover:scale-105 transition-all duration-200"
                   >
                     <Link href={poster.href} onClick={closePopup}>
                       View Deal
@@ -175,26 +181,26 @@ export function DealsPopup() {
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transform hover:scale-110 transition-all duration-200"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full p-2 sm:p-3 transform hover:scale-110 transition-all duration-200"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="h-6 w-6 text-white" />
+            <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transform hover:scale-110 transition-all duration-200"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full p-2 sm:p-3 transform hover:scale-110 transition-all duration-200"
             aria-label="Next slide"
           >
-            <ChevronRight className="h-6 w-6 text-white" />
+            <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
           </button>
 
           {/* Slide Indicators */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+          <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-10 flex space-x-2">
             {dealPosters.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                   index === currentSlide
                     ? "bg-brand-accent scale-125"
                     : "bg-white/50 hover:bg-white/80"
@@ -206,8 +212,8 @@ export function DealsPopup() {
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 p-4 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="bg-gray-50 p-3 sm:p-4 text-center">
+          <p className="text-xs sm:text-sm text-gray-600">
             Don't miss out on these amazing deals! Limited time offers available.
           </p>
         </div>
