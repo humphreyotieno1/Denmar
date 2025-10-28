@@ -148,7 +148,7 @@ export function DealsPopup() {
               
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 text-white z-20">
-                <div className="max-w-2xl">
+                <div className="max-w-2xl ml-0 sm:ml-0 md:ml-4">
                   {poster.discount && (
                     <div className="inline-block bg-brand-accent text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-2 sm:mb-4">
                       {poster.discount}
@@ -178,20 +178,36 @@ export function DealsPopup() {
             </div>
           ))}
 
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Hidden on mobile, shown on desktop and positioned to avoid content */}
           <button
             onClick={prevSlide}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full p-2 sm:p-3 transform hover:scale-110 transition-all duration-200"
+            className="hidden md:block absolute left-2 top-[calc(50%-4rem)] -translate-y-1/2 z-30 bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full p-2.5 transform hover:scale-110 transition-all duration-200"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+            <ChevronLeft className="h-5 w-5 text-white" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full p-2 sm:p-3 transform hover:scale-110 transition-all duration-200"
+            className="hidden md:block absolute right-2 top-[calc(50%-4rem)] -translate-y-1/2 z-30 bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full p-2.5 transform hover:scale-110 transition-all duration-200"
             aria-label="Next slide"
           >
-            <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+            <ChevronRight className="h-5 w-5 text-white" />
+          </button>
+
+          {/* Mobile Navigation - Small icons at top corners */}
+          <button
+            onClick={prevSlide}
+            className="md:hidden absolute left-3 top-6 z-30 bg-black/40 hover:bg-black/60 rounded-full p-1.5 transition-all duration-200"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="h-4 w-4 text-white" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="md:hidden absolute right-3 top-6 z-30 bg-black/40 hover:bg-black/60 rounded-full p-1.5 transition-all duration-200"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="h-4 w-4 text-white" />
           </button>
 
           {/* Slide Indicators */}
