@@ -7,12 +7,15 @@ import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { MapPin, Clock, ChevronLeft, ChevronRight } from "lucide-react"
-import { packages } from "@/lib/services"
 import useEmblaCarousel from 'embla-carousel-react'
 
-export function PackagesSection() {
-  const featuredPackages = packages.filter(pkg => pkg.featured).slice(0, 6)
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+interface PackagesSectionProps {
+  packages?: any[]
+}
+
+export function PackagesSection({ packages = [] }: PackagesSectionProps) {
+  const featuredPackages = packages.slice(0, 6)
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
     slidesToScroll: 1,
@@ -119,16 +122,16 @@ export function PackagesSection() {
               ))}
             </div>
           </div>
-          
+
           {/* Navigation Buttons */}
-          <button 
+          <button
             onClick={scrollPrev}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button 
+          <button
             onClick={scrollNext}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
             aria-label="Next slide"

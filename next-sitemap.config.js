@@ -28,7 +28,7 @@ module.exports = {
   siteUrl: 'https://www.denmartravel.co.ke',
   generateRobotsTxt: true,
   generateIndexSitemap: false,   // 👈 keeps all URLs in one sitemap.xml
-  exclude: ['/api/*', '/admin/*'], // optional: exclude system routes
+  exclude: ['/api/*', '/denmar-portal/*'], // optional: exclude system routes
   robotsTxtOptions: {
     policies: [
       {

@@ -5,19 +5,23 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { services as servicesData, type Service } from "@/lib/services"
 import { Pagination } from "@/components/pagination"
 import { Badge } from "@/components/ui/badge"
 
-export function ServicesGrid() {
+interface ServicesGridProps {
+  services?: any[]
+  showTitle?: boolean
+}
+
+export function ServicesGrid({ services = [], showTitle = true }: ServicesGridProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const pageSize = 6
 
   // Filter services by category
-  const filteredServices = selectedCategory === "all" 
-    ? servicesData 
-    : servicesData.filter(service => service.category === selectedCategory)
+  const filteredServices = selectedCategory === "all"
+    ? services
+    : services.filter(service => service.category === selectedCategory)
 
   // Paginate services
   const totalPages = Math.ceil(filteredServices.length / pageSize)
@@ -33,28 +37,6 @@ export function ServicesGrid() {
     { value: "activities", label: "Activities" },
     { value: "planning", label: "Planning" }
   ]
-
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      travel: "bg-brand-accent",
-      accommodation: "bg-green-500",
-      transportation: "bg-blue-500",
-      activities: "bg-purple-500",
-      planning: "bg-orange-500"
-    }
-    return colors[category] || "bg-gray-500"
-  }
-
-  const getCategoryIcon = (category: string) => {
-    const icons: Record<string, string> = {
-      travel: "🎒",
-      accommodation: "🏨",
-      transportation: "✈️",
-      activities: "🎯",
-      planning: "📋"
-    }
-    return icons[category] || "🔧"
-  }
 
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-white to-gray-50">
@@ -80,11 +62,10 @@ export function ServicesGrid() {
                 setSelectedCategory(category.value)
                 setCurrentPage(1)
               }}
-              className={`${
-                selectedCategory === category.value 
-                  ? "bg-brand-accent text-white border-brand-accent" 
-                  : "hover:bg-gray-100"
-              }`}
+              className={`${selectedCategory === category.value
+                ? "bg-brand-accent text-white border-brand-accent"
+                : "hover:bg-gray-100"
+                }`}
             >
               {category.label}
             </Button>
@@ -100,87 +81,49 @@ export function ServicesGrid() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
-                <div className="relative h-48 overflow-hidden group">
-                  <div className={`absolute inset-0 ${getCategoryColor(service.category)}/10 flex items-center justify-center`}>
-                    <span className="text-6xl">{service.icon}</span>
+              <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg group">
+                <div className="relative h-64 overflow-hidden">
+                  <div className="absolute inset-0 bg-gray-200">
+                    {/* Fallback pattern or color if no image load */}
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  
+                  <img
+                    src={service.image || "/placeholder-service.jpg"}
+                    alt={service.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
                   {/* Category Badge */}
-                  <div className="absolute top-3 right-3">
-                    <Badge 
-                      variant="secondary" 
-                      className={`${getCategoryColor(service.category)} text-white border-0`}
+                  <div className="absolute top-4 right-4">
+                    <Badge
+                      className="bg-brand-accent text-white border-0 shadow-md"
                     >
                       {service.category}
                     </Badge>
                   </div>
-                </div>
 
-                <CardContent className="p-5 flex flex-col h-full">
-                  <div className="flex-1">
-                    <div className="mb-3">
-                      <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2">
-                        {service.name}
-                      </h3>
-                      <p className="text-gray-600 text-sm line-clamp-2">
-                        {service.shortDescription}
-                      </p>
-                    </div>
-                  </div>
+                  {/* Content Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-transform duration-300">
+                    <h3 className="text-xl font-bold mb-2 text-shadow-sm">
+                      {service.name}
+                    </h3>
+                    <p className="text-gray-200 text-sm line-clamp-2 mb-3">
+                      {service.shortDescription}
+                    </p>
 
-                  {/* Price and Duration */}
-                  {(service.price || service.duration) && (
-                    <div className="flex items-center justify-between mb-4">
-                      {service.price && (
-                        <div className="text-center">
-                          <div className="text-sm text-gray-500">Starting from</div>
-                          <div className="text-lg font-bold text-brand-accent">
-                            {service.price}
-                          </div>
-                        </div>
-                      )}
-                      {service.duration && (
-                        <div className="text-center">
-                          <div className="text-sm text-gray-500">Duration</div>
-                          <div className="text-sm font-medium text-gray-700">
-                            {service.duration}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Features */}
-                  <div className="mb-4">
-                    <div className="text-sm font-medium text-gray-700 mb-2">Key Features:</div>
-                    <div className="flex flex-wrap gap-1">
-                      {service.features.slice(0, 3).map((feature, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
+                    {/* Features */}
+                    <div className="flex flex-wrap gap-2 text-xs">
+                      {service.features?.slice(0, 3).map((feature: string, idx: number) => (
+                        <span key={idx} className="bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full">
                           {feature}
-                        </Badge>
+                        </span>
                       ))}
-                      {service.features.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{service.features.length - 3} more
-                        </Badge>
-                      )}
                     </div>
                   </div>
-
-                  {/* Action Button */}
-                  <div className="mt-auto pt-4">
-                    <Button 
-                      className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white transition-all duration-200 hover:scale-105 active:scale-95"
-                      asChild
-                    >
-                      <a href={`/services/${service.slug}`}>
-                        Learn More
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
+                </div>
               </Card>
             </motion.div>
           ))}
@@ -196,7 +139,7 @@ export function ServicesGrid() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-8 flex justify-center">
-            <Pagination 
+            <Pagination
               totalItems={filteredServices.length}
               pageSize={pageSize}
               currentPage={currentPage}
@@ -218,13 +161,13 @@ export function ServicesGrid() {
               Our travel experts are here to create personalized experiences just for you.
             </p>
             <Link href="/contact">
-            <Button 
-              size="lg" 
-              variant="secondary"
-              className="bg-white text-brand-accent hover:bg-gray-100"
-            >
-              Contact Our Experts
-            </Button>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-brand-accent hover:bg-gray-100"
+              >
+                Contact Our Experts
+              </Button>
             </Link>
           </div>
         </div>

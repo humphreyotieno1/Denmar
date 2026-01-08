@@ -7,80 +7,15 @@ import Link from "next/link"
 import Image from "next/image"
 
 interface HeroSlide {
-  id: number
+  id: string
   image: string
-  eyebrow: string
+  eyebrow: string | null
   title: string
-  highlight?: string
+  highlight: string | null
   subtitle: string
-  cta: string
-  ctaLink?: string
-  secondaryCta?: string
-  secondaryLink?: string
+  buttonText: string
+  buttonLink: string
 }
-
-const heroSlides: HeroSlide[] = [
-  {
-    id: 1,
-    image: "/hero/header.jpg", // This should be 1920x1080px
-    eyebrow: "Tailor–made escapes",
-    title: "The Bold and",
-    highlight: "Daring",
-    subtitle: "Escape to breathtaking destinations crafted just for you by the Denmar experts.",
-    cta: "Start Planning",
-    ctaLink: "/destinations",
-    secondaryCta: "Talk to an Expert",
-    secondaryLink: "/contact",
-  },
-  {
-    id: 2,
-    image: "/hero/hero2.jpg", // This should be 1920x1080px
-    eyebrow: "Signature adventures",
-    title: "Adventure",
-    highlight: "Awaits",
-    subtitle: "Experience thrilling safaris, city lights and serene beaches in one effortless itinerary.",
-    cta: "Explore Adventures",
-    ctaLink: "/destinations",
-    secondaryCta: "Browse Packages",
-    secondaryLink: "/packages",
-  },
-  {
-    id: 3,
-    image: "/hero/hero3.jpg", // This should be 1920x1080px
-    eyebrow: "Immersive culture",
-    title: "Cultural",
-    highlight: "Journeys",
-    subtitle: "Immerse yourself in rich heritage, curated guides and seamless travel support.",
-    cta: "Discover Culture",
-    ctaLink: "/destinations",
-    secondaryCta: "See City Breaks",
-    secondaryLink: "/deals",
-  },
-  {
-    id: 4,
-    image: "/hero/capetownholiday.jpg",
-    eyebrow: "Signature getaway",
-    title: "Cape Town",
-    highlight: "Elegance",
-    subtitle: "Sunsets on Signal Hill, vineyards in Stellenbosch and a front-row seat to Table Mountain.",
-    cta: "Discover Cape Town",
-    ctaLink: "/destinations",
-    secondaryCta: "Request Quote",
-    secondaryLink: "/contact",
-  },
-  {
-    id: 5,
-    image: "/hero/thailandholiday.jpg",
-    eyebrow: "Signature getaway",
-    title: "Thailand",
-    highlight: "Elegance",
-    subtitle: "Golden temples by day, floating markets by night – all seamlessly arranged for you.",
-    cta: "Discover Thailand",
-    ctaLink: "/destinations",
-    secondaryCta: "See Asia Escapes",
-    secondaryLink: "/destinations/asia",
-  },
-]
 
 const heroStats = [
   { label: "Countries", value: "35+", icon: <MapPin className="h-4 w-4" /> },
@@ -88,35 +23,34 @@ const heroStats = [
   { label: "Guest Satisfaction", value: "4.9/5", icon: <Sparkles className="h-4 w-4" /> },
 ]
 
-const highlightPackages = [
-  {
-    title: "Masai Mara Fly-in Safari",
-    duration: "4 nights",
-    price: "From $1,299",
-    image: "/top/amboseli.jpg",
-    link: "/packages",
-  },
-  {
-    title: "Dubai City & Desert Escape",
-    duration: "5 nights",
-    price: "From $1,149",
-    image: "/top/dubai.jpg",
-    link: "/deals",
-  },
-]
+interface HighlightPackage {
+  title: string
+  duration: string
+  price: string
+  image: string
+  link: string
+}
 
-export function HeroSection() {
+interface HeroSectionProps {
+  slides: HeroSlide[]
+  highlightPackages?: HighlightPackage[]
+}
+
+export function HeroSection({ slides, highlightPackages = [] }: HeroSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    startTimer()
+    if (slides.length > 0) {
+      startTimer()
+    }
     return () => clearTimer()
-  }, [])
+  }, [slides.length])
 
   const startTimer = () => {
+    clearTimer()
     timerRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
     }, 6000)
   }
 
@@ -128,11 +62,11 @@ export function HeroSection() {
   }
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
   }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
   }
 
   const handleMouseEnter = () => {
@@ -140,8 +74,12 @@ export function HeroSection() {
   }
 
   const handleMouseLeave = () => {
-    startTimer()
+    if (slides.length > 0) {
+      startTimer()
+    }
   }
+
+  if (slides.length === 0) return null
 
   return (
     <section
@@ -149,19 +87,18 @@ export function HeroSection() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {heroSlides.map((slide, index) => (
+      {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-all duration-[1200ms] ease-in-out ${
-            index === currentSlide
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-105 pointer-events-none"
-          }`}
+          className={`absolute inset-0 transition-all duration-[1200ms] ease-in-out ${index === currentSlide
+            ? "opacity-100 scale-100"
+            : "opacity-0 scale-105 pointer-events-none"
+            }`}
         >
           <div className="absolute inset-0">
             <Image
               src={slide.image}
-              alt={`${slide.eyebrow} - ${slide.title} ${slide.highlight ?? ""} travel experience with Denmar Tours`}
+              alt={`${slide.eyebrow || ""} - ${slide.title} ${slide.highlight ?? ""} travel experience with Denmar Tours`}
               fill
               priority={index === 0}
               className="object-cover object-center"
@@ -176,9 +113,11 @@ export function HeroSection() {
 
           <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-4 pb-8 pt-16 sm:justify-center sm:px-6 lg:flex-row lg:items-center lg:gap-12 lg:px-8">
             <div className="w-full text-white lg:w-3/5">
-              <div className="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white/80">
-                {slide.eyebrow}
-              </div>
+              {slide.eyebrow && (
+                <div className="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white/80">
+                  {slide.eyebrow}
+                </div>
+              )}
               <h1 className="mt-6 font-heading text-[34px] font-semibold leading-tight sm:text-5xl md:text-6xl lg:text-[68px] lg:leading-[1.05]">
                 {slide.title} {slide.highlight && <span className="text-brand-accent">{slide.highlight}</span>}
               </h1>
@@ -192,18 +131,8 @@ export function HeroSection() {
                   size="lg"
                   className="bg-brand-accent text-brand-primary hover:bg-brand-accent/90 shadow-xl shadow-brand-accent/30"
                 >
-                  <Link href={slide.ctaLink || "#"}>{slide.cta}</Link>
+                  <Link href={slide.buttonLink || "#"}>{slide.buttonText}</Link>
                 </Button>
-                {slide.secondaryCta && (
-                  <Button
-                    asChild
-                    size="lg"
-                    variant="outline"
-                    className="border-white/40 bg-white/10 text-white hover:bg-white/20"
-                  >
-                    <Link href={slide.secondaryLink || "#"}>{slide.secondaryCta}</Link>
-                  </Button>
-                )}
               </div>
 
               <div className="mt-10 hidden lg:grid lg:grid-cols-3 lg:gap-10">
@@ -330,33 +259,36 @@ export function HeroSection() {
         </div>
       ))}
 
-      <button
-        onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/10 p-2 text-white transition hover:bg-white/25 lg:left-8"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/10 p-2 text-white transition hover:bg-white/25 lg:right-8"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="h-6 w-6" />
-      </button>
-
-      <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
-        {heroSlides.map((_, index) => (
+      {slides.length > 1 && (
+        <>
           <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`h-1.5 rounded-full transition-all duration-300 sm:h-2 ${
-              index === currentSlide ? "w-10 bg-brand-success" : "w-5 bg-white/50 hover:bg-white/80"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/10 p-2 text-white transition hover:bg-white/25 lg:left-8"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/10 p-2 text-white transition hover:bg-white/25 lg:right-8"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`h-1.5 rounded-full transition-all duration-300 sm:h-2 ${index === currentSlide ? "w-10 bg-brand-success" : "w-5 bg-white/50 hover:bg-white/80"
+                  }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   )
 }

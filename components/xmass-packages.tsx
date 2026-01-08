@@ -7,7 +7,6 @@ import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CalendarDays, Clock, ChevronLeft, ChevronRight, Info, Plus, Sparkles, UtensilsCrossed } from "lucide-react"
-import { packages } from "@/lib/services"
 import useEmblaCarousel from 'embla-carousel-react'
 
 const DetailRow = ({ icon: Icon, children }: { icon: React.ElementType; children: React.ReactNode }) => (
@@ -17,9 +16,13 @@ const DetailRow = ({ icon: Icon, children }: { icon: React.ElementType; children
   </div>
 )
 
-export function ChristmasPackages() {
-  const featuredPackages = packages.filter(pkg => pkg.category === 'festive').slice(0, 6)
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+interface ChristmasPackagesProps {
+  packages?: any[]
+}
+
+export function ChristmasPackages({ packages = [] }: ChristmasPackagesProps) {
+  const featuredPackages = packages.slice(0, 6)
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
     slidesToScroll: 1,
@@ -43,7 +46,7 @@ export function ChristmasPackages() {
         const duration = 8 + Math.random() * 15; // 8s to 23s
         const startX = Math.random() * 100; // 0% to 100%
         const drift = (Math.random() - 0.5) * 60; // -30px to 30px
-        
+
         return (
           <div
             key={i}
@@ -75,7 +78,7 @@ export function ChristmasPackages() {
         const color = ['#ff6b6b', '#ff8e8e', '#ffd166', '#06d6a0', '#118ab2', '#ef476f', '#ffd166', '#06d6a0', '#118ab2'][
           Math.floor(Math.random() * 9)
         ];
-        
+
         return (
           <div
             key={i}
@@ -101,7 +104,7 @@ export function ChristmasPackages() {
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-red-50/20 via-white/30 to-green-50/20 pointer-events-none"></div>
-      <div 
+      <div
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(circle at 10% 20%, #ff6b6b22 0%, #ffd16622 20%, #06d6a022 40%, #118ab222 60%, #073b4c22 80%)',
@@ -202,16 +205,16 @@ export function ChristmasPackages() {
               ))}
             </div>
           </div>
-          
+
           {/* Navigation Buttons */}
-          <button 
+          <button
             onClick={scrollPrev}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button 
+          <button
             onClick={scrollNext}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
             aria-label="Next slide"

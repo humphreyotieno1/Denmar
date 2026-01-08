@@ -5,7 +5,11 @@ import Link from "next/link"
 import { Facebook, Instagram, Twitter, Youtube, Phone, Mail, X } from "lucide-react"
 import { FaTiktok } from "react-icons/fa"
 
-export function TopBanner() {
+interface TopBannerProps {
+  settings?: any
+}
+
+export function TopBanner({ settings }: TopBannerProps) {
   const [showPromo, setShowPromo] = useState(true)
 
   return (
@@ -14,18 +18,18 @@ export function TopBanner() {
         <div className="flex flex-col gap-2 py-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-3 text-white/90">
             <span className="hidden inline-block uppercase tracking-[0.2em] text-[10px] text-white/70">
-              Denmar Tours & Travel
+              {settings?.siteName || "Denmar Tours & Travel"}
             </span>
             <div className="flex items-center gap-1">
               <Phone className="h-4 w-4 text-white/80" strokeWidth={1.5} />
-              <a href="tel:+254793041888" className="hover:text-white transition-colors">
-                +254 793 041 888
+              <a href={`tel:${settings?.contactPhone || '+254793041888'}`} className="hover:text-white transition-colors">
+                {settings?.contactPhone || '+254 793 041 888'}
               </a>
             </div>
             <div className="hidden sm:flex items-center gap-1">
               <Mail className="h-4 w-4 text-white/80" strokeWidth={1.5} />
-              <a href="mailto:info@denmartravel.co.ke" className="hover:text-white transition-colors">
-                info@denmartravel.co.ke
+              <a href={`mailto:${settings?.contactEmail || 'info@denmartravel.co.ke'}`} className="hover:text-white transition-colors">
+                {settings?.contactEmail || 'info@denmartravel.co.ke'}
               </a>
             </div>
             {showPromo && (
@@ -48,21 +52,32 @@ export function TopBanner() {
             <span className="hidden sm:inline-block uppercase tracking-[0.3em] text-[10px] text-white/60">
               Follow Us
             </span>
-            <SocialLink href="https://facebook.com/denmartravel" label="Facebook">
-              <Facebook className="h-4 w-4" target="_blank" strokeWidth={1.6} />
-            </SocialLink>
-            <SocialLink href="https://instagram.com/denmar_travel" label="Instagram">
-              <Instagram className="h-4 w-4" target="_blank" strokeWidth={1.6} />
-            </SocialLink>
-            <SocialLink href="https://x.com/DenmarTravel" label="Twitter">
-              <Twitter className="h-4 w-4" target="_blank" strokeWidth={1.6} />
-            </SocialLink>
-            <SocialLink href="https://www.youtube.com/c/dennisGathitu/videos" label="YouTube">
-              <Youtube className="h-4 w-4" target="_blank" strokeWidth={1.6} />
-            </SocialLink>
-            <SocialLink href="https://www.tiktok.com/@denmar_travel" label="TikTok">
-              <FaTiktok className="h-4 w-4" target="_blank" strokeWidth={1.6} />
-            </SocialLink>
+            {settings?.socialFacebook && (
+              <SocialLink href={settings.socialFacebook} label="Facebook">
+                <Facebook className="h-4 w-4" target="_blank" strokeWidth={1.6} />
+              </SocialLink>
+            )}
+            {settings?.socialInstagram && (
+              <SocialLink href={settings.socialInstagram} label="Instagram">
+                <Instagram className="h-4 w-4" target="_blank" strokeWidth={1.6} />
+              </SocialLink>
+            )}
+            {settings?.socialTwitter && (
+              <SocialLink href={settings.socialTwitter} label="Twitter">
+                <Twitter className="h-4 w-4" target="_blank" strokeWidth={1.6} />
+              </SocialLink>
+            )}
+
+            {settings?.socialYoutube && (
+              <SocialLink href={settings.socialYoutube} label="YouTube">
+                <Youtube className="h-4 w-4" target="_blank" strokeWidth={1.6} />
+              </SocialLink>
+            )}
+            {settings?.socialTiktok && (
+              <SocialLink href={settings.socialTiktok} label="TikTok">
+                <FaTiktok className="h-4 w-4" target="_blank" strokeWidth={1.6} />
+              </SocialLink>
+            )}
           </div>
         </div>
       </div>

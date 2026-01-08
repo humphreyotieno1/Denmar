@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
 
 const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "info@denmartravel.co.ke"
 const SUPPORT_WHATSAPP = process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP ?? "+254793041888"
@@ -48,7 +49,13 @@ const initialMessages: ChatMessage[] = [
 ]
 
 export function AiChatWidget() {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+
+  // Hide on admin portal pages
+  if (pathname?.startsWith("/denmar-portal")) {
+    return null
+  }
   const [isMinimized, setIsMinimized] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
   const [sessionId, setSessionId] = useState<string | null>(null)
@@ -99,7 +106,7 @@ export function AiChatWidget() {
   }, [sessionId])
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: any) {
       if (!widgetRef.current) return
       if (widgetRef.current.contains(event.target as Node)) return
       setIsOpen(false)
@@ -245,7 +252,7 @@ export function AiChatWidget() {
                         <Plane className="h-4 w-4" />
                       </div>
                     )}
-                    <div className={cn("flex-1", message.role === "user" && "text-right")}> 
+                    <div className={cn("flex-1", message.role === "user" && "text-right")}>
                       <div
                         className={cn(
                           "inline-flex max-w-full rounded-2xl px-4 py-3 text-sm shadow-sm",

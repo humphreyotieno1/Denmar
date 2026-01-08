@@ -20,30 +20,46 @@ interface ServicePageProps {
 export default function ServicePage({ params }: ServicePageProps) {
   const [service, setService] = useState<any>(null)
 
+  const [settings, setSettings] = useState<any>(null)
+  const [loadingSettings, setLoadingSettings] = useState(true)
+
   // Unwrap params using React.use()
   const unwrappedParams = use(params)
   const serviceSlug = unwrappedParams.slug
 
   useEffect(() => {
+    // Fetch service data
     const serviceData = getServiceBySlug(serviceSlug)
     if (!serviceData) {
       notFound()
     }
     setService(serviceData)
+
+    // Fetch site settings
+    fetch('/api/denmar-portal/settings')
+      .then(res => res.json())
+      .then(data => {
+        setSettings(data)
+        setLoadingSettings(false)
+      })
+      .catch(err => {
+        console.error("Failed to fetch settings:", err)
+        setLoadingSettings(false)
+      })
   }, [serviceSlug])
 
-  if (!service) {
+  if (!service || loadingSettings) {
     return (
       <div className="min-h-screen overflow-x-hidden">
-        <TopBanner />
-        <Navbar />
+        <TopBanner settings={settings} />
+        <Navbar settings={settings} />
         <main className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-accent mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading service information...</p>
+            <p className="text-gray-600">Loading...</p>
           </div>
         </main>
-        <Footer />
+        <Footer settings={settings} />
         <FloatingActions />
       </div>
     )
@@ -62,8 +78,8 @@ export default function ServicePage({ params }: ServicePageProps) {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main>
         {/* Hero Section */}
@@ -76,8 +92,8 @@ export default function ServicePage({ params }: ServicePageProps) {
           </div>
           <div className="relative z-10 flex items-center justify-center h-full">
             <div className="text-center text-white">
-              <Badge 
-                variant="secondary" 
+              <Badge
+                variant="secondary"
                 className={`${getCategoryColor(service.category)} text-white border-0 mb-4`}
               >
                 {service.category}
@@ -90,11 +106,11 @@ export default function ServicePage({ params }: ServicePageProps) {
 
         {/* Breadcrumbs */}
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <Breadcrumbs 
+          <Breadcrumbs
             items={[
               { label: "Services", href: "/services" },
               { label: service.name }
-            ]} 
+            ]}
           />
         </div>
 
@@ -173,14 +189,14 @@ export default function ServicePage({ params }: ServicePageProps) {
 
                   {/* CTA Buttons */}
                   <div className="mt-6 space-y-3">
-                    <Button 
+                    <Button
                       className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white"
                       size="lg"
                     >
                       Get Quote
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className="w-full"
                       size="lg"
                     >
@@ -204,10 +220,10 @@ export default function ServicePage({ params }: ServicePageProps) {
                 Discover more ways we can help with your travel needs
               </p>
             </div>
-            
+
             <div className="text-center">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-brand-accent hover:bg-brand-accent/90 text-white"
                 asChild
               >
@@ -221,7 +237,7 @@ export default function ServicePage({ params }: ServicePageProps) {
         </section>
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
     </div>
   )

@@ -30,11 +30,20 @@ export const trackContactFormSubmission = (formType: 'contact' | 'newsletter') =
   });
 };
 
-export const trackPackageView = (packageName: string, packagePrice?: number) => {
+export const trackPackageView = (packageName: string, packagePrice?: number | string) => {
+  let price = 0;
+  if (typeof packagePrice === 'number') {
+    price = packagePrice;
+  } else if (typeof packagePrice === 'string') {
+    // Extract first number found
+    const match = packagePrice.match(/\d+/);
+    price = match ? parseInt(match[0]) : 0;
+  }
+
   trackFacebookEvent('ViewContent', {
     content_name: packageName,
     content_category: 'Travel Package',
-    value: packagePrice || 0,
+    value: price,
     currency: 'USD'
   });
 };

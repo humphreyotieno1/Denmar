@@ -19,11 +19,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AboutPage() {
+import { prisma } from "@/lib/db"
+
+export default async function AboutPage() {
+  const settings = await prisma.siteSettings.findUnique({
+    where: { id: "settings" },
+  })
+
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main>
         <AboutHeroBanner />
@@ -32,7 +38,7 @@ export default function AboutPage() {
         <TestimonialsSection />
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
     </div>
   )

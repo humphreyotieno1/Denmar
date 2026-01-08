@@ -1,54 +1,47 @@
-"use client"
-
+import { prisma } from "@/lib/db"
 import { notFound } from "next/navigation"
 import { TopBanner } from "@/components/top-banner"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
 import { Breadcrumbs } from "@/components/breadcrumbs"
-import { getDealBySlug } from "@/lib/services"
-import { useState, useEffect, use } from "react"
-import { Star, MapPin, Calendar, Percent, ArrowRight, CheckCircle, Clock } from "lucide-react"
+import { MapPin, Percent, ArrowRight, CheckCircle, Clock } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import Link from "next/link"
+import { Deal } from "@/lib/services"
+
+export const dynamic = 'force-dynamic'
 
 interface DealPageProps {
   params: Promise<{ slug: string }>
 }
 
-export default function DealPage({ params }: DealPageProps) {
-  const [deal, setDeal] = useState<any>(null)
+export default async function DealPage({ params }: DealPageProps) {
+  const { slug } = await params
 
-  // Unwrap params using React.use()
-  const unwrappedParams = use(params)
-  const dealSlug = unwrappedParams.slug
+  const [dealData, settings] = await Promise.all([
+    prisma.deal.findUnique({
+      where: { slug },
+    }),
+    prisma.siteSettings.findUnique({
+      where: { id: "settings" },
+    })
+  ])
 
-  useEffect(() => {
-    const dealData = getDealBySlug(dealSlug)
-    if (!dealData) {
-      notFound()
-    }
-    setDeal(dealData)
-  }, [dealSlug])
+  if (!dealData) {
+    notFound()
+  }
 
-  if (!deal) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <TopBanner />
-        <Navbar />
-        <main className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-accent mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading deal information...</p>
-          </div>
-        </main>
-        <Footer />
-        <FloatingActions />
-      </div>
-    )
+  // Cast dealData to Deal type with JSON parsing
+  const deal: Deal = {
+    ...dealData,
+    validUntil: dealData.validUntil.toISOString(),
+    destinations: dealData.destinations as unknown as string[],
+    terms: dealData.terms as unknown as string[],
+    highlights: dealData.highlights as unknown as string[],
+    category: dealData.category as any
   }
 
   const getCategoryColor = (category: string) => {
@@ -69,16 +62,10 @@ export default function DealPage({ params }: DealPageProps) {
     })
   }
 
-  const calculateSavings = () => {
-    const original = parseInt(deal.originalPrice.replace(/[^0-9]/g, ''))
-    const discounted = parseInt(deal.discountedPrice.replace(/[^0-9]/g, ''))
-    return original - discounted
-  }
-
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main>
         {/* Hero Section */}
@@ -95,8 +82,8 @@ export default function DealPage({ params }: DealPageProps) {
           </div>
           <div className="relative z-10 flex items-center justify-center h-full">
             <div className="text-center text-white">
-              <Badge 
-                variant="secondary" 
+              <Badge
+                variant="secondary"
                 className={`${getCategoryColor(deal.category)} text-white border-0 mb-4`}
               >
                 {deal.category}
@@ -109,11 +96,12 @@ export default function DealPage({ params }: DealPageProps) {
 
         {/* Breadcrumbs */}
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <Breadcrumbs 
+          <Breadcrumbs
             items={[
+              { label: "Home", href: "/" },
               { label: "Deals", href: "/deals" },
               { label: deal.title }
-            ]} 
+            ]}
           />
         </div>
 
@@ -170,16 +158,24 @@ export default function DealPage({ params }: DealPageProps) {
 
               {/* Sidebar */}
               <div className="lg:col-span-1">
-                <div className="bg-gray-50 rounded-lg p-6 sticky top-6">
+                <div className="bg-gray-50 rounded-lg p-6 sticky top-24">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Deal Summary</h3>
-                  
+
                   {/* Pricing */}
-                  <div className="mb-6 p-4 bg-white rounded-lg border">    
+                  <div className="mb-6 p-4 bg-white rounded-lg border">
                     <div className="text-center">
                       <Badge className={`${getCategoryColor(deal.category)} text-white border-0 text-sm font-bold`}>
                         <Percent className="w-3 h-3 mr-1" />
                         UP TO {deal.discount}% OFF
                       </Badge>
+                      <div className="mt-4 flex flex-col items-center">
+                        <span className="text-sm text-gray-500 line-through">
+                          {deal.originalPrice}
+                        </span>
+                        <span className="text-3xl font-bold text-brand-primary">
+                          {deal.discountedPrice}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -205,15 +201,14 @@ export default function DealPage({ params }: DealPageProps) {
 
                   {/* CTA Buttons */}
                   <div className="space-y-3">
-                    <Link href="/contact">
-                    <Button 
-                      className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white"
-                      size="lg"
-                    >
-                      Book This Deal
-                    </Button>
+                    <Link href="/contact" className="w-full">
+                      <Button
+                        className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white"
+                        size="lg"
+                      >
+                        Book This Deal
+                      </Button>
                     </Link>
-                  
                   </div>
                 </div>
               </div>
@@ -232,24 +227,24 @@ export default function DealPage({ params }: DealPageProps) {
                 Don't miss out on other incredible offers
               </p>
             </div>
-            
+
             <div className="text-center">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-brand-accent hover:bg-brand-accent/90 text-white"
                 asChild
               >
-                <a href="/deals">
+                <Link href="/deals">
                   View All Deals
                   <ArrowRight className="w-4 h-4 ml-2" />
-                </a>
+                </Link>
               </Button>
             </div>
           </div>
         </section>
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
     </div>
   )

@@ -1,4 +1,4 @@
-"use client"  
+"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -10,7 +10,11 @@ import { toast } from "@/components/ui/toast"
 import { trackNewsletterSignup, trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics"
 import { trackNewsletterSignup as trackFacebookNewsletter, trackPhoneClick as trackFacebookPhone, trackWhatsAppClick as trackFacebookWhatsApp } from "@/lib/facebook-pixel"
 
-export function Footer() {
+interface FooterProps {
+  settings: any
+}
+
+export function Footer({ settings }: FooterProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubscribe = async () => {
@@ -23,15 +27,15 @@ export function Footer() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, firstName: 'Guest' })
         })
-        
+
         const data = await response.json()
-        
+
         if (data.success) {
           // Track successful newsletter signup
           trackNewsletterSignup(email, 'footer')
           trackFacebookNewsletter()
           toast.success(data.message)
-          ;(document.getElementById('footer-email') as HTMLInputElement).value = ''
+            ; (document.getElementById('footer-email') as HTMLInputElement).value = ''
         } else {
           toast.error(data.message || 'Failed to subscribe. Please try again.')
         }
@@ -48,11 +52,6 @@ export function Footer() {
     trackFacebookPhone(phoneNumber)
   }
 
-  const handleWhatsAppClick = () => {
-    trackWhatsAppClick('Contact from footer')
-    trackFacebookWhatsApp()
-  }
-
   return (
     <footer className="bg-brand-primary text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -60,31 +59,41 @@ export function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="font-heading text-xl font-bold text-white">DENMAR</div>
-              <div className="text-brand-accent font-heading text-xl font-bold">TOURS</div>
+              <div className="font-heading text-xl font-bold text-white">
+                {settings?.siteName?.split(' ')[0] || 'DENMAR'}
+              </div>
+              <div className="text-brand-accent font-heading text-xl font-bold">
+                {settings?.siteName?.split(' ').slice(1).join(' ') || 'TOURS'}
+              </div>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Your trusted travel partner for unforgettable adventures. We create personalized experiences that turn
-              your travel dreams into reality.
+              {settings?.siteDescription || 'Your trusted travel partner for unforgettable adventures.'}
             </p>
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm">
-                <MapPin className="h-4 w-4 text-brand-accent" />
-                <span className="text-gray-300">3rd Floor Office - Design Center Building, Tausi Road, Westlands, Nairobi, Kenya</span>
+                <MapPin className="h-4 w-4 text-brand-accent flex-shrink-0" />
+                <span className="text-gray-300">
+                  {settings?.address || '3rd Floor Office - Design Center Building, Tausi Road, Westlands, Nairobi, Kenya'}
+                </span>
               </div>
               <div className="flex items-center space-x-2 text-sm">
-                <Phone className="h-4 w-4 text-brand-accent" />
-                <a 
-                  href="tel:+254793041888" 
+                <Phone className="h-4 w-4 text-brand-accent flex-shrink-0" />
+                <a
+                  href={`tel:${settings?.contactPhone || '+254793041888'}`}
                   className="text-gray-300 hover:text-brand-accent transition-colors"
-                  onClick={() => handlePhoneClick('+254793041888')}
+                  onClick={() => handlePhoneClick(settings?.contactPhone || '+254793041888')}
                 >
-                  +254 793 041 888
+                  {settings?.contactPhone || '+254 793 041 888'}
                 </a>
               </div>
               <div className="flex items-center space-x-2 text-sm">
-                <Mail className="h-4 w-4 text-brand-accent" />
-                <span className="text-gray-300">info@denmartravel.co.ke</span>
+                <Mail className="h-4 w-4 text-brand-accent flex-shrink-0" />
+                <a
+                  href={`mailto:${settings?.contactEmail || 'info@denmartravel.co.ke'}`}
+                  className="text-gray-300 hover:text-brand-accent transition-colors"
+                >
+                  {settings?.contactEmail || 'info@denmartravel.co.ke'}
+                </a>
               </div>
             </div>
           </div>
@@ -155,7 +164,7 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="font-heading text-lg font-semibold text-brand-accent">Stay Connected</h3>
             <p className="text-gray-300 text-sm">Subscribe to our newsletter for travel tips and exclusive deals.</p>
-            
+
             {/* Simple Newsletter Form for Footer */}
             <div className="space-y-3">
               <Input
@@ -165,7 +174,7 @@ export function Footer() {
                 id="footer-email"
                 disabled={isLoading}
               />
-              <Button 
+              <Button
                 className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary w-full"
                 onClick={handleSubscribe}
                 disabled={isLoading}
@@ -173,23 +182,34 @@ export function Footer() {
                 {isLoading ? 'Subscribing...' : 'Subscribe'}
               </Button>
             </div>
-            
+
             <div className="flex space-x-4 pt-4">
-              <Link href="https://www.facebook.com/denmartravel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link href="https://www.instagram.com/denmar_travel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
-                <Instagram className="h-5 w-5" />
-              </Link>
-              <Link href="https://www.youtube.com/c/dennisGathitu/videos" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
-                <Youtube className="h-5 w-5" />
-              </Link>
-              <Link href="https://x.com/DenmarTravel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
-                <Twitter className="h-5 w-5" />
-              </Link>
-              <Link href="https://www.tiktok.com/@denmar_travel" target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
-                <FaTiktok className="h-5 w-5" />
-              </Link>
+              {settings?.socialFacebook && (
+                <Link href={settings.socialFacebook} target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
+                  <Facebook className="h-5 w-5" />
+                </Link>
+              )}
+              {settings?.socialInstagram && (
+                <Link href={settings.socialInstagram} target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
+                  <Instagram className="h-5 w-5" />
+                </Link>
+              )}
+              {settings?.socialTwitter && (
+                <Link href={settings.socialTwitter} target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
+                  <Twitter className="h-5 w-5" />
+                </Link>
+              )}
+
+              {settings?.socialYoutube && (
+                <Link href={settings.socialYoutube} target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
+                  <Youtube className="h-5 w-5" />
+                </Link>
+              )}
+              {settings?.socialTiktok && (
+                <Link href={settings.socialTiktok} target="_blank" className="text-gray-300 hover:text-brand-accent transition-colors">
+                  <FaTiktok className="h-5 w-5" />
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -197,7 +217,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            {`  ${new Date().getFullYear()} Denmar Tours & Travel. All rights reserved.`} | Privacy Policy | Terms of Service
+            {`  ${new Date().getFullYear()} ${settings?.siteName || 'Denmar Tours & Travel'}. All rights reserved.`} | Privacy Policy | Terms of Service
           </p>
         </div>
       </div>

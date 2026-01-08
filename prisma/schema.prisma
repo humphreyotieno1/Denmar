@@ -70,3 +70,275 @@ model AiConversation {
 
   @@map("ai_conversations")
 }
+
+// ==========================================
+// CMS Models for Admin Dashboard
+// ==========================================
+
+// Admin Users (admin, staff roles)
+model AdminUser {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  name          String
+  password      String
+  role          String     @default("staff") // admin, staff
+  isActive      Boolean    @default(true)
+  lastLoginAt   DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  auditLogs     AuditLog[]
+
+  @@map("admin_users")
+}
+
+// Audit Logs for tracking changes
+model AuditLog {
+  id          String    @id @default(cuid())
+  userId      String
+  user        AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action      String    // create, update, delete
+  entityType  String    // country, destination, package, etc.
+  entityId    String
+  entityName  String?   // For display purposes
+  oldData     Json?     // Previous state (for updates/deletes)
+  newData     Json?     // New state (for creates/updates)
+  ipAddress   String?
+  userAgent   String?   @db.Text
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// Countries
+model Country {
+  id                  String        @id @default(cuid())
+  name                String
+  slug                String        @unique
+  heroImage           String
+  summary             String
+  description         String        @db.Text
+  region              String
+  popularDestinations Int           @default(0)
+  featured            Boolean       @default(false)
+  isActive            Boolean       @default(true)
+  order               Int           @default(0)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  destinations        Destination[]
+
+  @@index([slug])
+  @@index([featured])
+  @@index([isActive])
+  @@map("countries")
+}
+
+// Destinations
+model Destination {
+  id          String   @id @default(cuid())
+  countryId   String
+  country     Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  slug        String   @unique
+  name        String
+  images      Json     // string[]
+  heroImage   String
+  tags        Json     // string[]
+  priceFrom   Float
+  priceTo     Float?
+  summary     String
+  description String   @db.Text
+  latitude    Float?
+  longitude   Float?
+  highlights  Json     // string[]
+  bestTime    String
+  duration    String
+  rating      Float    @default(0)
+  reviews     Int      @default(0)
+  featured    Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([countryId])
+  @@index([slug])
+  @@index([featured])
+  @@index([isActive])
+  @@map("destinations")
+}
+
+// Packages
+model Package {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  destinationSlug  String
+  country          String
+  description      String   @db.Text
+  shortDescription String
+  duration         String
+  price            String
+  includes         Json     // string[]
+  excludes         Json     // string[]
+  terms            Json     // string[]
+  itinerary        Json     // DayItinerary[]
+  featured         Boolean  @default(false)
+  image            String
+  category         String   // family & kids, group, honeymoon, festive, adventure, business
+  bestTime         String
+  order            Int      @default(0)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([featured])
+  @@index([isActive])
+  @@map("packages")
+}
+
+// Deals
+model Deal {
+  id               String    @id @default(cuid())
+  title            String
+  slug             String    @unique
+  description      String    @db.Text
+  shortDescription String
+  originalPrice    String
+  discountedPrice  String
+  discount         Int
+  validUntil       DateTime
+  destinations     Json      // string[]
+  image            String
+  featured         Boolean   @default(false)
+  category         String    // flight, hotel, package, activity
+  terms            Json      // string[]
+  highlights       Json      // string[]
+  isActive         Boolean   @default(true)
+  order            Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([featured])
+  @@index([isActive])
+  @@index([validUntil])
+  @@map("deals")
+}
+
+// Services
+model Service {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  description      String   @db.Text
+  shortDescription String
+  icon             String
+  features         Json     // string[]
+  price            String?
+  duration         String?
+  category         String   // travel, accommodation, transportation, activities, planning, adventure
+  featured         Boolean  @default(false)
+  image            String?
+  order            Int      @default(0)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([featured])
+  @@index([isActive])
+  @@map("services")
+}
+
+// Hero Slides
+model HeroSlide {
+  id          String   @id @default(cuid())
+  eyebrow     String?
+  title       String
+  highlight   String?
+  subtitle    String
+  buttonText  String   @default("Explore")
+  buttonLink  String   @default("/destinations")
+  image       String
+  imageMobile String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([order])
+  @@map("hero_slides")
+}
+
+// Testimonials
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  location  String?
+  trip      String?
+  content   String   @db.Text
+  rating    Int      @default(5)
+  image     String?
+  source    String   @default("Facebook")
+  featured  Boolean  @default(false)
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([featured])
+  @@index([isActive])
+  @@map("testimonials")
+}
+
+// Site Settings (single row)
+model SiteSettings {
+  id                String   @id @default("settings")
+  siteName          String   @default("Denmar Tours & Travel")
+  siteDescription   String   @db.Text @default("Kenya's premier travel agency")
+  contactEmail      String   @default("info@denmartravel.co.ke")
+  contactPhone      String   @default("+254 793 041 888")
+  whatsappNumber    String   @default("+254793041888")
+  address           String   @default("3rd Floor, Tausi Road, Westlands, Nairobi")
+  socialFacebook    String?
+  socialTwitter     String?
+  socialInstagram   String?
+  socialTiktok      String?
+  socialYoutube     String?
+  googleAnalyticsId String?
+  facebookPixelId   String?
+  logoUrl           String?
+  faviconUrl        String?
+  updatedAt         DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// Deals Popup
+model DealsPopup {
+  id          String    @id @default(cuid())
+  title       String
+  subtitle    String
+  image       String
+  discount    String?
+  link        String
+  isActive    Boolean   @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  priority    Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([isActive])
+  @@index([priority])
+  @@map("deals_popups")
+}

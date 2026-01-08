@@ -4,7 +4,6 @@ import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
 import { DestinationsBanner } from "@/components/destinations-banner"
 import { CountryGrid } from "@/components/country-grid"
-import { countries } from "@/lib/destinations"
 import { Suspense } from "react"
 import type { Metadata } from "next"
 
@@ -19,11 +18,23 @@ export const metadata: Metadata = {
   },
 }
 
-export default function DestinationsPage() {
+import { prisma } from "@/lib/db"
+
+export default async function DestinationsPage() {
+  const [countries, settings] = await Promise.all([
+    prisma.country.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    }),
+    prisma.siteSettings.findUnique({
+      where: { id: "settings" },
+    }),
+  ])
+
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main>
         <DestinationsBanner />
@@ -33,8 +44,8 @@ export default function DestinationsPage() {
             <p className="text-gray-600">Loading destinations...</p>
           </div>
         }>
-          <CountryGrid 
-            countries={countries}
+          <CountryGrid
+            countries={countries as any}
             showViewAll={false}
             enablePagination
             pageSize={12}
@@ -44,7 +55,7 @@ export default function DestinationsPage() {
         </Suspense>
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
     </div>
   )

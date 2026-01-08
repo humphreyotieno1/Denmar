@@ -17,18 +17,43 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ServicesPage() {
+import { prisma } from "@/lib/db"
+import { Service } from "@/lib/services"
+
+export const dynamic = 'force-dynamic'
+
+export default async function ServicesPage() {
+  const [servicesData, settings] = await Promise.all([
+    prisma.service.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    }),
+    prisma.siteSettings.findUnique({
+      where: { id: "settings" },
+    }),
+  ])
+
+  // Map to Service interface
+  const services: Service[] = servicesData.map(s => ({
+    ...s,
+    features: s.features as unknown as string[],
+    category: s.category as any,
+    image: s.image || undefined,
+    price: s.price || undefined,
+    duration: s.duration || undefined,
+  }))
+
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main>
         <ServicesBanner />
-        <ServicesGrid />
+        <ServicesGrid services={services} />
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
     </div>
   )

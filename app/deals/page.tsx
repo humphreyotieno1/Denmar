@@ -17,18 +17,43 @@ export const metadata: Metadata = {
   },
 }
 
-export default function DealsPage() {
+import { prisma } from "@/lib/db"
+import { Deal } from "@/lib/services"
+
+export const dynamic = 'force-dynamic'
+
+export default async function DealsPage() {
+  const [dealsData, settings] = await Promise.all([
+    prisma.deal.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    }),
+    prisma.siteSettings.findUnique({
+      where: { id: "settings" },
+    })
+  ])
+
+  // Map to Deal interface
+  const deals: Deal[] = dealsData.map(d => ({
+    ...d,
+    validUntil: d.validUntil.toISOString(), // Convert Date to string
+    destinations: d.destinations as unknown as string[],
+    terms: d.terms as unknown as string[],
+    highlights: d.highlights as unknown as string[],
+    category: d.category as any
+  }))
+
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main>
         <DealsHero />
-        <DealsGrid />
+        <DealsGrid deals={deals} />
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
     </div>
   )

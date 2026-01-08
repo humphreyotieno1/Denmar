@@ -52,24 +52,91 @@ export const metadata: Metadata = {
   },
 }
 
-export default function HomePage() {
+import { prisma } from "@/lib/db"
+import { TestimonialsSection } from "@/components/testimonials-section"
+import { ServicesGrid } from "@/components/services-grid"
+
+export default async function HomePage() {
+  const [slides, settings, destinations, packages, testimonials, popups, services] = await Promise.all([
+    prisma.heroSlide.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    }),
+    prisma.siteSettings.findUnique({
+      where: { id: "settings" },
+    }),
+    prisma.destination.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+      take: 8,
+    }),
+    prisma.package.findMany({
+      where: { isActive: true, featured: true },
+      orderBy: { order: "asc" },
+      take: 6,
+    }),
+    prisma.testimonial.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    }),
+    prisma.dealsPopup.findMany({
+      where: { isActive: true },
+      orderBy: { priority: "desc" },
+    }),
+    prisma.service.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    })
+  ])
+
+  // Filter festive packages manually or with a query if category is used
+  const festivePackages = await prisma.package.findMany({
+    where: { isActive: true, category: "festive" },
+    orderBy: { order: "asc" },
+    take: 6,
+  })
+
+  // Map services to match interface
+  const formattedServices = services.map((s: any) => ({
+    ...s,
+    features: s.features as unknown as string[],
+    category: s.category as any,
+    image: s.image || undefined,
+    price: s.price || undefined,
+    duration: s.duration || undefined,
+  }))
+
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main className="pt-2">
-        <HeroSection />
+        <HeroSection
+          slides={slides}
+          highlightPackages={packages.slice(0, 2).map((pkg: any) => ({
+            title: pkg.name,
+            duration: pkg.duration,
+            price: pkg.price,
+            image: pkg.image,
+            link: `/packages/${pkg.slug}`
+          }))}
+        />
         <WhyUsSection />
-        <TopDestinationsSection />
-        <PackagesSection />
-        <ChristmasPackages />
+        <TopDestinationsSection destinations={destinations} />
+        <PackagesSection packages={packages} />
+        <ChristmasPackages packages={festivePackages} />
+        {/* <section id="services">
+          <ServicesGrid services={formattedServices} />
+        </section> */}
+        <TestimonialsSection testimonials={testimonials} />
         <ReadyToPlanSection />
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
-      <DealsPopup />
+      <DealsPopup deals={popups} />
     </div>
   )
 }

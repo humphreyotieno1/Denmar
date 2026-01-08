@@ -8,178 +8,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 
-const testimonials = [
-  {
-    id: 1,
-    name: "Grace Wangeci",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Very good service and highly recommended",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 2,
-    name: "Wycliffe Okoth",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Well planned and timely trip to Diani. Arranged for transfers and were always available for any clarification or assistance. Had a great experience with Denmar Tours and Travel",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "Diani Beach",
-    source: "Facebook"
-  },
-  {
-    id: 3,
-    name: "Kasweety Kayte",
-    location: "Embu, Kenya",
-    rating: 5,
-    text: "World class experience…. especially the UAE tour and holiday",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "UAE Tour",
-    source: "Facebook"
-  },
-  {
-    id: 4,
-    name: "Faith Wanjira",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Denmar Tours & Travel is the best and most reliable tour partner. After spending hours and hours on the internet looking up for holiday ideas I found them. The experience I had with Alex was best in class from the beginning to the end. Everything was thoroughly laid out,all my queries answered in details and the followed up was great. There were no surprises and the whole trip went as planned. I would definitely recommend Denmar Tours & Travel for all your vacation planning needs.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 5,
-    name: "Tony Kamau",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "TI highly recommend Denmar. They are hands on and will keep you posted on everything. They organized my honeymoon and later and trip to diani. They are truly wonderful to work with. Thanks Alex and Dennis.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 6,
-    name: "Aine Faith Twebanze",
-    location: "Algiers, Algeria",
-    rating: 5,
-    text: "I recommend EVERYTHING about Denmar Tours & Travel. Their Professionalism and Care is off the chart.. Thank you so much Denmar, you made our honeymoon the best we could possibly have. The resort you recommended was top notch and beautiful. Denmar Tours & Travel took care of us and of all our needs. The staff are all so professional and caring. I can't even say enough of a Thank you. God bless you guys. ❤️❤️❤️❤️",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 7,
-    name: "Atie Nyodero",
-    location: "Siaya, Kenya",
-    rating: 5,
-    text: "Thanks a lot for your hospitality Denmar Tours for making our vacation in Kenya with my family worthwhile,will always come back with more friends.The best tours and travel agency I have used.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 8,
-    name: "Omian Ramo",
-    location: "Siaya, Kenya",
-    rating: 5,
-    text: "Fast, efficiency and reliable agent .The packages are amazing and has been done accordingly as per the voucher.I have enjoyed my stay in Dubai hopefully visiting soon again.Your kind services are not taken for granted .will soon visit again with my fam and obviously through denmar.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "Dubai, UAE",
-    source: "Facebook"
-  },
-  {
-    id: 9,
-    name: "Shikoh Kimani Mbugua",
-    location: "Mombasa, Kenya",
-    rating: 5,
-    text: "My family has vacationed hassle free courtesy of Denmar Tours & Travel...their efficiency and customer service is top notch ..i highly recommend Denmar tours for all your travel needs.Thank you Denmar tours & Travel!",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 10,
-    name: "Peris Sonia",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Making our little ones happy by organising great holidays and adventures, Anytime #Denmar Tours & Travel.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 11,
-    name: "Lydiah Gatambu",
-    location: "Mombasa, Kenya",
-    rating: 5,
-    text: "Would totally recommend Denmar Tours & Travel. Their efficiency, reliability and and great customer service keeps me going back. Thanks for always going an extra mile to ensure my trips are enjoyable and successful. Keep up the good job 👍👍",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 12,
-    name: "Stevo Ngure",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Who knew Travels/Vacations and adventure would be so easy with Denmar tours and Travel. I have done several vacation with Denmar and they are the best .Denmar is your go to travel agency.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 13,
-    name: "Kabura Essie",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "I have used Denmar Tours and Travel on a number of occasions and haven't been disappointed. a few instances is I used them when I first visited Dubai and everything was well planned out, our itinerary was perfect and we had a great time with my mum. they also book flights to different destinations and most recently booked my flights to the US. Their team is just awesome and are available all the time.  Denmar is your go to travel agency and I have never been disappointed!",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "USA",
-    source: "Facebook"
-  },
-  {
-    id: 14,
-    name: "Harriet Ngei",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Greatful for choosing Denmar Tours & Travel for vacation needs. I sure will use them again.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "",
-    source: "Facebook"
-  },
-  {
-    id: 15,
-    name: "Loyc Giturwa",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Who knew travels/ vacations would be this easy. Just name the destination and Denmar will come to the rescue! I have done several vacations with Denmar (Dubai , Coast, Masai Mara) and I leave each trip already thinking of the next one! I would definitely recommend their services.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "Dubai, Coast, Masai Mara",
-    source: "Facebook"
-  },
-  {
-    id: 16,
-    name: "Kiriga Kimani",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Denmar Tours &Travels facilitated our visit to Meru national park. Their services are top notch and we would highly recommend them. Kudos Denmar.",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "Meru National Park",
-    source: "Facebook"
-  },
-  {
-    id: 17,
-    name: "Marion Nganga",
-    location: "Nairobi, Kenya",
-    rating: 5,
-    text: "Denmar Tours & Travel are synonymous to efficiency, reliability and fun. They made my whole travelling experience to Dubai very easy and valuable back in 2019. My experience at Wild Wadi Water Park was one of my favourite parts of the tour.  I'll definitely revisit! I really had fun and would highly recommend them to any one. Get in touch with Denmar today and have all your travel needs met, just like mine!",
-    image: "/placeholder.svg?height=80&width=80",
-    trip: "Dubai",
-    source: "Facebook"
-  },
-]
+interface TestimonialsSectionProps {
+  testimonials?: any[]
+}
 
 const sourceIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Facebook,
@@ -190,7 +21,7 @@ const sourceIconMap: Record<string, React.ComponentType<{ className?: string }>>
   Linkedin,
 }
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ testimonials = [] }: TestimonialsSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const handleScroll = (direction: "left" | "right") => {
@@ -229,7 +60,7 @@ export function TestimonialsSection() {
           ref={scrollContainerRef}
           className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 scrollbar-hide"
         >
-          {testimonials.map((testimonial, index) => {
+          {testimonials.map((testimonial: any, index: number) => {
             const SourceIcon = sourceIconMap[testimonial.source] ?? Globe
 
             return (
@@ -286,8 +117,8 @@ export function TestimonialsSection() {
                       </div>
 
                       <p className="text-sm leading-relaxed text-gray-600">
-                      “{testimonial.text}”
-                    </p>
+                        “{testimonial.content}”
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -300,12 +131,12 @@ export function TestimonialsSection() {
         <div className="text-center mt-16">
           <p className="text-lg text-gray-600 mb-6">Ready to create your own amazing travel story?</p>
           <Link href='/contact'>
-          <Button
-            size="lg"
-            className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
-          >
-            Start Planning Your Trip
-          </Button>
+            <Button
+              size="lg"
+              className="bg-brand-accent hover:bg-brand-accent/40 text-brand-primary font-semibold px-8 py-4"
+            >
+              Start Planning Your Trip
+            </Button>
           </Link>
         </div>
       </div>

@@ -19,11 +19,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ContactPage() {
+import { prisma } from "@/lib/db"
+
+export default async function ContactPage() {
+  const settings = await prisma.siteSettings.findUnique({
+    where: { id: "settings" },
+  })
+
   return (
     <div className="min-h-screen overflow-x-hidden flex flex-col mt-4">
-      <TopBanner />
-      <Navbar />
+      <TopBanner settings={settings} />
+      <Navbar settings={settings} />
 
       <main className="flex-grow">
         <ContactHero />
@@ -35,7 +41,7 @@ export default function ContactPage() {
                 Have questions or ready to book your next adventure? Our team is here to help you plan the perfect trip.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
               {/* Left Column - Contact Form */}
               <div className="lg:col-span-3">
@@ -43,14 +49,14 @@ export default function ContactPage() {
                   <ContactForm />
                 </div>
               </div>
-              
+
               {/* Right Column - Contact Info */}
               <div className="lg:col-span-2 lg:sticky lg:top-24 h-fit">
                 <div className="p-6 rounded-xl">
                   <ContactInfo />
                 </div>
               </div>
-              
+
               {/* Full Width Map */}
               <div className="col-span-full mt-4">
                 <div className="rounded-xl overflow-hidden shadow-lg">
@@ -62,7 +68,7 @@ export default function ContactPage() {
         </div>
       </main>
 
-      <Footer />
+      <Footer settings={settings} />
       <FloatingActions />
     </div>
   )

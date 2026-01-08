@@ -88,7 +88,9 @@ export const metadata: Metadata = {
   generator: 'v0.dev'
 }
 
-export default function RootLayout({
+import { prisma } from "@/lib/db"
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -114,7 +116,7 @@ export default function RootLayout({
             `,
           }}
         />
-        
+
         {/* Facebook Meta Pixel */}
         <Script
           id="facebook-pixel"
@@ -135,7 +137,7 @@ export default function RootLayout({
           }}
         />
         <noscript>
-          <img height="1" width="1" style={{display:'none'}}
+          <img height="1" width="1" style={{ display: 'none' }}
             src="https://www.facebook.com/tr?id=3332570506840480&ev=PageView&noscript=1"
           />
         </noscript>

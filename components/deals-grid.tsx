@@ -7,18 +7,22 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { deals as dealsData, type Deal } from "@/lib/services"
+import { type Deal } from "@/lib/services"
 import { Pagination } from "@/components/pagination"
 
-export function DealsGrid() {
+interface DealsGridProps {
+  deals: Deal[]
+}
+
+export function DealsGrid({ deals }: DealsGridProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const pageSize = 6
 
   // Filter deals by category
-  const filteredDeals = selectedCategory === "all" 
-    ? dealsData 
-    : dealsData.filter(deal => deal.category === selectedCategory)
+  const filteredDeals = selectedCategory === "all"
+    ? deals
+    : deals.filter(deal => deal.category === selectedCategory)
 
   // Paginate deals
   const totalPages = Math.ceil(filteredDeals.length / pageSize)
@@ -76,11 +80,10 @@ export function DealsGrid() {
                 setSelectedCategory(category.value)
                 setCurrentPage(1)
               }}
-              className={`${
-                selectedCategory === category.value 
-                  ? "bg-brand-accent text-white border-brand-accent" 
+              className={`${selectedCategory === category.value
+                  ? "bg-brand-accent text-white border-brand-accent"
                   : "hover:bg-gray-100"
-              }`}
+                }`}
             >
               {category.label}
             </Button>
@@ -107,7 +110,7 @@ export function DealsGrid() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  
+
                   {/* Discount Badge */}
                   <div className="absolute top-3 left-3">
                     <Badge className={`${getCategoryColor(deal.category)} text-white border-0 text-sm font-bold`}>
@@ -216,7 +219,7 @@ export function DealsGrid() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-8 flex justify-center">
-            <Pagination 
+            <Pagination
               totalItems={filteredDeals.length}
               pageSize={pageSize}
               currentPage={currentPage}
@@ -237,13 +240,13 @@ export function DealsGrid() {
             <p className="text-lg mb-6 opacity-90">
               Subscribe to our newsletter and be the first to know about exclusive offers and flash sales.
             </p>
-              <Button
-              size="lg" 
+            <Button
+              size="lg"
               variant="secondary"
               className="bg-white text-brand-accent hover:bg-gray-100"
-              >
+            >
               Subscribe Now
-              </Button>
+            </Button>
           </div>
         </div>
       </div>

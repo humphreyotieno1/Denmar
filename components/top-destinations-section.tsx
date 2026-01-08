@@ -7,183 +7,11 @@ import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 
-interface Destination {
-  id: number
-  name: string
-  image: string
-  description: string
-  price: string
-  badge: string
-  badgeColor: string
-  href: string
+interface TopDestinationsSectionProps {
+  destinations?: any[]
 }
 
-const destinations: Destination[] = [
-  {
-    id: 1,
-    name: "Nairobi, Kenya",
-    image: "/top/nairobi.jpg",
-    description: "Discover the vibrant city of Nairobi with its rich history, modern architecture, and diverse culture.",
-    price: "From $1000",
-    badge: "Hot Deal",
-    badgeColor: "bg-red-500",
-    href: "/destinations/kenya/nairobi",
-  },
-  {
-    id: 2,
-    name: "Europe",
-    image: "/top/europe.jpg",
-    description: "Explore the diverse and rich culture of Europe with its ancient landmarks, modern cities, and vibrant nightlife.",
-    price: "From $1000",
-    badge: "Popular",
-    badgeColor: "bg-brand-accent",
-    href: "/destinations/europe",
-  },
-  {
-    id: 3,
-    name: "Dubai, UAE",
-    image: "/top/dubai.jpg",
-    description: "Modern metropolis with world-class shopping, dining, and entertainment.",
-    price: "From $1000",
-    badge: "Popular",
-    badgeColor: "bg-brand-success",
-    href: "/destinations/uae/dubai",
-  },
-  {
-    id: 4,
-    name: "Africa",
-    image: "/top/Africa.jpg",
-    description: "Explore the diverse and rich culture of Africa with its ancient landmarks, modern cities, and vibrant nightlife.",
-    price: "From $1000",
-    badge: "Cultural",
-    badgeColor: "bg-green-500",
-
-    href: "/destinations/africa",
-  },
-  {
-    id: 5,
-    name: "Diani - Mombasa, Kenya",
-    image: "/top/diani.jpg",
-    description: "Tour the beautiful beaches of Mombasa with its rich history, modern architecture, and diverse culture.",
-    price: "From $1000",
-    badge: "Luxury",
-    badgeColor: "bg-purple-500",
-    href: "/destinations/kenya/diani",
-  },
-  {
-    id: 6,
-    name: "Zanzibar, Tanzania",
-    image: "/top/zanzibar.jpg",
-    description: "Travel and get to experience the beauty of Zanzibar and Tanzania.",
-    price: "From $1000",
-    badge: "Exclusive",
-    badgeColor: "bg-brand-secondary",
-    href: "/destinations/tanzania/zanzibar",
-  },
-  {
-    id: 7,
-    name: "Thailand",
-    image: "/top/thailand.jpg",
-    description: "Explore the rich culture and beauty of Thailand.",
-    price: "From $1000",
-    badge: "Popular",
-    badgeColor: "bg-brand-success",
-    href: "/destinations/thailand/bangkok",
-  },
-  {
-    id: 8,
-    name: "Seychelles",
-    image: "/top/seychelles.jpg",
-    description: "Discover the crystal clear waters and beautiful beaches of Seychelles.",
-    price: "From $1000",
-    badge: "Romantic",
-    badgeColor: "bg-pink-500",
-    href: "/destinations/seychelles/mahe",
-  },
-  {
-    id: 9,
-    name: "South Africa",
-    image: "/top/southafrica.jpg",
-    description: "Travel and get to experience the beauty of South Africa.",
-    price: "From $1000",
-    badge: "Featured",
-    badgeColor: "bg-brand-success",
-    href: "/destinations/south-africa",
-  },
-  {
-    id: 10,
-    name: "Mauritius",
-    image: "/top/mauritius.jpg",
-    description: "Discover the beauty of Mauritius with its crystal clear waters and lush landscapes.",
-    price: "From $1000",
-    badge: "Luxury",
-    badgeColor: "bg-purple-500",
-    href: "/destinations/mauritius/port-louis",
-  },
-  {
-    id: 11,
-    name: "Italy",
-    image: "/top/italy.jpg",
-    description: "Experience the rich history and culture of Italy.",
-    price: "From $1000",
-    badge: "Exclusive",
-    badgeColor: "bg-brand-secondary",
-    href: "/destinations/italy/rome",
-  },
-  {
-    id: 12,
-    name: "China",
-    image: "/top/china.jpg",
-    description: "Discover the rich history and culture of China.",
-    price: "From $1000",
-    badge: "New",
-    badgeColor: "bg-brand-success",
-    href: "/destinations/china/beijing",
-  },
-  {
-    id: 13,
-    name: "Turkey",
-    image: "/top/turkey.jpg",
-    description: "Explore the rich history and culture of Turkey.",
-    price: "From $1000",
-    badge: "Romantic",
-    badgeColor: "bg-pink-500",
-    href: "/destinations/turkey/istanbul",
-  },
-  {
-    id: 14,
-    name: "Singapore",
-    image: "/top/singapore.jpg",
-    description: "Experience the vibrant culture and modern architecture of Singapore.",
-    price: "From $1000",
-    badge: "Luxury",
-    badgeColor: "bg-purple-500",
-    href: "/destinations/singapore/singapore-city",
-  },
-  {
-    id: 15,
-    name: "Maldives",
-    image: "/top/maldives.jpg",
-    description: "Discover the beautiful beaches and crystal clear waters of the Maldives.",
-    price: "From $1000",
-    badge: "Exclusive",
-    badgeColor: "bg-brand-secondary",
-    href: "/destinations/maldives/male",
-  },
-  {
-    id: 16,
-    name: "Malaysia",
-    image: "/top/malaysia.jpg",
-    description: "Explore the diverse culture and natural beauty of Malaysia.",
-    price: "From $1000",
-    badge: "Popular",
-    badgeColor: "bg-brand-success",
-    href: "/destinations/malaysia/kuala-lumpur",
-  },
-
-]
-
-export function TopDestinationsSection() {
+export function TopDestinationsSection({ destinations = [] }: TopDestinationsSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
@@ -206,6 +34,18 @@ export function TopDestinationsSection() {
   const scrollByOffset = (offset: number) => {
     scrollContainerRef.current?.scrollBy({ left: offset, behavior: "smooth" })
   }
+
+  // Map database destinations to the UI format
+  const displayDestinations = destinations.map((d) => ({
+    id: d.id,
+    name: d.name,
+    image: d.heroImage || d.images[0] || "/placeholder.svg",
+    description: d.summary || d.description,
+    price: `From $${d.priceFrom}`,
+    badge: d.featured ? "Featured" : "Popular",
+    badgeColor: d.featured ? "bg-brand-accent" : "bg-brand-success",
+    href: `/destinations/${d.slug}`,
+  }))
 
   return (
     <section className="relative py-20 bg-gradient-to-b from-white via-slate-50 to-white">
@@ -232,7 +72,7 @@ export function TopDestinationsSection() {
             ref={scrollContainerRef}
             className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
           >
-            {destinations.map((destination, index) => (
+            {displayDestinations.map((destination, index) => (
               <motion.article
                 key={destination.id}
                 className="group flex h-[360px] w-[280px] flex-shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl sm:h-[420px] sm:w-[300px] md:h-[440px] md:w-[320px]"
@@ -243,7 +83,7 @@ export function TopDestinationsSection() {
               >
                 <div className="relative h-56 overflow-hidden">
                   <Image
-                    src={destination.image || "/placeholder.svg"}
+                    src={destination.image}
                     alt={destination.name}
                     fill
                     sizes="(max-width: 768px) 280px, (max-width: 1024px) 300px, 320px"
