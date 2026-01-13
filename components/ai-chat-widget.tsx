@@ -53,9 +53,6 @@ export function AiChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
 
   // Hide on admin portal pages
-  if (pathname?.startsWith("/denmar-portal")) {
-    return null
-  }
   const [isMinimized, setIsMinimized] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
   const [sessionId, setSessionId] = useState<string | null>(null)
@@ -137,6 +134,11 @@ export function AiChatWidget() {
     } else if (messages.length === 0) {
       setMessages(initialMessages)
     }
+  }
+
+  // Conditionally return AFTER ALL hooks to follow Rules of Hooks
+  if (pathname?.startsWith("/denmar-portal")) {
+    return null
   }
 
   const handleSend = async (prompt?: string) => {
