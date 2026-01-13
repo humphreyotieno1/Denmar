@@ -9,7 +9,8 @@ import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
 import type { Metadata } from "next"
 import { DealsPopup } from "@/components/deals-popup"
-import { ChristmasPackages } from "@/components/xmass-packages"
+// import { ChristmasPackages } from "@/components/xmass-packages"
+import { ValentinesPackages } from "@/components/valentines"
 
 export const metadata: Metadata = {
   title: "Best Travel Agency in Kenya - Kenya Safari Tour Operator | Denmar Travel",
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
 
 import { prisma } from "@/lib/db"
 import { TestimonialsSection } from "@/components/testimonials-section"
-import { ServicesGrid } from "@/components/services-grid"
+// import { ServicesGrid } from "@/components/services-grid"
 
 export default async function HomePage() {
   const [slides, settings, destinations, packages, testimonials, popups, services] = await Promise.all([
@@ -92,7 +93,7 @@ export default async function HomePage() {
 
   // Filter festive packages manually or with a query if category is used
   const festivePackages = await prisma.package.findMany({
-    where: { isActive: true, category: "festive" },
+    where: { isActive: true, category: "Adventure" },
     orderBy: { order: "asc" },
     take: 6,
   })
@@ -126,7 +127,8 @@ export default async function HomePage() {
         <WhyUsSection />
         <TopDestinationsSection destinations={destinations} />
         <PackagesSection packages={packages} />
-        <ChristmasPackages packages={festivePackages} />
+        {/* <ChristmasPackages packages={festivePackages} /> */}
+        <ValentinesPackages packages={festivePackages} />
         {/* <section id="services">
           <ServicesGrid services={formattedServices} />
         </section> */}

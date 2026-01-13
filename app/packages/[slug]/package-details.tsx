@@ -141,10 +141,10 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
                                                 <span className="text-gray-700">{packageData.duration}</span>
                                             </div>
 
-                                            <div className="flex items-center gap-3">
+                                            {/* <div className="flex items-center gap-3">
                                                 <MapPin className="w-5 h-5 text-brand-accent" />
                                                 <span className="text-gray-700">Best time: {packageData.bestTime}</span>
-                                            </div>
+                                            </div> */}
 
                                         </div>
 
@@ -153,7 +153,7 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <div className="text-3xl font-bold text-green-600">
-                                                        From {packageData.price}
+                                                        From ${packageData.price}
                                                     </div>
                                                     <div className="text-sm text-gray-600">per person sharing</div>
                                                 </div>
@@ -251,7 +251,7 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
                                                         <span className="font-medium">{packageData.duration}</span>
                                                     </div>
                                                     <div className="flex justify-between">
-                                                        <span className="text-gray-600">Best Time:</span>
+                                                        {/* <span className="text-gray-600">Best Time:</span> */}
                                                         <span className="font-medium">{packageData.bestTime}</span>
                                                     </div>
                                                     <div className="flex justify-between">

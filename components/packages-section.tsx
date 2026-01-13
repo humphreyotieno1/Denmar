@@ -98,15 +98,15 @@ export function PackagesSection({ packages = [] }: PackagesSectionProps) {
                         </div>
 
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                          {/* <div className="flex items-center gap-2 text-sm text-gray-600">
                             <MapPin className="h-4 w-4 text-brand-accent" />
                             <span>Best time: {pkg.bestTime}</span>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="mt-auto flex flex-col gap-4">
                           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">
-                            From {pkg.price} per person
+                            From ${pkg.price} per person
                           </span>
                           <Button
                             asChild
@@ -126,14 +126,14 @@ export function PackagesSection({ packages = [] }: PackagesSectionProps) {
           {/* Navigation Buttons */}
           <button
             onClick={scrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
+            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10 ${featuredPackages.length <= 3 ? 'lg:hidden' : ''}`}
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={scrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10"
+            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10 ${featuredPackages.length <= 3 ? 'lg:hidden' : ''}`}
             aria-label="Next slide"
           >
             <ChevronRight className="w-5 h-5" />
