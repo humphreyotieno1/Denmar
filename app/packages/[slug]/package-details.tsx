@@ -129,9 +129,9 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
                                             <h1 className="text-3xl font-bold text-brand-primary mb-2">
                                                 {packageData.name}
                                             </h1>
-                                            <p className="text-gray-600 text-lg">
+                                            {/* <p className="text-gray-600 text-lg">
                                                 {packageData.description}
-                                            </p>
+                                            </p> */}
                                         </div>
 
                                         {/* Package Details */}
