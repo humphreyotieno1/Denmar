@@ -61,7 +61,7 @@ export function PackageCard({ pkg, index = 0, className = "" }: PackageCardProps
         <div className="flex-1 space-y-2">
           <DetailRow icon={UtensilsCrossed}>{highlights[0] ?? "All inclusive getaway"}</DetailRow>
           <DetailRow icon={Clock}>{pkg.duration}</DetailRow>
-          <DetailRow icon={CalendarDays}>{`Best time: ${pkg.bestTime}`}</DetailRow>
+          {/* <DetailRow icon={CalendarDays}>{`Best time: ${pkg.bestTime}`}</DetailRow> */}
           {highlights[1] && <DetailRow icon={Plus}>{highlights[1]}</DetailRow>}
           {pkg.terms[0] && <DetailRow icon={Info}>{pkg.terms[0]}</DetailRow>}
         </div>
