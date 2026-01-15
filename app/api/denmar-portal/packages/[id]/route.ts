@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const itineraryDaySchema = z.object({
@@ -28,7 +29,7 @@ const packageSchema = z.object({
     itinerary: z.array(itineraryDaySchema).min(1),
     image: z.string().min(1),
     category: z.string().min(1),
-    bestTime: z.string().optional().nullable(),
+    bestTime: z.string().nullable().optional().transform(v => v || "All year round"),
     featured: z.boolean().default(false),
     isActive: z.boolean().default(true),
     order: z.number().default(0),
@@ -43,7 +44,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params
 
-        const pkg = await prisma.package.findUnique({
+        const packageModel: any = prisma.package
+        const pkg = await packageModel.findUnique({
             where: { id },
         })
 
@@ -73,14 +75,17 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         const body = await request.json()
         const validatedData = packageSchema.parse(body)
 
+        // Use any to bypass Prisma Accelerate type issues
+        const packageModel: any = prisma.package
+
         // Get existing package for audit log
-        const existing = await prisma.package.findUnique({ where: { id } })
+        const existing = await packageModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Package not found" }, { status: 404 })
         }
 
         // Check for duplicate slug (excluding current)
-        const duplicateSlug = await prisma.package.findFirst({
+        const duplicateSlug = await packageModel.findFirst({
             where: {
                 slug: validatedData.slug,
                 NOT: { id },
@@ -94,14 +99,15 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        const pkg = await prisma.package.update({
+        const pkg = await packageModel.update({
             where: { id },
             data: {
                 ...validatedData,
-                includes: validatedData.includes as any,
-                excludes: validatedData.excludes as any,
-                terms: validatedData.terms as any,
-                itinerary: validatedData.itinerary as any,
+                bestTime: validatedData.bestTime,
+                includes: (validatedData as any).includes,
+                excludes: (validatedData as any).excludes,
+                terms: (validatedData as any).terms,
+                itinerary: (validatedData as any).itinerary,
             },
         })
 
@@ -115,6 +121,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             oldData: existing,
             newData: pkg,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json(pkg)
     } catch (error) {
@@ -150,12 +159,15 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
         const { id } = await params
 
         // Get existing package for audit log
-        const existing = await prisma.package.findUnique({ where: { id } })
+        const packageModel = (prisma as any).package
+
+        // Get existing package for audit log
+        const existing = await packageModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Package not found" }, { status: 404 })
         }
 
-        await prisma.package.delete({ where: { id } })
+        await packageModel.delete({ where: { id } })
 
         // Create audit log
         await createAuditLog({
@@ -166,6 +178,9 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
             entityName: existing.name,
             oldData: existing,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json({ message: "Package deleted" })
     } catch (error) {

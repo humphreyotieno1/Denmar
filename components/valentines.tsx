@@ -213,7 +213,7 @@ export function ValentinesPackages({ packages = [] }: ValentinesPackagesProps) {
                         <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-auto">
                           <div>
                             <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">Starting from</p>
-                            <p className="text-lg font-bold text-rose-500">${pkg.price}</p>
+                            <p className="text-lg font-bold text-rose-500">{pkg.price}</p>
                           </div>
                           <Button
                             asChild

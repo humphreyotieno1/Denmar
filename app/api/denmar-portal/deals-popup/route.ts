@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const popupSchema = z.object({
@@ -17,7 +18,8 @@ const popupSchema = z.object({
 // GET all popups
 export async function GET() {
     try {
-        const popups = await prisma.dealsPopup.findMany({
+        const popupModel: any = prisma.dealsPopup
+        const popups = await popupModel.findMany({
             orderBy: { priority: "desc" },
         })
 
@@ -42,9 +44,14 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const validatedData = popupSchema.parse(body)
 
-        const popup = await prisma.dealsPopup.create({
+        const popupModel: any = prisma.dealsPopup
+
+        const popup = await popupModel.create({
             data: validatedData,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         // Create audit log
         await createAuditLog({

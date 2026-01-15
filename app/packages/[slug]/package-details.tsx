@@ -153,7 +153,7 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <div className="text-3xl font-bold text-green-600">
-                                                        From ${packageData.price}
+                                                        From {packageData.price}
                                                     </div>
                                                     <div className="text-sm text-gray-600">per person sharing</div>
                                                 </div>

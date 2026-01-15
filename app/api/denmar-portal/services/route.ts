@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const serviceSchema = z.object({
@@ -79,6 +80,9 @@ export async function POST(request: NextRequest) {
             entityName: service.name,
             newData: service,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json(service, { status: 201 })
     } catch (error) {

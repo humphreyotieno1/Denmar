@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const dealSchema = z.object({
@@ -105,6 +106,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             newData: deal,
         })
 
+        // Revalidate public pages
+        revalidatePublicPages()
+
         return NextResponse.json(deal)
     } catch (error) {
         console.error("Error updating deal:", error)
@@ -155,6 +159,9 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
             entityName: existing.title,
             oldData: existing,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json({ message: "Deal deleted" })
     } catch (error) {

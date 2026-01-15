@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const popupSchema = z.object({
@@ -23,7 +24,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params
 
-        const popup = await prisma.dealsPopup.findUnique({
+        const popupModel: any = prisma.dealsPopup
+        const popup = await popupModel.findUnique({
             where: { id },
         })
 
@@ -53,13 +55,15 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         const body = await request.json()
         const validatedData = popupSchema.parse(body)
 
+        const popupModel: any = prisma.dealsPopup
+
         // Get existing for audit log
-        const existing = await prisma.dealsPopup.findUnique({ where: { id } })
+        const existing = await popupModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Popup not found" }, { status: 404 })
         }
 
-        const popup = await prisma.dealsPopup.update({
+        const popup = await popupModel.update({
             where: { id },
             data: validatedData,
         })
@@ -74,6 +78,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             oldData: existing,
             newData: popup,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         return NextResponse.json(popup)
     } catch (error) {
@@ -103,13 +110,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
         const { id } = await params
 
+        const popupModel: any = prisma.dealsPopup
+
         // Get existing for audit log
-        const existing = await prisma.dealsPopup.findUnique({ where: { id } })
+        const existing = await popupModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Popup not found" }, { status: 404 })
         }
 
-        await prisma.dealsPopup.delete({ where: { id } })
+        await popupModel.delete({ where: { id } })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         // Create audit log
         await createAuditLog({

@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react"
 import { AdminSidebar } from "@/components/admin/sidebar"
+import { GlobalSearch } from "@/components/admin/global-search"
 import { Toaster } from "sonner"
 import { usePathname } from "next/navigation"
 
@@ -29,7 +30,15 @@ export default function AdminLayout({
             <div className="flex h-screen bg-slate-50 overflow-hidden">
                 <AdminSidebar />
                 <main className="flex-1 overflow-auto relative">
-                    <div className="p-4 md:p-8 pt-20 md:pt-8 min-h-full">
+                    {/* Top Bar with Search - Desktop */}
+                    <div className="sticky top-0 z-40 bg-slate-50/80 backdrop-blur-sm border-b border-slate-200 px-4 md:px-8 py-3 hidden md:flex items-center justify-end">
+                        <GlobalSearch />
+                    </div>
+                    {/* Top Bar - Mobile: Search positioned to the left of hamburger */}
+                    <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-sm border-b border-slate-200 px-4 py-3 flex md:hidden items-center justify-end pr-16">
+                        <GlobalSearch />
+                    </div>
+                    <div className="p-4 md:p-8 min-h-full">
                         {children}
                     </div>
                 </main>
@@ -38,4 +47,3 @@ export default function AdminLayout({
         </SessionProvider>
     )
 }
-

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const heroSlideSchema = z.object({
@@ -25,7 +26,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params
 
-        const slide = await prisma.heroSlide.findUnique({
+        const slideModel: any = prisma.heroSlide
+        const slide = await slideModel.findUnique({
             where: { id },
         })
 
@@ -55,13 +57,15 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         const body = await request.json()
         const validatedData = heroSlideSchema.parse(body)
 
+        const slideModel: any = prisma.heroSlide
+
         // Get existing slide for audit log
-        const existing = await prisma.heroSlide.findUnique({ where: { id } })
+        const existing = await slideModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Slide not found" }, { status: 404 })
         }
 
-        const slide = await prisma.heroSlide.update({
+        const slide = await slideModel.update({
             where: { id },
             data: validatedData,
         })
@@ -76,6 +80,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             oldData: existing,
             newData: slide,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         return NextResponse.json(slide)
     } catch (error) {
@@ -110,13 +117,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
         const { id } = await params
 
+        const slideModel: any = prisma.heroSlide
+
         // Get existing slide for audit log
-        const existing = await prisma.heroSlide.findUnique({ where: { id } })
+        const existing = await slideModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Slide not found" }, { status: 404 })
         }
 
-        await prisma.heroSlide.delete({ where: { id } })
+        await slideModel.delete({ where: { id } })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         // Create audit log
         await createAuditLog({

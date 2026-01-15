@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const countrySchema = z.object({
@@ -20,7 +21,8 @@ const countrySchema = z.object({
 // GET all countries
 export async function GET() {
     try {
-        const countries = await prisma.country.findMany({
+        const countryModel: any = prisma.country
+        const countries = await countryModel.findMany({
             orderBy: [{ order: "asc" }, { name: "asc" }],
             include: {
                 _count: { select: { destinations: true } },
@@ -48,8 +50,10 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const validatedData = countrySchema.parse(body)
 
+        const countryModel: any = prisma.country
+
         // Check for duplicate slug
-        const existing = await prisma.country.findUnique({
+        const existing = await countryModel.findUnique({
             where: { slug: validatedData.slug },
         })
 
@@ -60,7 +64,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const country = await prisma.country.create({
+        const country = await countryModel.create({
             data: validatedData,
         })
 
@@ -73,6 +77,9 @@ export async function POST(request: NextRequest) {
             entityName: country.name,
             newData: country,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         return NextResponse.json(country, { status: 201 })
     } catch (error) {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const itineraryDaySchema = z.object({
@@ -28,7 +29,7 @@ const packageSchema = z.object({
     itinerary: z.array(itineraryDaySchema).min(1),
     image: z.string().min(1),
     category: z.string().min(1),
-    bestTime: z.string().optional().nullable(),
+    bestTime: z.string().nullable().optional().transform(v => v || "All year round"),
     featured: z.boolean().default(false),
     isActive: z.boolean().default(true),
     order: z.number().default(0),
@@ -37,7 +38,8 @@ const packageSchema = z.object({
 // GET all packages
 export async function GET() {
     try {
-        const packages = await prisma.package.findMany({
+        const packageModel: any = prisma.package
+        const packages = await packageModel.findMany({
             orderBy: [
                 { country: "asc" },
                 { order: "asc" },
@@ -66,8 +68,10 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const validatedData = packageSchema.parse(body)
 
+        const packageModel: any = prisma.package
+
         // Check for duplicate slug
-        const existing = await prisma.package.findUnique({
+        const existing = await packageModel.findUnique({
             where: { slug: validatedData.slug },
         })
 
@@ -78,13 +82,14 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const pkg = await prisma.package.create({
+        const pkg = await packageModel.create({
             data: {
                 ...validatedData,
-                includes: validatedData.includes as any,
-                excludes: validatedData.excludes as any,
-                terms: validatedData.terms as any,
-                itinerary: validatedData.itinerary as any,
+                bestTime: validatedData.bestTime,
+                includes: (validatedData as any).includes,
+                excludes: (validatedData as any).excludes,
+                terms: (validatedData as any).terms,
+                itinerary: (validatedData as any).itinerary,
             },
         })
 
@@ -97,6 +102,9 @@ export async function POST(request: NextRequest) {
             entityName: pkg.name,
             newData: pkg,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json(pkg, { status: 201 })
     } catch (error) {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const destinationSchema = z.object({
@@ -104,6 +105,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             newData: destination,
         })
 
+        // Revalidate public pages
+        revalidatePublicPages()
+
         return NextResponse.json(destination)
     } catch (error) {
         console.error("Error updating destination:", error)
@@ -154,6 +158,9 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
             entityName: existing.name,
             oldData: existing,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json({ message: "Destination deleted" })
     } catch (error) {

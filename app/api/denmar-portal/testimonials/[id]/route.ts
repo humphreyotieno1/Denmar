@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const testimonialSchema = z.object({
@@ -26,7 +27,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params
 
-        const testimonial = await prisma.testimonial.findUnique({
+        const testimonialModel: any = prisma.testimonial
+        const testimonial = await testimonialModel.findUnique({
             where: { id },
         })
 
@@ -56,13 +58,15 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         const body = await request.json()
         const validatedData = testimonialSchema.parse(body)
 
+        const testimonialModel: any = prisma.testimonial
+
         // Get existing testimonial for audit log
-        const existing = await prisma.testimonial.findUnique({ where: { id } })
+        const existing = await testimonialModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Testimonial not found" }, { status: 404 })
         }
 
-        const testimonial = await prisma.testimonial.update({
+        const testimonial = await testimonialModel.update({
             where: { id },
             data: validatedData,
         })
@@ -77,6 +81,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             oldData: existing,
             newData: testimonial,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         return NextResponse.json(testimonial)
     } catch (error) {
@@ -111,13 +118,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
         const { id } = await params
 
+        const testimonialModel: any = prisma.testimonial
+
         // Get existing testimonial for audit log
-        const existing = await prisma.testimonial.findUnique({ where: { id } })
+        const existing = await testimonialModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Testimonial not found" }, { status: 404 })
         }
 
-        await prisma.testimonial.delete({ where: { id } })
+        await testimonialModel.delete({ where: { id } })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         // Create audit log
         await createAuditLog({

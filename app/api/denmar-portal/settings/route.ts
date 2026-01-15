@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const settingsSchema = z.object({
@@ -75,6 +76,9 @@ export async function PUT(request: NextRequest) {
             oldData: existing,
             newData: settings,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json(settings)
     } catch (error) {

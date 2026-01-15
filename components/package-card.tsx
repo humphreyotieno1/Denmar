@@ -68,7 +68,7 @@ export function PackageCard({ pkg, index = 0, className = "" }: PackageCardProps
 
         <div className="mt-auto flex flex-col gap-4">
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">
-            From ${pkg.price} per person
+            From {pkg.price} per person
           </span>
           <Button
             asChild

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const heroSlideSchema = z.object({
@@ -19,7 +20,8 @@ const heroSlideSchema = z.object({
 // GET all slides
 export async function GET() {
     try {
-        const slides = await prisma.heroSlide.findMany({
+        const slideModel: any = prisma.heroSlide
+        const slides = await slideModel.findMany({
             orderBy: { order: "asc" },
         })
 
@@ -44,9 +46,14 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const validatedData = heroSlideSchema.parse(body)
 
-        const slide = await prisma.heroSlide.create({
+        const slideModel: any = prisma.heroSlide
+
+        const slide = await slideModel.create({
             data: validatedData,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         // Create audit log
         await createAuditLog({

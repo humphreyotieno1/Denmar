@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const testimonialSchema = z.object({
@@ -20,7 +21,8 @@ const testimonialSchema = z.object({
 // GET all testimonials
 export async function GET() {
     try {
-        const testimonials = await prisma.testimonial.findMany({
+        const testimonialModel: any = prisma.testimonial
+        const testimonials = await testimonialModel.findMany({
             orderBy: [
                 { order: "asc" },
                 { createdAt: "desc" }
@@ -48,9 +50,14 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const validatedData = testimonialSchema.parse(body)
 
-        const testimonial = await prisma.testimonial.create({
+        const testimonialModel: any = prisma.testimonial
+
+        const testimonial = await testimonialModel.create({
             data: validatedData,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         // Create audit log
         await createAuditLog({

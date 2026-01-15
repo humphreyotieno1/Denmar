@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const countrySchema = z.object({
@@ -26,7 +27,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params
 
-        const country = await prisma.country.findUnique({
+        const countryModel: any = prisma.country
+        const country = await countryModel.findUnique({
             where: { id },
             include: {
                 destinations: {
@@ -61,14 +63,16 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         const body = await request.json()
         const validatedData = countrySchema.parse(body)
 
+        const countryModel: any = prisma.country
+
         // Get existing country for audit log
-        const existing = await prisma.country.findUnique({ where: { id } })
+        const existing = await countryModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Country not found" }, { status: 404 })
         }
 
         // Check for duplicate slug (excluding current)
-        const duplicateSlug = await prisma.country.findFirst({
+        const duplicateSlug = await countryModel.findFirst({
             where: {
                 slug: validatedData.slug,
                 NOT: { id },
@@ -82,7 +86,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        const country = await prisma.country.update({
+        const country = await countryModel.update({
             where: { id },
             data: validatedData,
         })
@@ -97,6 +101,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             oldData: existing,
             newData: country,
         })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         return NextResponse.json(country)
     } catch (error) {
@@ -131,14 +138,19 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
         const { id } = await params
 
+        const countryModel: any = prisma.country
+
         // Get existing country for audit log
-        const existing = await prisma.country.findUnique({ where: { id } })
+        const existing = await countryModel.findUnique({ where: { id } })
         if (!existing) {
             return NextResponse.json({ message: "Country not found" }, { status: 404 })
         }
 
         // Delete country (destinations will cascade delete)
-        await prisma.country.delete({ where: { id } })
+        await countryModel.delete({ where: { id } })
+
+        // Revalidate cache
+        revalidatePublicPages()
 
         // Create audit log
         await createAuditLog({

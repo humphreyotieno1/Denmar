@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
+import { revalidatePublicPages } from "@/lib/revalidate"
 import { z } from "zod"
 
 const serviceSchema = z.object({
@@ -99,6 +100,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             newData: service,
         })
 
+        // Revalidate public pages
+        revalidatePublicPages()
+
         return NextResponse.json(service)
     } catch (error) {
         console.error("Error updating service:", error)
@@ -149,6 +153,9 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
             entityName: existing.name,
             oldData: existing,
         })
+
+        // Revalidate public pages
+        revalidatePublicPages()
 
         return NextResponse.json({ message: "Service deleted" })
     } catch (error) {

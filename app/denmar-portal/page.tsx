@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { getRecentAuditLogs, formatAuditAction, formatEntityType } from "@/lib/audit"
 import {
     Globe,
     MapPin,
@@ -11,7 +12,12 @@ import {
     Mail,
     Users,
     TrendingUp,
+    Clock,
+    Plus,
+    Pencil,
+    Trash2,
 } from "lucide-react"
+import { formatDistanceToNow } from "date-fns"
 
 async function getStats() {
     const [
@@ -49,9 +55,38 @@ async function getStats() {
     }
 }
 
+function getActionIcon(action: string) {
+    switch (action) {
+        case "create":
+            return <Plus className="h-4 w-4 text-emerald-500" />
+        case "update":
+            return <Pencil className="h-4 w-4 text-blue-500" />
+        case "delete":
+            return <Trash2 className="h-4 w-4 text-red-500" />
+        default:
+            return <Clock className="h-4 w-4 text-slate-500" />
+    }
+}
+
+function getActionColor(action: string) {
+    switch (action) {
+        case "create":
+            return "bg-emerald-500/10 border-emerald-500/20"
+        case "update":
+            return "bg-blue-500/10 border-blue-500/20"
+        case "delete":
+            return "bg-red-500/10 border-red-500/20"
+        default:
+            return "bg-slate-500/10 border-slate-500/20"
+    }
+}
+
 export default async function AdminDashboard() {
     const session = await auth()
-    const stats = await getStats()
+    const [stats, recentActivity] = await Promise.all([
+        getStats(),
+        getRecentAuditLogs(10),
+    ])
 
     const statCards = [
         {
@@ -188,14 +223,58 @@ export default async function AdminDashboard() {
                 </div>
             </div>
 
-            {/* Recent Activity Placeholder */}
+            {/* Recent Activity */}
             <div className="bg-white border border-slate-200 rounded-xl p-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-brand-accent" />
                     Recent Activity
                 </h2>
-                <p className="text-slate-500 text-sm">
-                    Activity will be displayed here once you start managing content.
-                </p>
+                {recentActivity.length === 0 ? (
+                    <p className="text-slate-500 text-sm">
+                        No recent activity. Start managing content to see updates here.
+                    </p>
+                ) : (
+                    <div className="space-y-3">
+                        {recentActivity.map((log) => (
+                            <div
+                                key={log.id}
+                                className={`flex items-start gap-3 p-3 rounded-lg border ${getActionColor(log.action)}`}
+                            >
+                                <div className="flex-shrink-0 mt-0.5">
+                                    {getActionIcon(log.action)}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm text-slate-900">
+                                        <span className="font-medium">{log.user?.name || "Unknown"}</span>
+                                        {" "}
+                                        <span className="text-slate-600">
+                                            {formatAuditAction(log.action as any).toLowerCase()}
+                                        </span>
+                                        {" "}
+                                        <span className="font-medium">{formatEntityType(log.entityType as any)}</span>
+                                        {log.entityName && (
+                                            <>
+                                                {": "}
+                                                <span className="text-slate-700">{log.entityName}</span>
+                                            </>
+                                        )}
+                                    </p>
+                                    <p className="text-xs text-slate-500 mt-0.5">
+                                        {formatDistanceToNow(new Date(log.createdAt), { addSuffix: true })}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                {recentActivity.length > 0 && (
+                    <a
+                        href="/denmar-portal/audit-logs"
+                        className="block mt-4 text-sm text-brand-primary hover:underline"
+                    >
+                        View all activity →
+                    </a>
+                )}
             </div>
         </div>
     )
