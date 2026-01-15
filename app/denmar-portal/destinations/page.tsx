@@ -1,44 +1,93 @@
 import Link from "next/link"
+import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { Plus, MapPin, Pencil, Trash2, Eye, EyeOff, Star } from "lucide-react"
+import { Plus, MapPin, Pencil, Eye, EyeOff, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DeleteDestinationButton } from "./delete-button"
+import { Pagination } from "@/components/admin/pagination"
+import { ListFilters } from "@/components/admin/list-filters"
 
-export default async function DestinationsPage() {
-    const destinations = await prisma.destination.findMany({
-        orderBy: [
-            { country: { name: "asc" } },
-            { order: "asc" },
-            { name: "asc" }
-        ],
-        include: {
-            country: {
-                select: { name: true }
-            }
-        },
-    })
+const ITEMS_PER_PAGE = 10
+
+const SORT_OPTIONS = [
+    { value: "newest", label: "Newest First" },
+    { value: "order", label: "Display Order" },
+    { value: "name-asc", label: "Name A-Z" },
+    { value: "name-desc", label: "Name Z-A" },
+    { value: "price-asc", label: "Price: Low to High" },
+    { value: "price-desc", label: "Price: High to Low" },
+]
+
+const FILTER_OPTIONS = [
+    { value: "active", label: "Active" },
+    { value: "hidden", label: "Hidden" },
+    { value: "featured", label: "Featured" },
+]
+
+interface PageProps {
+    searchParams: Promise<{ page?: string; sort?: string; filter?: string }>
+}
+
+function getOrderBy(sort: string) {
+    switch (sort) {
+        case "newest":
+            return { createdAt: "desc" as const }
+        case "order":
+            return [{ order: "asc" as const }, { name: "asc" as const }]
+        case "name-asc":
+            return { name: "asc" as const }
+        case "name-desc":
+            return { name: "desc" as const }
+        case "price-asc":
+            return { priceFrom: "asc" as const }
+        case "price-desc":
+            return { priceFrom: "desc" as const }
+        default:
+            return { createdAt: "desc" as const }
+    }
+}
+
+function getWhereClause(filter: string) {
+    switch (filter) {
+        case "active":
+            return { isActive: true }
+        case "hidden":
+            return { isActive: false }
+        case "featured":
+            return { featured: true }
+        default:
+            return {}
+    }
+}
+
+async function DestinationsList({ page, sort, filter }: { page: number; sort: string; filter: string }) {
+    const whereClause = getWhereClause(filter)
+    const orderBy = getOrderBy(sort)
+
+    const destinationModel: any = prisma.destination
+
+    const [destinations, totalCount] = await Promise.all([
+        destinationModel.findMany({
+            where: whereClause,
+            orderBy: orderBy,
+            skip: (page - 1) * ITEMS_PER_PAGE,
+            take: ITEMS_PER_PAGE,
+            include: {
+                country: {
+                    select: { name: true }
+                }
+            },
+        }),
+        destinationModel.count({ where: whereClause }),
+    ])
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
     return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Destinations</h1>
-                    <p className="text-slate-500 mt-1">
-                        Manage specific destinations within countries
-                    </p>
-                </div>
-                <Link href="/denmar-portal/destinations/new">
-                    <Button className="bg-brand-success hover:bg-brand-secondary">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Destination
-                    </Button>
-                </Link>
-            </div>
-
+        <>
             {/* Table */}
             <div className="bg-white border border-slate-200 rounded-xl overflow-hidden overflow-x-auto shadow-sm">
-                {destinations.length === 0 ? (
+                {destinations.length === 0 && page === 1 && filter === "all" ? (
                     <div className="p-12 text-center">
                         <MapPin className="h-12 w-12 text-slate-600 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-slate-900 mb-2">
@@ -53,6 +102,10 @@ export default async function DestinationsPage() {
                                 Add Destination
                             </Button>
                         </Link>
+                    </div>
+                ) : destinations.length === 0 ? (
+                    <div className="p-12 text-center">
+                        <p className="text-slate-500">No destinations found matching your filters.</p>
                     </div>
                 ) : (
                     <table className="w-full min-w-[800px]">
@@ -76,7 +129,7 @@ export default async function DestinationsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200">
-                            {destinations.map((dest) => (
+                            {destinations.map((dest: any) => (
                                 <tr key={dest.id} className="hover:bg-slate-100/50 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
@@ -135,6 +188,63 @@ export default async function DestinationsPage() {
                     </table>
                 )}
             </div>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between">
+                <p className="text-sm text-slate-500">
+                    Showing {destinations.length > 0 ? (page - 1) * ITEMS_PER_PAGE + 1 : 0} to {Math.min(page * ITEMS_PER_PAGE, totalCount)} of {totalCount} destinations
+                </p>
+                <Suspense fallback={<div className="h-9" />}>
+                    <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        basePath="/denmar-portal/destinations"
+                    />
+                </Suspense>
+            </div>
+        </>
+    )
+}
+
+export default async function DestinationsPage({ searchParams }: PageProps) {
+    const params = await searchParams
+    const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
+    const sort = params.sort || "newest"
+    const filter = params.filter || "all"
+
+    return (
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">Destinations</h1>
+                    <p className="text-slate-500 mt-1">
+                        Manage specific destinations within countries
+                    </p>
+                </div>
+                <Link href="/denmar-portal/destinations/new">
+                    <Button className="bg-brand-success hover:bg-brand-secondary">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Destination
+                    </Button>
+                </Link>
+            </div>
+
+            {/* Filters */}
+            <div className="bg-white border border-slate-200 rounded-xl p-4">
+                <Suspense fallback={<div className="h-10" />}>
+                    <ListFilters
+                        sortOptions={SORT_OPTIONS}
+                        filterOptions={FILTER_OPTIONS}
+                        filterLabel="Status"
+                        defaultSort="newest"
+                    />
+                </Suspense>
+            </div>
+
+            <Suspense fallback={<div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-500">Loading destinations...</div>}>
+                <DestinationsList page={page} sort={sort} filter={filter} />
+            </Suspense>
         </div>
     )
 }

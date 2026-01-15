@@ -1,40 +1,95 @@
 import Link from "next/link"
+import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { Plus, MessageSquare, Pencil, Trash2, Eye, EyeOff, Star } from "lucide-react"
+import { Plus, MessageSquare, Pencil, Eye, EyeOff, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DeleteTestimonialButton } from "./delete-button"
+import { Pagination } from "@/components/admin/pagination"
+import { ListFilters } from "@/components/admin/list-filters"
 
-export default async function TestimonialsPage() {
-    const testimonials = await prisma.testimonial.findMany({
-        orderBy: [
-            { order: "asc" }
-        ],
-    })
+const ITEMS_PER_PAGE = 10
+
+const SORT_OPTIONS = [
+    { value: "order", label: "Display Order" },
+    { value: "newest", label: "Newest First" },
+    { value: "rating-desc", label: "Rating: High to Low" },
+    { value: "rating-asc", label: "Rating: Low to High" },
+]
+
+const FILTER_OPTIONS = [
+    { value: "active", label: "Published" },
+    { value: "hidden", label: "Hidden" },
+    { value: "featured", label: "Featured" },
+]
+
+interface PageProps {
+    searchParams: Promise<{ page?: string; sort?: string; filter?: string }>
+}
+
+function getOrderBy(sort: string) {
+    switch (sort) {
+        case "order":
+            return { order: "asc" as const }
+        case "newest":
+            return { createdAt: "desc" as const }
+        case "rating-desc":
+            return { rating: "desc" as const }
+        case "rating-asc":
+            return { rating: "asc" as const }
+        default:
+            return { order: "asc" as const }
+    }
+}
+
+function getWhereClause(filter: string) {
+    switch (filter) {
+        case "active":
+            return { isActive: true }
+        case "hidden":
+            return { isActive: false }
+        case "featured":
+            return { featured: true }
+        default:
+            return {}
+    }
+}
+
+async function TestimonialsList({ page, sort, filter }: { page: number; sort: string; filter: string }) {
+    const whereClause = getWhereClause(filter)
+    const orderBy = getOrderBy(sort)
+
+    const testimonialModel: any = prisma.testimonial
+
+    const [testimonials, totalCount] = await Promise.all([
+        testimonialModel.findMany({
+            where: whereClause,
+            orderBy: orderBy,
+            skip: (page - 1) * ITEMS_PER_PAGE,
+            take: ITEMS_PER_PAGE,
+        }),
+        testimonialModel.count({ where: whereClause }),
+    ])
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
     return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Testimonials</h1>
-                    <p className="text-slate-500 mt-1">
-                        Manage customer reviews and feedback
-                    </p>
-                </div>
-                <Link href="/denmar-portal/testimonials/new">
-                    <Button className="bg-brand-success hover:bg-brand-secondary">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Testimonial
-                    </Button>
-                </Link>
-            </div>
-
+        <>
             {/* List */}
             <div className="space-y-4">
-                {testimonials.length === 0 ? (
+                {testimonials.length === 0 && page === 1 && filter === "all" ? (
                     <div className="p-12 bg-white border border-slate-200 rounded-xl text-center text-slate-500">
                         <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-20" />
                         <p>No testimonials found. Add one to build trust!</p>
+                        <Link href="/denmar-portal/testimonials/new" className="mt-4 inline-block">
+                            <Button className="bg-brand-success hover:bg-brand-secondary">
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Testimonial
+                            </Button>
+                        </Link>
+                    </div>
+                ) : testimonials.length === 0 ? (
+                    <div className="p-12 bg-white border border-slate-200 rounded-xl text-center">
+                        <p className="text-slate-500">No testimonials found matching your filters.</p>
                     </div>
                 ) : (
                     testimonials.map((testimonial: any) => (
@@ -59,29 +114,29 @@ export default async function TestimonialsPage() {
                                     </div>
                                     <div className="flex items-center gap-1">
                                         {Array.from({ length: 5 }).map((_, i) => (
-                                            <Star key={i} className={`h-4 w-4 ${i < testimonial.rating ? "text-brand-accent fill-amber-400" : "text-slate-700"}`} />
+                                            <Star key={i} className={`h-4 w-4 ${i < testimonial.rating ? "text-brand-accent fill-amber-400" : "text-slate-200"}`} />
                                         ))}
                                     </div>
                                 </div>
 
                                 <p className="text-slate-700 italic">"{testimonial.content}"</p>
 
-                                <div className="pt-4 flex items-center gap-4">
+                                <div className="pt-4 flex items-center gap-4 text-xs">
                                     {testimonial.isActive ? (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                            <Eye className="h-2.5 w-2.5" /> Published
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                            <Eye className="h-3 w-3" /> Published
                                         </span>
                                     ) : (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-500 border border-slate-300">
-                                            <EyeOff className="h-2.5 w-2.5" /> Hidden
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium bg-slate-100 text-slate-500 border border-slate-300">
+                                            <EyeOff className="h-3 w-3" /> Hidden
                                         </span>
                                     )}
                                     {testimonial.featured && (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-brand-success/10 text-amber-500 border border-amber-500/20">
-                                            <Star className="h-2.5 w-2.5" /> Featured
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium bg-brand-success/10 text-amber-500 border border-amber-500/20">
+                                            <Star className="h-3 w-3" /> Featured
                                         </span>
                                     )}
-                                    <span className="text-[10px] text-slate-600">Order: {testimonial.order}</span>
+                                    <span className="text-slate-600">Order: {testimonial.order}</span>
                                 </div>
                             </div>
 
@@ -97,6 +152,63 @@ export default async function TestimonialsPage() {
                     ))
                 )}
             </div>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between mt-6">
+                <p className="text-sm text-slate-500">
+                    Showing {testimonials.length > 0 ? (page - 1) * ITEMS_PER_PAGE + 1 : 0} to {Math.min(page * ITEMS_PER_PAGE, totalCount)} of {totalCount} testimonials
+                </p>
+                <Suspense fallback={<div className="h-9" />}>
+                    <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        basePath="/denmar-portal/testimonials"
+                    />
+                </Suspense>
+            </div>
+        </>
+    )
+}
+
+export default async function TestimonialsPage({ searchParams }: PageProps) {
+    const params = await searchParams
+    const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
+    const sort = params.sort || "order"
+    const filter = params.filter || "all"
+
+    return (
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">Testimonials</h1>
+                    <p className="text-slate-500 mt-1">
+                        Manage customer reviews and feedback
+                    </p>
+                </div>
+                <Link href="/denmar-portal/testimonials/new">
+                    <Button className="bg-brand-success hover:bg-brand-secondary">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Testimonial
+                    </Button>
+                </Link>
+            </div>
+
+            {/* Filters */}
+            <div className="bg-white border border-slate-200 rounded-xl p-4">
+                <Suspense fallback={<div className="h-10" />}>
+                    <ListFilters
+                        sortOptions={SORT_OPTIONS}
+                        filterOptions={FILTER_OPTIONS}
+                        filterLabel="Status"
+                        defaultSort="order"
+                    />
+                </Suspense>
+            </div>
+
+            <Suspense fallback={<div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-500">Loading testimonials...</div>}>
+                <TestimonialsList page={page} sort={sort} filter={filter} />
+            </Suspense>
         </div>
     )
 }

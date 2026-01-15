@@ -1,38 +1,85 @@
+import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { History, User as UserIcon, Clock, HardDrive, Search } from "lucide-react"
+import { User as UserIcon, Clock } from "lucide-react"
 import { format } from "date-fns"
+import { Pagination } from "@/components/admin/pagination"
+import { ListFilters } from "@/components/admin/list-filters"
 
-export default async function AuditLogPage() {
-    const logs = await prisma.auditLog.findMany({
-        orderBy: { createdAt: "desc" },
-        include: {
-            user: {
-                select: { name: true, email: true }
-            }
-        },
-        take: 100, // Show last 100 logs
-    })
+const ITEMS_PER_PAGE = 20
 
-    const getActionColor = (action: string) => {
-        switch (action) {
-            case "create": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-            case "update": return "bg-brand-success/10 text-brand-accent border-amber-500/20"
-            case "delete": return "bg-red-500/10 text-red-400 border-red-500/20"
-            default: return "bg-slate-500/10 text-slate-500 border-slate-500/20"
-        }
+const SORT_OPTIONS = [
+    { value: "newest", label: "Newest First" },
+    { value: "oldest", label: "Oldest First" },
+]
+
+const FILTER_OPTIONS = [
+    { value: "create", label: "Creates" },
+    { value: "update", label: "Updates" },
+    { value: "delete", label: "Deletes" },
+]
+
+interface PageProps {
+    searchParams: Promise<{ page?: string; sort?: string; filter?: string }>
+}
+
+const getActionColor = (action: string) => {
+    switch (action) {
+        case "create": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+        case "update": return "bg-brand-success/10 text-brand-accent border-amber-500/20"
+        case "delete": return "bg-red-500/10 text-red-400 border-red-500/20"
+        default: return "bg-slate-500/10 text-slate-500 border-slate-500/20"
     }
+}
+
+function getOrderBy(sort: string) {
+    switch (sort) {
+        case "newest":
+            return { createdAt: "desc" as const }
+        case "oldest":
+            return { createdAt: "asc" as const }
+        default:
+            return { createdAt: "desc" as const }
+    }
+}
+
+function getWhereClause(filter: string) {
+    switch (filter) {
+        case "create":
+            return { action: "create" }
+        case "update":
+            return { action: "update" }
+        case "delete":
+            return { action: "delete" }
+        default:
+            return {}
+    }
+}
+
+async function AuditLogsList({ page, sort, filter }: { page: number; sort: string; filter: string }) {
+    const whereClause = getWhereClause(filter)
+    const orderBy = getOrderBy(sort)
+
+    const auditLogModel: any = prisma.auditLog
+
+    const [logs, totalCount] = await Promise.all([
+        auditLogModel.findMany({
+            where: whereClause,
+            orderBy: orderBy,
+            skip: (page - 1) * ITEMS_PER_PAGE,
+            take: ITEMS_PER_PAGE,
+            include: {
+                user: {
+                    select: { name: true, email: true }
+                }
+            },
+        }),
+        auditLogModel.count({ where: whereClause }),
+    ])
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Audit Logs</h1>
-                    <p className="text-slate-500 mt-1">
-                        Track all administrative actions and content changes
-                    </p>
-                </div>
-            </div>
-
+        <>
             <div className="bg-white border border-slate-200 rounded-xl overflow-hidden overflow-x-auto shadow-sm">
                 <table className="w-full min-w-[800px]">
                     <thead className="bg-slate-100/50">
@@ -65,8 +112,8 @@ export default async function AuditLogPage() {
                                                 <UserIcon className="h-4 w-4 text-slate-500" />
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className="text-sm text-slate-900 font-medium">{log.user.name}</span>
-                                                <span className="text-[10px] text-slate-500">{log.user.email}</span>
+                                                <span className="text-sm text-slate-900 font-medium">{log.user?.name || "Deleted User"}</span>
+                                                <span className="text-[10px] text-slate-500">{log.user?.email || "N/A"}</span>
                                             </div>
                                         </div>
                                     </td>
@@ -91,6 +138,56 @@ export default async function AuditLogPage() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between mt-6">
+                <p className="text-sm text-slate-500">
+                    Showing {logs.length > 0 ? (page - 1) * ITEMS_PER_PAGE + 1 : 0} to {Math.min(page * ITEMS_PER_PAGE, totalCount)} of {totalCount} logs
+                </p>
+                <Suspense fallback={<div className="h-9" />}>
+                    <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        basePath="/denmar-portal/audit-logs"
+                    />
+                </Suspense>
+            </div>
+        </>
+    )
+}
+
+export default async function AuditLogPage({ searchParams }: PageProps) {
+    const params = await searchParams
+    const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
+    const sort = params.sort || "newest"
+    const filter = params.filter || "all"
+
+    return (
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">Audit Logs</h1>
+                    <p className="text-slate-500 mt-1">
+                        Track all administrative actions and content changes
+                    </p>
+                </div>
+            </div>
+
+            {/* Filters */}
+            <div className="bg-white border border-slate-200 rounded-xl p-4">
+                <Suspense fallback={<div className="h-10" />}>
+                    <ListFilters
+                        sortOptions={SORT_OPTIONS}
+                        filterOptions={FILTER_OPTIONS}
+                        filterLabel="Action Type"
+                        defaultSort="newest"
+                    />
+                </Suspense>
+            </div>
+
+            <Suspense fallback={<div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-500">Loading logs...</div>}>
+                <AuditLogsList page={page} sort={sort} filter={filter} />
+            </Suspense>
         </div>
     )
 }

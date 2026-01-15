@@ -1,35 +1,73 @@
 import Link from "next/link"
+import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { Plus, LayoutTemplate, Pencil, Trash2, Eye, EyeOff, GripVertical } from "lucide-react"
+import { Plus, LayoutTemplate, Pencil, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DeleteHeroSlideButton } from "./delete-button"
+import { Pagination } from "@/components/admin/pagination"
+import { ListFilters } from "@/components/admin/list-filters"
 
-export default async function HeroSlidesPage() {
-    const slides = await prisma.heroSlide.findMany({
-        orderBy: { order: "asc" },
-    })
+const ITEMS_PER_PAGE = 6
+
+const SORT_OPTIONS = [
+    { value: "order", label: "Display Order" },
+    { value: "newest", label: "Newest First" },
+]
+
+const FILTER_OPTIONS = [
+    { value: "active", label: "Active" },
+    { value: "hidden", label: "Hidden" },
+]
+
+interface PageProps {
+    searchParams: Promise<{ page?: string; sort?: string; filter?: string }>
+}
+
+function getOrderBy(sort: string) {
+    switch (sort) {
+        case "order":
+            return { order: "asc" as const }
+        case "newest":
+            return { createdAt: "desc" as const }
+        default:
+            return { order: "asc" as const }
+    }
+}
+
+function getWhereClause(filter: string) {
+    switch (filter) {
+        case "active":
+            return { isActive: true }
+        case "hidden":
+            return { isActive: false }
+        default:
+            return {}
+    }
+}
+
+async function HeroSlidesList({ page, sort, filter }: { page: number; sort: string; filter: string }) {
+    const whereClause = getWhereClause(filter)
+    const orderBy = getOrderBy(sort)
+
+    const slideModel: any = prisma.heroSlide
+
+    const [slides, totalCount] = await Promise.all([
+        slideModel.findMany({
+            where: whereClause,
+            orderBy: orderBy,
+            skip: (page - 1) * ITEMS_PER_PAGE,
+            take: ITEMS_PER_PAGE,
+        }),
+        slideModel.count({ where: whereClause }),
+    ])
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
     return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Hero Slides</h1>
-                    <p className="text-slate-500 mt-1">
-                        Manage the homepage hero carousel slides
-                    </p>
-                </div>
-                <Link href="/denmar-portal/hero-slides/new">
-                    <Button className="bg-brand-success hover:bg-brand-secondary">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Slide
-                    </Button>
-                </Link>
-            </div>
-
+        <>
             {/* Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {slides.length === 0 ? (
+                {slides.length === 0 && page === 1 && filter === "all" ? (
                     <div className="md:col-span-2 lg:col-span-3 p-12 bg-white border border-slate-200 rounded-xl text-center">
                         <LayoutTemplate className="h-12 w-12 text-slate-600 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-slate-900 mb-2">
@@ -45,8 +83,12 @@ export default async function HeroSlidesPage() {
                             </Button>
                         </Link>
                     </div>
+                ) : slides.length === 0 ? (
+                    <div className="md:col-span-2 lg:col-span-3 p-12 bg-white border border-slate-200 rounded-xl text-center">
+                        <p className="text-slate-500">No slides found matching your filters.</p>
+                    </div>
                 ) : (
-                    slides.map((slide) => (
+                    slides.map((slide: any) => (
                         <div key={slide.id} className="group relative bg-white border border-slate-200 rounded-xl overflow-hidden">
                             <div className="aspect-video relative overflow-hidden">
                                 <img
@@ -64,11 +106,11 @@ export default async function HeroSlidesPage() {
                                 </div>
                                 <div className="absolute top-2 right-2 flex gap-1">
                                     {slide.isActive ? (
-                                        <span className="bg-emerald-500/90 text-slate-900 p-1 rounded-md shadow-lg">
+                                        <span className="bg-emerald-500/90 text-slate-100 p-1 rounded-md shadow-lg border border-black/10">
                                             <Eye className="h-4 w-4" />
                                         </span>
                                     ) : (
-                                        <span className="bg-slate-700/90 text-slate-900 p-1 rounded-md shadow-lg">
+                                        <span className="bg-slate-700/90 text-slate-100 p-1 rounded-md shadow-lg border border-black/10">
                                             <EyeOff className="h-4 w-4" />
                                         </span>
                                     )}
@@ -95,6 +137,63 @@ export default async function HeroSlidesPage() {
                     ))
                 )}
             </div>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between">
+                <p className="text-sm text-slate-500">
+                    Showing {slides.length > 0 ? (page - 1) * ITEMS_PER_PAGE + 1 : 0} to {Math.min(page * ITEMS_PER_PAGE, totalCount)} of {totalCount} slides
+                </p>
+                <Suspense fallback={<div className="h-9" />}>
+                    <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        basePath="/denmar-portal/hero-slides"
+                    />
+                </Suspense>
+            </div>
+        </>
+    )
+}
+
+export default async function HeroSlidesPage({ searchParams }: PageProps) {
+    const params = await searchParams
+    const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
+    const sort = params.sort || "order"
+    const filter = params.filter || "all"
+
+    return (
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">Hero Slides</h1>
+                    <p className="text-slate-500 mt-1">
+                        Manage the homepage hero carousel slides
+                    </p>
+                </div>
+                <Link href="/denmar-portal/hero-slides/new">
+                    <Button className="bg-brand-success hover:bg-brand-secondary">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Slide
+                    </Button>
+                </Link>
+            </div>
+
+            {/* Filters */}
+            <div className="bg-white border border-slate-200 rounded-xl p-4">
+                <Suspense fallback={<div className="h-10" />}>
+                    <ListFilters
+                        sortOptions={SORT_OPTIONS}
+                        filterOptions={FILTER_OPTIONS}
+                        filterLabel="Status"
+                        defaultSort="order"
+                    />
+                </Suspense>
+            </div>
+
+            <Suspense fallback={<div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-500">Loading slides...</div>}>
+                <HeroSlidesList page={page} sort={sort} filter={filter} />
+            </Suspense>
         </div>
     )
 }

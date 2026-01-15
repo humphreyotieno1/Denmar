@@ -1,38 +1,82 @@
 import Link from "next/link"
+import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { Plus, Wrench, Pencil, Trash2, Eye, EyeOff, Star } from "lucide-react"
+import { Plus, Wrench, Pencil, Eye, EyeOff, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DeleteServiceButton } from "./delete-button"
+import { Pagination } from "@/components/admin/pagination"
+import { ListFilters } from "@/components/admin/list-filters"
 
-export default async function ServicesPage() {
-    const services = await prisma.service.findMany({
-        orderBy: [
-            { order: "asc" },
-            { name: "asc" }
-        ],
-    })
+const ITEMS_PER_PAGE = 10
+
+const SORT_OPTIONS = [
+    { value: "order", label: "Display Order" },
+    { value: "newest", label: "Newest First" },
+    { value: "name-asc", label: "Name A-Z" },
+    { value: "name-desc", label: "Name Z-A" },
+]
+
+const FILTER_OPTIONS = [
+    { value: "active", label: "Active" },
+    { value: "hidden", label: "Hidden" },
+    { value: "featured", label: "Featured" },
+]
+
+interface PageProps {
+    searchParams: Promise<{ page?: string; sort?: string; filter?: string }>
+}
+
+function getOrderBy(sort: string) {
+    switch (sort) {
+        case "order":
+            return [{ order: "asc" as const }, { name: "asc" as const }]
+        case "newest":
+            return { createdAt: "desc" as const }
+        case "name-asc":
+            return { name: "asc" as const }
+        case "name-desc":
+            return { name: "desc" as const }
+        default:
+            return [{ order: "asc" as const }, { name: "asc" as const }]
+    }
+}
+
+function getWhereClause(filter: string) {
+    switch (filter) {
+        case "active":
+            return { isActive: true }
+        case "hidden":
+            return { isActive: false }
+        case "featured":
+            return { featured: true }
+        default:
+            return {}
+    }
+}
+
+async function ServicesList({ page, sort, filter }: { page: number; sort: string; filter: string }) {
+    const whereClause = getWhereClause(filter)
+    const orderBy = getOrderBy(sort)
+
+    const serviceModel: any = prisma.service
+
+    const [services, totalCount] = await Promise.all([
+        serviceModel.findMany({
+            where: whereClause,
+            orderBy: orderBy,
+            skip: (page - 1) * ITEMS_PER_PAGE,
+            take: ITEMS_PER_PAGE,
+        }),
+        serviceModel.count({ where: whereClause }),
+    ])
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
     return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Services</h1>
-                    <p className="text-slate-500 mt-1">
-                        Manage travel services and business offerings
-                    </p>
-                </div>
-                <Link href="/denmar-portal/services/new">
-                    <Button className="bg-brand-success hover:bg-brand-secondary">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Service
-                    </Button>
-                </Link>
-            </div>
-
+        <>
             {/* Table */}
             <div className="bg-white border border-slate-200 rounded-xl overflow-hidden overflow-x-auto shadow-sm">
-                {services.length === 0 ? (
+                {services.length === 0 && page === 1 && filter === "all" ? (
                     <div className="p-12 text-center">
                         <Wrench className="h-12 w-12 text-slate-600 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-slate-900 mb-2">
@@ -47,6 +91,10 @@ export default async function ServicesPage() {
                                 Add Service
                             </Button>
                         </Link>
+                    </div>
+                ) : services.length === 0 ? (
+                    <div className="p-12 text-center">
+                        <p className="text-slate-500">No services found matching your filters.</p>
                     </div>
                 ) : (
                     <table className="w-full min-w-[800px]">
@@ -70,7 +118,7 @@ export default async function ServicesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200">
-                            {services.map((service) => (
+                            {services.map((service: any) => (
                                 <tr key={service.id} className="hover:bg-slate-100/50 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
@@ -134,6 +182,63 @@ export default async function ServicesPage() {
                     </table>
                 )}
             </div>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between">
+                <p className="text-sm text-slate-500">
+                    Showing {services.length > 0 ? (page - 1) * ITEMS_PER_PAGE + 1 : 0} to {Math.min(page * ITEMS_PER_PAGE, totalCount)} of {totalCount} services
+                </p>
+                <Suspense fallback={<div className="h-9" />}>
+                    <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        basePath="/denmar-portal/services"
+                    />
+                </Suspense>
+            </div>
+        </>
+    )
+}
+
+export default async function ServicesPage({ searchParams }: PageProps) {
+    const params = await searchParams
+    const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
+    const sort = params.sort || "order"
+    const filter = params.filter || "all"
+
+    return (
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">Services</h1>
+                    <p className="text-slate-500 mt-1">
+                        Manage travel services and business offerings
+                    </p>
+                </div>
+                <Link href="/denmar-portal/services/new">
+                    <Button className="bg-brand-success hover:bg-brand-secondary">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Service
+                    </Button>
+                </Link>
+            </div>
+
+            {/* Filters */}
+            <div className="bg-white border border-slate-200 rounded-xl p-4">
+                <Suspense fallback={<div className="h-10" />}>
+                    <ListFilters
+                        sortOptions={SORT_OPTIONS}
+                        filterOptions={FILTER_OPTIONS}
+                        filterLabel="Status"
+                        defaultSort="order"
+                    />
+                </Suspense>
+            </div>
+
+            <Suspense fallback={<div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-500">Loading services...</div>}>
+                <ServicesList page={page} sort={sort} filter={filter} />
+            </Suspense>
         </div>
     )
 }

@@ -19,9 +19,15 @@ export async function GET(request: NextRequest) {
 
         const searchTerm = query.toLowerCase()
 
+        const packageModel: any = prisma.package
+        const destinationModel: any = prisma.destination
+        const dealModel: any = prisma.deal
+        const serviceModel: any = prisma.service
+        const countryModel: any = (prisma as any).country
+
         // Search across multiple entities in parallel
-        const [packages, destinations, deals, services] = await Promise.all([
-            prisma.package.findMany({
+        const [packages, destinations, deals, services, countries] = await Promise.all([
+            packageModel.findMany({
                 where: {
                     OR: [
                         { name: { contains: searchTerm, mode: "insensitive" } },
@@ -38,7 +44,7 @@ export async function GET(request: NextRequest) {
                 },
                 take: 5,
             }),
-            prisma.destination.findMany({
+            destinationModel.findMany({
                 where: {
                     OR: [
                         { name: { contains: searchTerm, mode: "insensitive" } },
@@ -52,7 +58,7 @@ export async function GET(request: NextRequest) {
                 },
                 take: 5,
             }),
-            prisma.deal.findMany({
+            dealModel.findMany({
                 where: {
                     OR: [
                         { title: { contains: searchTerm, mode: "insensitive" } },
@@ -66,7 +72,21 @@ export async function GET(request: NextRequest) {
                 },
                 take: 5,
             }),
-            prisma.service.findMany({
+            serviceModel.findMany({
+                where: {
+                    OR: [
+                        { name: { contains: searchTerm, mode: "insensitive" } },
+                        { slug: { contains: searchTerm, mode: "insensitive" } },
+                    ],
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                },
+                take: 5,
+            }),
+            countryModel.findMany({
                 where: {
                     OR: [
                         { name: { contains: searchTerm, mode: "insensitive" } },
@@ -84,28 +104,35 @@ export async function GET(request: NextRequest) {
 
         // Format results with type and link
         const results = [
-            ...packages.map((p: { id: string; name: string; slug: string; country: string }) => ({
+            ...packages.map((p: any) => ({
                 id: p.id,
                 type: "package" as const,
                 title: p.name,
                 subtitle: p.country,
                 href: `/denmar-portal/packages/${p.id}`,
             })),
-            ...destinations.map((d: { id: string; name: string; slug: string }) => ({
+            ...destinations.map((d: any) => ({
                 id: d.id,
                 type: "destination" as const,
                 title: d.name,
                 subtitle: d.slug,
                 href: `/denmar-portal/destinations/${d.id}`,
             })),
-            ...deals.map((d: { id: string; title: string; slug: string }) => ({
+            ...countries.map((c: any) => ({
+                id: c.id,
+                type: "country" as const,
+                title: c.name,
+                subtitle: c.slug,
+                href: `/denmar-portal/countries/${c.id}`,
+            })),
+            ...deals.map((d: any) => ({
                 id: d.id,
                 type: "deal" as const,
                 title: d.title,
                 subtitle: d.slug,
                 href: `/denmar-portal/deals/${d.id}`,
             })),
-            ...services.map((s: { id: string; name: string; slug: string }) => ({
+            ...services.map((s: any) => ({
                 id: s.id,
                 type: "service" as const,
                 title: s.name,
