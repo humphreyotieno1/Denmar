@@ -89,31 +89,38 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
                     <div className="max-w-6xl mx-auto px-4">
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             {/* Package Image */}
-                            <div className="lg:col-span-2">
+                            <div className="lg:col-span-2 flex justify-center lg:justify-start">
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.6 }}
-                                    className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden cursor-pointer group"
+                                    className="relative w-full max-w-[500px] aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer group shadow-2xl border-8 border-white"
                                     onClick={() => setIsImageModalOpen(true)}
                                 >
                                     <Image
                                         src={packageData.image}
                                         alt={packageData.name}
                                         fill
-                                        className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                                        sizes="(max-width: 1024px) 100vw, 66vw"
+                                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                        sizes="(max-width: 1024px) 100vw, 500px"
                                         priority
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                                    <div className="absolute inset-0 border border-black/5 rounded-[inherit]" />
 
                                     {/* Featured Badge */}
                                     {packageData.featured && (
-                                        <Badge className="absolute top-4 left-4 bg-brand-accent text-white border-0">
+                                        <Badge className="absolute top-4 left-4 bg-brand-accent text-white border-0 shadow-lg">
                                             Featured Package
                                         </Badge>
                                     )}
+
+                                    {/* Zoom Hint */}
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 backdrop-blur-[2px]">
+                                        <div className="bg-white/90 text-brand-primary px-4 py-2 rounded-full font-medium text-sm shadow-xl">
+                                            Click to view full poster
+                                        </div>
+                                    </div>
                                 </motion.div>
                             </div>
 
@@ -443,31 +450,28 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
 
                         {/* Scrollable image container */}
                         <div
-                            className="w-full h-full overflow-auto flex items-center justify-center"
+                            className="w-full h-full flex items-center justify-center p-4 md:p-12"
                             onClick={(e) => e.stopPropagation()}
-                            onWheel={(e) => e.stopPropagation()}
-                            onTouchMove={(e) => e.stopPropagation()}
                         >
-                            <div className="min-w-full min-h-full flex items-center justify-center p-4">
-                                <div className="relative">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="relative w-full max-w-[700px] aspect-[4/5] bg-white p-3 md:p-6 rounded-sm shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-gray-200"
+                            >
+                                <div className="relative w-full h-full bg-slate-100 rounded-[2px] overflow-hidden">
                                     <Image
                                         src={packageData.image}
                                         alt={packageData.name}
-                                        width={0}
-                                        height={0}
-                                        sizes="100vw"
-                                        className="w-auto h-auto object-contain rounded-lg shadow-2xl"
-                                        style={{
-                                            width: 'auto',
-                                            height: 'auto',
-                                            minWidth: '200px',
-                                            minHeight: '200px',
-                                            maxWidth: 'none',
-                                            maxHeight: 'none'
-                                        }}
+                                        fill
+                                        className="object-contain"
+                                        sizes="(max-width: 768px) 95vw, 700px"
+                                        quality={100}
                                     />
                                 </div>
-                            </div>
+                                <div className="mt-4 md:mt-8 text-center text-slate-800 font-serif italic text-sm md:text-base tracking-widest opacity-80 select-none">
+                                    DENMAR HOLIDAYS & SAFARIS • PORTFOLIO SERIES
+                                </div>
+                            </motion.div>
                         </div>
 
                         {/* Click outside to close hint */}
