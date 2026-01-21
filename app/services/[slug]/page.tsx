@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { FloatingActions } from "@/components/floating-actions"
 import { Breadcrumbs } from "@/components/breadcrumbs"
-import { getServiceBySlug } from "@/lib/services"
+
 import { useState, useEffect, use } from "react"
 import { Star, CheckCircle, Clock, DollarSign, ArrowRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -28,12 +28,21 @@ export default function ServicePage({ params }: ServicePageProps) {
   const serviceSlug = unwrappedParams.slug
 
   useEffect(() => {
-    // Fetch service data
-    const serviceData = getServiceBySlug(serviceSlug)
-    if (!serviceData) {
-      notFound()
-    }
-    setService(serviceData)
+    // Fetch service data from API
+    fetch(`/api/services/${serviceSlug}`)
+      .then(res => {
+        if (!res.ok) {
+          if (res.status === 404) notFound()
+          throw new Error("Failed to fetch service")
+        }
+        return res.json()
+      })
+      .then(data => {
+        setService(data)
+      })
+      .catch(err => {
+        console.error("Failed to fetch service:", err)
+      })
 
     // Fetch site settings
     fetch('/api/denmar-portal/settings')

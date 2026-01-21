@@ -18,7 +18,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     return null
                 }
 
-                const user = await prisma.adminUser.findUnique({
+                const modelAdminUser: any = prisma.adminUser
+                const user = await modelAdminUser.findUnique({
                     where: { email: credentials.email as string },
                 })
 
@@ -36,7 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
 
                 // Update last login
-                await prisma.adminUser.update({
+                await modelAdminUser.update({
                     where: { id: user.id },
                     data: { lastLoginAt: new Date() },
                 })

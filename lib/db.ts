@@ -3,7 +3,7 @@ import { withAccelerate } from '@prisma/extension-accelerate'
 
 // Prevent multiple instances of Prisma Client in development
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
+  prisma: any
 }
 
 const prismaClient = globalForPrisma.prisma ??

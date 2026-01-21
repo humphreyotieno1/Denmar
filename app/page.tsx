@@ -58,47 +58,57 @@ import { TestimonialsSection } from "@/components/testimonials-section"
 // import { ServicesGrid } from "@/components/services-grid"
 
 export default async function HomePage() {
-  const [slides, settings, destinations, packages, testimonials, popups, services] = await Promise.all([
-    prisma.heroSlide.findMany({
+  const modelHero: any = prisma.heroSlide
+  const modelSettings: any = prisma.siteSettings
+  const modelDestination: any = prisma.destination
+  const modelPackage: any = prisma.package
+  const modelTestimonial: any = prisma.testimonial
+  const modelPopup: any = prisma.dealsPopup
+  const modelCountry: any = prisma.country
+
+  const [slides, settings, destinations, packages, testimonials, popups, countries] = await Promise.all([
+    modelHero.findMany({
       where: { isActive: true },
       orderBy: { order: "asc" },
     }),
-    prisma.siteSettings.findUnique({
+    modelSettings.findUnique({
       where: { id: "settings" },
     }),
-    prisma.destination.findMany({
+    modelDestination.findMany({
       where: { isActive: true },
       orderBy: { order: "asc" },
       take: 8,
     }),
-    prisma.package.findMany({
+    modelPackage.findMany({
       where: { isActive: true, featured: true },
       orderBy: { order: "asc" },
       take: 6,
     }),
-    prisma.testimonial.findMany({
+    modelTestimonial.findMany({
       where: { isActive: true },
       orderBy: { createdAt: "desc" },
       take: 10,
     }),
-    prisma.dealsPopup.findMany({
+    modelPopup.findMany({
       where: { isActive: true },
       orderBy: { priority: "desc" },
     }),
-    prisma.service.findMany({
+    modelCountry.findMany({
       where: { isActive: true },
+      include: { destinations: { where: { isActive: true } } },
       orderBy: { order: "asc" },
-    })
+    }),
   ])
 
   // Filter festive packages manually or with a query if category is used
-  const festivePackages = await prisma.package.findMany({
+  const festivePackages = await modelPackage.findMany({
     where: { isActive: true, category: "Adventure" },
     orderBy: { order: "asc" },
     take: 6,
   })
 
-  // Map services to match interface
+  // Map services to match interface (Commented out as ServicesGrid is commented out)
+  /*
   const formattedServices = services.map((s: any) => ({
     ...s,
     features: s.features as unknown as string[],
@@ -107,11 +117,12 @@ export default async function HomePage() {
     price: s.price || undefined,
     duration: s.duration || undefined,
   }))
+  */
 
   return (
     <div className="min-h-screen overflow-x-hidden">
       <TopBanner settings={settings} />
-      <Navbar settings={settings} />
+      <Navbar settings={settings} countries={countries as any} />
 
       <main className="pt-2">
         <HeroSection

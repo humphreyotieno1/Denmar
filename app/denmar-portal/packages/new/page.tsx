@@ -2,7 +2,8 @@ import { prisma } from "@/lib/db"
 import { PackageForm } from "../package-form"
 
 export default async function NewPackagePage() {
-    const destinations = await prisma.destination.findMany({
+    const modelDestination: any = prisma.destination
+    const destinations = await modelDestination.findMany({
         orderBy: { name: "asc" },
         select: {
             slug: true,
@@ -13,7 +14,7 @@ export default async function NewPackagePage() {
         }
     })
 
-    const formattedDestinations = destinations.map(d => ({
+    const formattedDestinations = destinations.map((d: any) => ({
         slug: d.slug,
         name: d.name,
         countryName: d.country.name

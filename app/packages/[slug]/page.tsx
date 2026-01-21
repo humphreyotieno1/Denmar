@@ -12,15 +12,21 @@ interface PackagePageProps {
 export default async function PackagePage({ params }: PackagePageProps) {
   const { slug } = await params
 
-  const [packageData, settings, relatedPackagesData] = await Promise.all([
-    prisma.package.findUnique({
+  const modelPackage: any = prisma.package
+  const modelSettings: any = prisma.siteSettings
+  const modelCountry: any = prisma.country
+
+  const [packageData, settings, countries] = await Promise.all([
+    modelPackage.findUnique({
       where: { slug: slug },
     }),
-    prisma.siteSettings.findUnique({
+    modelSettings.findUnique({
       where: { id: "settings" },
     }),
-    prisma.package.findMany({
-      where: { isActive: true }, // We'll filter by category in memory or fetch all and filter, better to fetch category first but let's do this simply for now or fetch by category if packageData exists
+    modelCountry.findMany({
+      where: { isActive: true },
+      include: { destinations: { where: { isActive: true } } },
+      orderBy: { order: "asc" },
     })
   ])
 
@@ -41,6 +47,6 @@ export default async function PackagePage({ params }: PackagePageProps) {
   // Cast packageData to Package type
   const pkg = packageData as unknown as Package
 
-  return <PackageDetails packageData={pkg} relatedPackages={relatedPackages} settings={settings} />
+  return <PackageDetails packageData={pkg} relatedPackages={relatedPackages} settings={settings} navCountries={countries} />
 }
 

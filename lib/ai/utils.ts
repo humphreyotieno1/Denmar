@@ -32,10 +32,11 @@ export function createSystemPrompt(
   const context = documents
     .map((doc, index) => {
       let metadataSnippet = ""
+      const metadata = doc.metadata as any
       if (doc.source === "package") {
-        metadataSnippet = `Category: ${doc.metadata?.category}, Destination: ${doc.metadata?.destinationSlug}, Duration: ${doc.metadata?.duration}, Price: ${doc.metadata?.price}`
+        metadataSnippet = `Category: ${metadata?.category}, Destination: ${metadata?.destinationSlug}, Duration: ${metadata?.duration}, Price: ${metadata?.price}`
       } else if (doc.source === "destination") {
-        metadataSnippet = `Country: ${doc.metadata?.countrySlug}, Tags: ${(doc.metadata?.tags || []).join(", ")}, Best time: ${doc.metadata?.bestTime}`
+        metadataSnippet = `Country: ${metadata?.countrySlug}, Tags: ${(metadata?.tags || []).join(", ")}, Best time: ${metadata?.bestTime}`
       }
 
       return `Context ${index + 1} (similarity ${doc.similarity.toFixed(2)}): ${doc.title}. ${doc.content}. ${metadataSnippet}`

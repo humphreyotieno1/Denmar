@@ -11,132 +11,12 @@ import { TopBanner } from "./top-banner"
 import { usePathname, useRouter } from "next/navigation"
 
 // Grouped destinations for better organization
-const groupedDestinations = [
-  {
-    region: "Africa & Indian Ocean",
-    destinations: [
-      {
-        name: "Kenya", href: "/destinations/kenya", image: "/top/amboseli.jpg", subDestinations: [
-          { name: "Mombasa", href: "/destinations/kenya/mombasa" },
-          { name: "Diani Beach", href: "/destinations/kenya/diani" },
-          { name: "Nairobi", href: "/destinations/kenya/nairobi" },
-          { name: "Amboseli", href: "/destinations/kenya/amboseli" },
-          { name: "Lake Naivasha", href: "/destinations/kenya/naivasha" },
-        ]
-      },
-      {
-        name: "Tanzania", href: "/destinations/tanzania", image: "/top/zanzibar.jpg", subDestinations: [
-          { name: "Zanzibar", href: "/destinations/tanzania/zanzibar" },
-        ]
-      },
-      {
-        name: "South Africa", href: "/destinations/south-africa", image: "/denmar3.jpeg", subDestinations: [
-          { name: "Cape Town", href: "/destinations/south-africa/cape-town" },
-        ]
-      },
-      {
-        name: "Seychelles", href: "/destinations/seychelles", image: "/denmar2.jpeg", subDestinations: [
-          { name: "Mahe Island", href: "/destinations/seychelles/mahe" },
-        ]
-      },
-      {
-        name: "Mauritius", href: "/destinations/mauritius", image: "/denmar1.jpeg", subDestinations: [
-          { name: "Port Louis", href: "/destinations/mauritius/port-louis" },
-        ]
-      },
-    ],
-  },
-  {
-    region: "Asia & Middle East",
-    destinations: [
-      {
-        name: "UAE", href: "/destinations/uae", image: "/top/dubai.jpg", subDestinations: [
-          { name: "Dubai", href: "/destinations/uae/dubai" },
-        ]
-      },
-      {
-        name: "Thailand", href: "/destinations/thailand", image: "/top/thailand.jpg", subDestinations: [
-          { name: "Bangkok", href: "/destinations/thailand/bangkok" },
-        ]
-      },
-      {
-        name: "China", href: "/destinations/china", image: "/top/china.jpg", subDestinations: [
-          { name: "Beijing", href: "/destinations/china/beijing" },
-        ]
-      },
-      {
-        name: "Singapore", href: "/destinations/singapore", image: "/top/singapore.jpg", subDestinations: [
-          { name: "Singapore City", href: "/destinations/singapore/singapore-city" },
-        ]
-      },
-      {
-        name: "Malaysia", href: "/destinations/malaysia", image: "/top/malaysia.jpg", subDestinations: [
-          { name: "Kuala Lumpur", href: "/destinations/malaysia/kuala-lumpur" },
-        ]
-      },
-      {
-        name: "Maldives", href: "/destinations/maldives", image: "/top/maldives.jpg", subDestinations: [
-          { name: "Male", href: "/destinations/maldives/male" },
-        ]
-      },
-    ],
-  },
-  {
-    region: "Europe",
-    destinations: [
-      {
-        name: "Europe", href: "/destinations/europe", image: "/top/paris.jpg", subDestinations: [
-          { name: "Paris", href: "/destinations/europe/paris" },
-        ]
-      },
-      {
-        name: "Italy", href: "/destinations/italy", image: "/top/italy.jpg", subDestinations: [
-          { name: "Rome", href: "/destinations/italy/rome" },
-        ]
-      },
-      {
-        name: "Turkey", href: "/destinations/turkey", image: "/top/turkey.jpg", subDestinations: [
-          { name: "Istanbul", href: "/destinations/turkey/istanbul" },
-        ]
-      },
-    ],
-  },
-]
-
-// Global search data
-const globalSearchData = [
-  // Destinations
-  { type: "destination", name: "Mombasa", href: "/destinations/kenya/mombasa", image: "/top/mombasa.jpg" },
-  { type: "destination", name: "Diani Beach", href: "/destinations/kenya/diani", image: "/top/diani.jpg" },
-  { type: "destination", name: "Amboseli", href: "/destinations/kenya/amboseli", image: "/top/amboseli.jpg" },
-  { type: "destination", name: "Lake Naivasha", href: "/destinations/kenya/naivasha", image: "/top/naivasha.jpg" },
-  { type: "destination", name: "Tsavo", href: "/destinations/kenya/tsavo", image: "/top/tsavo.jpg" },
-  { type: "destination", name: "Samburu", href: "/destinations/kenya/samburu", image: "/top/samburu.jpg" },
-  { type: "destination", name: "Malindi", href: "/destinations/kenya/malindi", image: "/top/malindi.jpg" },
-  { type: "destination", name: "Zanzibar", href: "/destinations/tanzania/zanzibar", image: "/denmar2.jpeg" },
-  { type: "destination", name: "Cape Town", href: "/destinations/south-africa/cape-town", image: "/denmar3.jpeg" },
-  { type: "destination", name: "Dubai", href: "/destinations/uae/dubai", image: "/denmar2.jpeg" },
-  { type: "destination", name: "Bangkok", href: "/destinations/thailand/bangkok", image: "/denmar1.jpeg" },
-  { type: "destination", name: "Paris", href: "/destinations/europe/paris", image: "/denmar3.jpeg" },
-  { type: "destination", name: "Rome", href: "/destinations/italy/rome", image: "/denmar2.jpeg" },
-  { type: "destination", name: "Istanbul", href: "/destinations/turkey/istanbul", image: "/denmar1.jpeg" },
-  // Services
-  { type: "service", name: "Flight Booking", href: "/services", image: "/denmar1.jpeg" },
-  { type: "service", name: "Hotel Reservations", href: "/services", image: "/denmar2.jpeg" },
-  { type: "service", name: "Tour Packages", href: "/services", image: "/denmar3.jpeg" },
-  { type: "service", "name": "Car Rental", href: "/services", image: "/denmar1.jpeg" },
-  { type: "service", name: "Travel Insurance", href: "/services", image: "/denmar2.jpeg" },
-  // Deals
-  { type: "deal", name: "Kenya Safari Package", href: "/deals", image: "/top/amboseli.jpg" },
-  { type: "deal", name: "Beach Holiday Special", href: "/deals", image: "/top/diani.jpg" },
-  { type: "deal", name: "City Break Deals", href: "/deals", image: "/denmar3.jpeg" },
-]
-
 interface NavbarProps {
   settings: any
+  countries?: any[]
 }
 
-export function Navbar({ settings }: NavbarProps) {
+export function Navbar({ settings, countries = [] }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false)
@@ -152,8 +32,58 @@ export function Navbar({ settings }: NavbarProps) {
   const desktopMenuRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  // Memoize grouped destinations to prevent re-renders
-  const memoizedDestinations = useMemo(() => groupedDestinations, [])
+  // Format countries and destinations for the UI
+  const memoizedDestinations = useMemo(() => {
+    // Group countries by region
+    const groups: Record<string, any> = {}
+
+    countries.forEach(country => {
+      const region = country.region || "Other"
+      if (!groups[region]) {
+        groups[region] = {
+          region,
+          destinations: []
+        }
+      }
+
+      groups[region].destinations.push({
+        name: country.name,
+        href: `/destinations/${country.slug}`,
+        image: country.heroImage || "/placeholder.svg",
+        subDestinations: country.destinations?.map((d: any) => ({
+          name: d.name,
+          href: `/destinations/${country.slug}/${d.slug}`
+        })) || []
+      })
+    })
+
+    return Object.values(groups)
+  }, [countries])
+
+  // Flatten for global search fallback
+  const searchItems = useMemo(() => {
+    const items: any[] = []
+
+    countries.forEach(country => {
+      items.push({
+        type: "country",
+        name: country.name,
+        href: `/destinations/${country.slug}`,
+        image: country.heroImage || "/placeholder.svg"
+      })
+
+      country.destinations?.forEach((d: any) => {
+        items.push({
+          type: "destination",
+          name: d.name,
+          href: `/destinations/${country.slug}/${d.slug}`,
+          image: d.heroImage || d.images?.[0] || country.heroImage || "/placeholder.svg"
+        })
+      })
+    })
+
+    return items
+  }, [countries])
   const featuredColumns = useMemo(
     () =>
       memoizedDestinations.map((group) => ({
@@ -266,23 +196,23 @@ export function Navbar({ settings }: NavbarProps) {
   const toggleGlobalSearch = () => setIsGlobalSearchOpen(!isGlobalSearchOpen)
 
   // Filter global search results
-  const filteredGlobalSearch = globalSearchData.filter(item =>
+  const filteredGlobalSearch = searchItems.filter(item =>
     item.name.toLowerCase().includes(globalSearchQuery.toLowerCase())
   )
 
   // Filter destinations for mini search (independent from global search)
   const filteredDestinations = memoizedDestinations
     .flatMap((group) =>
-      group.destinations.flatMap((dest) => {
+      group.destinations.flatMap((dest: any) => {
         const mainMatch = dest.name.toLowerCase().includes(destinationsSearchQuery.toLowerCase())
-        const subMatches = dest.subDestinations?.filter((sub) =>
+        const subMatches = dest.subDestinations?.filter((sub: any) =>
           sub.name.toLowerCase().includes(destinationsSearchQuery.toLowerCase())
         ) || []
 
         if (mainMatch) {
           return [dest]
         } else if (subMatches.length > 0) {
-          return subMatches.map(sub => ({
+          return subMatches.map((sub: any) => ({
             ...dest,
             name: sub.name,
             href: sub.href,
@@ -482,7 +412,7 @@ export function Navbar({ settings }: NavbarProps) {
                       {column.title}
                     </h4>
                     <ul className="space-y-3">
-                      {column.items.map((destination) => (
+                      {column.items.map((destination: any) => (
                         <li key={destination.name}>
                           <Link
                             href={destination.href}
@@ -499,7 +429,7 @@ export function Navbar({ settings }: NavbarProps) {
                               </span>
                               {destination.subDestinations?.length ? (
                                 <span className="block text-xs text-[#948d74]">
-                                  {destination.subDestinations.map((sub) => sub.name).join(" · ")}
+                                  {destination.subDestinations.map((sub: any) => sub.name).join(" · ")}
                                 </span>
                               ) : null}
                             </div>
@@ -686,7 +616,7 @@ export function Navbar({ settings }: NavbarProps) {
                         <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide px-2">
                           {group.region}
                         </h3>
-                        {group.destinations.map((destination) => (
+                        {group.destinations.map((destination: any) => (
                           <div key={destination.name}>
                             <MobileNavLink
                               href={destination.href}
@@ -705,7 +635,7 @@ export function Navbar({ settings }: NavbarProps) {
                             </MobileNavLink>
                             {destination.subDestinations && destination.subDestinations.length > 0 && (
                               <div className="ml-6 mt-1 space-y-1">
-                                {destination.subDestinations.map((subDest) => (
+                                {destination.subDestinations.map((subDest: any) => (
                                   <MobileNavLink
                                     key={subDest.name}
                                     href={subDest.href}

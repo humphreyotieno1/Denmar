@@ -23,18 +23,29 @@ import { Deal } from "@/lib/services"
 export const dynamic = 'force-dynamic'
 
 export default async function DealsPage() {
-  const [dealsData, settings] = await Promise.all([
-    prisma.deal.findMany({
+  const modelDeal: any = prisma.deal
+  const modelSettings: any = prisma.siteSettings
+  const modelCountry: any = prisma.country
+
+
+
+  const [dealsData, settings, countries] = await Promise.all([
+    modelDeal.findMany({
       where: { isActive: true },
       orderBy: { order: "asc" },
     }),
-    prisma.siteSettings.findUnique({
+    modelSettings.findUnique({
       where: { id: "settings" },
+    }),
+    modelCountry.findMany({
+      where: { isActive: true },
+      include: { destinations: { where: { isActive: true } } },
+      orderBy: { order: "asc" },
     })
   ])
 
   // Map to Deal interface
-  const deals: Deal[] = dealsData.map(d => ({
+  const deals: Deal[] = dealsData.map((d: any) => ({
     ...d,
     validUntil: d.validUntil.toISOString(), // Convert Date to string
     destinations: d.destinations as unknown as string[],
@@ -46,7 +57,7 @@ export default async function DealsPage() {
   return (
     <div className="min-h-screen overflow-x-hidden">
       <TopBanner settings={settings} />
-      <Navbar settings={settings} />
+      <Navbar settings={settings} countries={countries as any} />
 
       <main>
         <DealsHero />

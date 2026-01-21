@@ -21,12 +21,21 @@ interface DealPageProps {
 export default async function DealPage({ params }: DealPageProps) {
   const { slug } = await params
 
-  const [dealData, settings] = await Promise.all([
-    prisma.deal.findUnique({
-      where: { slug },
+  const modelDeal: any = prisma.deal
+  const modelSettings: any = prisma.siteSettings
+  const modelCountry: any = prisma.country
+
+  const [dealData, settings, countries] = await Promise.all([
+    modelDeal.findUnique({
+      where: { slug: slug },
     }),
-    prisma.siteSettings.findUnique({
+    modelSettings.findUnique({
       where: { id: "settings" },
+    }),
+    modelCountry.findMany({
+      where: { isActive: true },
+      include: { destinations: { where: { isActive: true } } },
+      orderBy: { order: "asc" },
     })
   ])
 
@@ -65,7 +74,7 @@ export default async function DealPage({ params }: DealPageProps) {
   return (
     <div className="min-h-screen overflow-x-hidden">
       <TopBanner settings={settings} />
-      <Navbar settings={settings} />
+      <Navbar settings={settings} countries={countries as any} />
 
       <main>
         {/* Hero Section */}

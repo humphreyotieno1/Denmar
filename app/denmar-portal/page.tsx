@@ -235,7 +235,7 @@ export default async function AdminDashboard() {
                     </p>
                 ) : (
                     <div className="space-y-3">
-                        {recentActivity.map((log) => (
+                        {recentActivity.map((log: any) => (
                             <div
                                 key={log.id}
                                 className={`flex items-start gap-3 p-3 rounded-lg border ${getActionColor(log.action)}`}

@@ -20,9 +20,10 @@ interface DestinationContentProps {
     packages: any[]
     relatedDestinations: any[]
     settings?: any
+    navCountries?: any[]
 }
 
-export function DestinationContent({ country, destination, packages, relatedDestinations, settings }: DestinationContentProps) {
+export function DestinationContent({ country, destination, packages, relatedDestinations, settings, navCountries }: DestinationContentProps) {
     const formatPrice = (price: number) => {
         return `$${price.toLocaleString()}`
     }
@@ -30,7 +31,7 @@ export function DestinationContent({ country, destination, packages, relatedDest
     return (
         <div className="min-h-screen overflow-x-hidden">
             <TopBanner settings={settings} />
-            <Navbar settings={settings} />
+            <Navbar settings={settings} countries={navCountries} />
 
             <main>
                 {/* Hero Section */}

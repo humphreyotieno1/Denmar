@@ -21,9 +21,10 @@ interface PackageDetailsProps {
     packageData: Package
     relatedPackages: Package[]
     settings: any
+    navCountries?: any[]
 }
 
-export function PackageDetails({ packageData, relatedPackages, settings }: PackageDetailsProps) {
+export function PackageDetails({ packageData, relatedPackages, settings, navCountries }: PackageDetailsProps) {
     const [activeTab, setActiveTab] = useState("overview")
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 
@@ -74,7 +75,7 @@ export function PackageDetails({ packageData, relatedPackages, settings }: Packa
     return (
         <div className="min-h-screen overflow-x-hidden">
             <TopBanner settings={settings} />
-            <Navbar settings={settings} />
+            <Navbar settings={settings} countries={navCountries} />
 
             <main className="pt-16">
                 {/* Breadcrumbs */}

@@ -1,14 +1,18 @@
-import { getPackageBySlug } from "@/lib/services"
+import { prisma } from "@/lib/db"
 import type { Metadata } from "next"
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const packageData = getPackageBySlug(slug)
-  
+
+  const modelPackage: any = prisma.package
+  const packageData = await modelPackage.findUnique({
+    where: { slug }
+  })
+
   if (!packageData) {
     return {
       title: "Travel Package - Denmar Tours & Travel",
@@ -19,7 +23,7 @@ export async function generateMetadata({
   return {
     title: `${packageData.name} - Travel Package | Denmar Travel`,
     description: `${packageData.shortDescription}. Duration: ${packageData.duration}. Price: ${packageData.price}. Book with Denmar Tours & Travel.`,
-    keywords: `${packageData.name}, ${packageData.destination} travel packages, ${packageData.category} packages, ${packageData.duration} trips, ${packageData.country} holidays`,
+    keywords: `${packageData.name}, ${packageData.destinationSlug} travel packages, ${packageData.category} packages, ${packageData.duration} trips, ${packageData.countryShortCode || ''} holidays`,
     openGraph: {
       title: `${packageData.name} - Travel Package`,
       description: packageData.shortDescription,

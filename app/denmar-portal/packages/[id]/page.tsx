@@ -9,11 +9,14 @@ interface EditPackagePageProps {
 export default async function EditPackagePage({ params }: EditPackagePageProps) {
     const { id } = await params
 
+    const modelPackage: any = prisma.package
+    const modelDestination: any = prisma.destination
+
     const [pkg, destinations] = await Promise.all([
-        prisma.package.findUnique({
+        modelPackage.findUnique({
             where: { id },
         }),
-        prisma.destination.findMany({
+        modelDestination.findMany({
             orderBy: { name: "asc" },
             select: {
                 slug: true,
@@ -29,7 +32,7 @@ export default async function EditPackagePage({ params }: EditPackagePageProps) 
         notFound()
     }
 
-    const formattedDestinations = destinations.map(d => ({
+    const formattedDestinations = destinations.map((d: any) => ({
         slug: d.slug,
         name: d.name,
         countryName: d.country.name

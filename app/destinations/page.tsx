@@ -21,20 +21,28 @@ export const metadata: Metadata = {
 import { prisma } from "@/lib/db"
 
 export default async function DestinationsPage() {
-  const [countries, settings] = await Promise.all([
-    prisma.country.findMany({
+  const modelCountry: any = prisma.country
+  const modelSettings: any = prisma.siteSettings
+
+  const [countriesData, settings, allCountriesForNav] = await Promise.all([
+    modelCountry.findMany({
       where: { isActive: true },
       orderBy: { order: "asc" },
     }),
-    prisma.siteSettings.findUnique({
+    modelSettings.findUnique({
       where: { id: "settings" },
     }),
+    modelCountry.findMany({
+      where: { isActive: true },
+      include: { destinations: { where: { isActive: true } } },
+      orderBy: { order: "asc" },
+    })
   ])
 
   return (
     <div className="min-h-screen overflow-x-hidden">
       <TopBanner settings={settings} />
-      <Navbar settings={settings} />
+      <Navbar settings={settings} countries={allCountriesForNav as any} />
 
       <main>
         <DestinationsBanner />
@@ -45,7 +53,7 @@ export default async function DestinationsPage() {
           </div>
         }>
           <CountryGrid
-            countries={countries as any}
+            countries={countriesData as any}
             showViewAll={false}
             enablePagination
             pageSize={12}

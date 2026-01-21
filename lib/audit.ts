@@ -34,12 +34,13 @@ export async function createAuditLog({
     oldData,
     newData,
 }: CreateAuditLogParams) {
+    const modelAuditLog: any = prisma.auditLog
     try {
         const headersList = await headers()
         const ipAddress = headersList.get("x-forwarded-for") || headersList.get("x-real-ip") || "unknown"
         const userAgent = headersList.get("user-agent") || undefined
 
-        await prisma.auditLog.create({
+        await modelAuditLog.create({
             data: {
                 userId,
                 action,
@@ -59,7 +60,8 @@ export async function createAuditLog({
 }
 
 export async function getRecentAuditLogs(limit: number = 20) {
-    return prisma.auditLog.findMany({
+    const modelAuditLog: any = prisma.auditLog
+    return modelAuditLog.findMany({
         take: limit,
         orderBy: { createdAt: "desc" },
         include: {
@@ -74,7 +76,8 @@ export async function getRecentAuditLogs(limit: number = 20) {
 }
 
 export async function getAuditLogsForEntity(entityType: AuditEntityType, entityId: string) {
-    return prisma.auditLog.findMany({
+    const modelAuditLog: any = prisma.auditLog
+    return modelAuditLog.findMany({
         where: {
             entityType,
             entityId,

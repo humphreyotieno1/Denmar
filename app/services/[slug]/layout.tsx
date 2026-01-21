@@ -1,14 +1,18 @@
-import { getServiceBySlug } from "@/lib/services"
+import { prisma } from "@/lib/db"
 import type { Metadata } from "next"
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const service = getServiceBySlug(slug)
-  
+
+  const modelService: any = prisma.service
+  const service = await modelService.findUnique({
+    where: { slug }
+  })
+
   if (!service) {
     return {
       title: "Travel Service - Denmar Tours & Travel",

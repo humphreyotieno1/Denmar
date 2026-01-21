@@ -23,18 +23,21 @@ import { Service } from "@/lib/services"
 export const dynamic = 'force-dynamic'
 
 export default async function ServicesPage() {
+  const modelService: any = prisma.service
+  const modelSettings: any = prisma.siteSettings
+
   const [servicesData, settings] = await Promise.all([
-    prisma.service.findMany({
+    modelService.findMany({
       where: { isActive: true },
       orderBy: { order: "asc" },
     }),
-    prisma.siteSettings.findUnique({
+    modelSettings.findUnique({
       where: { id: "settings" },
     }),
   ])
 
   // Map to Service interface
-  const services: Service[] = servicesData.map(s => ({
+  const services: Service[] = servicesData.map((s: any) => ({
     ...s,
     features: s.features as unknown as string[],
     category: s.category as any,

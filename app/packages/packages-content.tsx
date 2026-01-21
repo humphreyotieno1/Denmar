@@ -18,9 +18,10 @@ import { Package } from "@/lib/services"
 interface PackagesContentProps {
     packages: Package[]
     settings: any
+    navCountries?: any[]
 }
 
-export function PackagesContent({ packages, settings }: PackagesContentProps) {
+export function PackagesContent({ packages, settings, navCountries }: PackagesContentProps) {
     const [searchQuery, setSearchQuery] = useState("")
     const [selectedCountry, setSelectedCountry] = useState("all")
     const [selectedCategory, setSelectedCategory] = useState("all")
@@ -78,7 +79,7 @@ export function PackagesContent({ packages, settings }: PackagesContentProps) {
     return (
         <div className="min-h-screen overflow-x-hidden">
             <TopBanner settings={settings} />
-            <Navbar settings={settings} />
+            <Navbar settings={settings} countries={navCountries} />
 
             <main className="pt-16">
                 {/* Breadcrumbs */}

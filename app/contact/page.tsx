@@ -22,14 +22,24 @@ export const metadata: Metadata = {
 import { prisma } from "@/lib/db"
 
 export default async function ContactPage() {
-  const settings = await prisma.siteSettings.findUnique({
-    where: { id: "settings" },
-  })
+  const modelSettings: any = prisma.siteSettings
+  const modelCountry: any = prisma.country
+
+  const [settings, countries] = await Promise.all([
+    modelSettings.findUnique({
+      where: { id: "settings" },
+    }),
+    modelCountry.findMany({
+      where: { isActive: true },
+      include: { destinations: { where: { isActive: true } } },
+      orderBy: { order: "asc" },
+    })
+  ])
 
   return (
     <div className="min-h-screen overflow-x-hidden flex flex-col mt-4">
       <TopBanner settings={settings} />
-      <Navbar settings={settings} />
+      <Navbar settings={settings} countries={countries as any} />
 
       <main className="flex-grow">
         <ContactHero />

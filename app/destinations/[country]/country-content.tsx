@@ -14,9 +14,10 @@ interface CountryContentProps {
     country: any
     destinations: any[]
     settings?: any
+    navCountries?: any[]
 }
 
-export function CountryContent({ country, destinations, settings }: CountryContentProps) {
+export function CountryContent({ country, destinations, settings, navCountries }: CountryContentProps) {
     const [filteredDestinations, setFilteredDestinations] = useState<any[]>(destinations)
     const [currentPage, setCurrentPage] = useState(1)
     const pageSize = 9
@@ -24,7 +25,7 @@ export function CountryContent({ country, destinations, settings }: CountryConte
     return (
         <div className="min-h-screen overflow-x-hidden">
             <TopBanner settings={settings} />
-            <Navbar settings={settings} />
+            <Navbar settings={settings} countries={navCountries} />
 
             <main>
                 {/* Hero Section */}
