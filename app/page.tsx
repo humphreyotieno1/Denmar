@@ -139,7 +139,7 @@ export default async function HomePage() {
         <TopDestinationsSection destinations={destinations} />
         <PackagesSection packages={packages} />
         {/* <ChristmasPackages packages={festivePackages} /> */}
-        <ValentinesPackages packages={festivePackages} />
+        {/* <ValentinesPackages packages={festivePackages} /> */}
         {/* <section id="services">
           <ServicesGrid services={formattedServices} />
         </section> */}
