@@ -24,10 +24,29 @@ const nextConfig = {
   
   // Add security headers
   async headers() {
+    const cspHeader = `
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com *.facebook.net *.facebook.com *.cloudinary.com *.vercel-scripts.com;
+      style-src 'self' 'unsafe-inline' fonts.googleapis.com;
+      img-src 'self' blob: data: *.cloudinary.com *.googletagmanager.com *.google-analytics.com *.facebook.com *.facebook.net res.cloudinary.com;
+      font-src 'self' data: fonts.gstatic.com;
+      connect-src 'self' *.googletagmanager.com *.google-analytics.com *.analytics.google.com *.facebook.com *.facebook.net res.cloudinary.com;
+      frame-src 'self' *.facebook.com *.facebook.net;
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'self';
+      object-src 'none';
+      upgrade-insecure-requests;
+    `.replace(/\s{2,}/g, ' ').trim();
+
     return [
       {
         source: '/(.*)',
         headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: cspHeader,
+          },
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
@@ -46,7 +65,7 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
           },
         ],
       },
@@ -57,9 +76,6 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
   },
   async redirects() {
     return [

@@ -164,11 +164,11 @@ export function ContactForm() {
 
   return (
     <Card className="border-0 shadow-xl bg-white/95 backdrop-blur-sm">
-      <CardHeader className="pb-6">
-        <CardTitle className="font-heading text-3xl text-brand-primary mb-3">Get in Touch</CardTitle>
-        <p className="text-gray-600 text-lg">Fill out the form below and we'll help you plan your perfect trip. Our travel experts will get back to you within 24 hours.</p>
+      <CardHeader className="p-6 pb-2 tablet:p-8 tablet:pb-6">
+        <CardTitle className="font-heading text-2xl sm:text-3xl text-brand-primary mb-2 sm:mb-3">Get in Touch</CardTitle>
+        <p className="text-gray-600 text-base sm:text-lg">Fill out the form below and we'll help you plan your perfect trip. Our travel experts will get back to you within 24 hours.</p>
       </CardHeader>
-      <CardContent className="p-8 pt-0">
+      <CardContent className="p-5 tablet:p-8 pt-0">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Honeypot field - hidden from users but visible to bots */}
           <div className="hidden" aria-hidden="true">
@@ -274,39 +274,43 @@ export function ContactForm() {
             </div>
             <div className="space-y-2">
               <Label>Travel Date Range *</Label>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <Label htmlFor="travelDateFrom" className="text-sm text-gray-600">From</Label>
-                  <Input
-                    id="travelDateFrom"
-                    type="date"
-                    min={today}
-                    {...register("travelDateFrom")}
-                    className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
-                      errors.travelDateFrom ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
-                    }`}
-                  />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="travelDateFrom" className="text-sm font-medium text-gray-700">From</Label>
+                  <div className="relative">
+                    <Input
+                      id="travelDateFrom"
+                      type="date"
+                      min={today}
+                      {...register("travelDateFrom")}
+                      className={`h-12 w-full transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent cursor-pointer ${
+                        errors.travelDateFrom ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                      }`}
+                    />
+                  </div>
                   {errors.travelDateFrom && <p className="text-sm text-red-500 mt-1">{errors.travelDateFrom.message}</p>}
                 </div>
-                <div>
-                  <Label htmlFor="travelDateTo" className="text-sm text-gray-600">To</Label>
-                  <Input
-                    id="travelDateTo"
-                    type="date"
-                    min={travelDateFrom || today}
-                    {...register("travelDateTo")}
-                    className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
-                      errors.travelDateTo ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
-                    }`}
-                  />
+                <div className="space-y-1.5">
+                  <Label htmlFor="travelDateTo" className="text-sm font-medium text-gray-700">To</Label>
+                  <div className="relative">
+                    <Input
+                      id="travelDateTo"
+                      type="date"
+                      min={travelDateFrom || today}
+                      {...register("travelDateTo")}
+                      className={`h-12 w-full transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent cursor-pointer ${
+                        errors.travelDateTo ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
+                      }`}
+                    />
+                  </div>
                   {errors.travelDateTo && <p className="text-sm text-red-500 mt-1">{errors.travelDateTo.message}</p>}
                 </div>
               </div>
               {/* Duration Display */}
               {duration > 0 && (
-                <div className="mt-2 flex items-center gap-2 text-brand-primary font-medium bg-brand-accent/10 p-2 rounded-md border border-brand-accent/20 animate-in fade-in slide-in-from-top-1">
-                  <Plane className="h-4 w-4" />
-                  <span>Trip Duration: {days} Days, {nights} Nights</span>
+                <div className="mt-3 flex items-center gap-2 text-brand-primary font-semibold bg-brand-accent/10 p-3 rounded-lg border border-brand-accent/20 animate-in fade-in slide-in-from-top-1">
+                  <Plane className="h-5 w-5 text-brand-accent" />
+                  <span className="text-base">Trip Duration: {days} Days, {nights} Nights</span>
                 </div>
               )}
             </div>
@@ -435,7 +439,7 @@ export function ContactForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold py-4 text-lg transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold h-14 sm:h-16 text-lg transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <div className="flex items-center gap-2">
