@@ -26,13 +26,14 @@ const contactSchema = z.object({
   adults: z.number().min(1, "At least 1 adult required").max(100, "Maximum 100 adults"),
   children: z.number().min(0, "Children cannot be negative").max(100, "Maximum 100 children"),
   budget: z.string().min(1, "Please select your budget range"),
-  message: z.string().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
+  message: z.string().min(1, "Message must be at least 1 character").max(1000, "Message must be less than 1000 characters"),
+  otherDestination: z.string().optional(),
   website: z.string().optional(), // Honeypot field
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
 
-export function ContactForm() {
+export function ContactForm({ countries = [] }: { countries?: any[] }) {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adults, setAdults] = useState(1)
@@ -108,7 +109,7 @@ export function ContactForm() {
           lastName: data.lastName,
           email: data.email,
           phone: data.phone,
-          destination: data.destination,
+          destination: data.destination === 'other' ? data.otherDestination : data.destination,
           travelDateFrom: data.travelDateFrom,
           travelDateTo: data.travelDateTo,
           adults: data.adults,
@@ -261,17 +262,37 @@ export function ContactForm() {
                   <SelectValue placeholder="Select destination" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="bali">Bali, Indonesia</SelectItem>
-                  <SelectItem value="paris">Paris, France</SelectItem>
-                  <SelectItem value="tokyo">Tokyo, Japan</SelectItem>
-                  <SelectItem value="santorini">Santorini, Greece</SelectItem>
-                  <SelectItem value="dubai">Dubai, UAE</SelectItem>
-                  <SelectItem value="maldives">Maldives</SelectItem>
-                  <SelectItem value="other">Other (specify in message)</SelectItem>
+                  {countries.map((country) => (
+                    <div key={country.id}>
+                      <div className="px-2 py-1.5 text-sm font-semibold text-gray-400 bg-gray-50/50 uppercase tracking-wider">
+                        {country.name}
+                      </div>
+                      {country.destinations.map((dest: any) => (
+                        <SelectItem key={dest.id} value={dest.name}>
+                          {dest.name}
+                        </SelectItem>
+                      ))}
+                    </div>
+                  ))}
+                  <SelectItem value="other">Other Destination (Specify)</SelectItem>
                 </SelectContent>
               </Select>
               {errors.destination && <p className="text-sm text-red-500">{errors.destination.message}</p>}
             </div>
+
+            {/* Other Destination Input - Dynamic */}
+            {watch("destination") === "other" && (
+              <div className="space-y-2 animate-in fade-in slide-in-from-top-1">
+                <Label htmlFor="otherDestination">Please specify your destination *</Label>
+                <Input
+                  id="otherDestination"
+                  {...register("otherDestination", { required: watch("destination") === "other" })}
+                  placeholder="Where would you like to go?"
+                  className={errors.otherDestination ? "border-red-500" : ""}
+                />
+                {errors.otherDestination && <p className="text-sm text-red-500">Please specify your destination</p>}
+              </div>
+            )}
             <div className="space-y-2">
               <Label>Travel Date Range *</Label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

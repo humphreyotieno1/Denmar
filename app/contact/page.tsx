@@ -56,7 +56,7 @@ export default async function ContactPage() {
               {/* Left Column - Contact Form */}
               <div className="lg:col-span-3">
                 <div className="p-6 rounded-xl">
-                  <ContactForm />
+                  <ContactForm countries={countries} />
                 </div>
               </div>
 
