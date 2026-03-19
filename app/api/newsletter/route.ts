@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { prisma } from '@/lib/db'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 // Create SMTP transporter for hosting.com email
 const createTransporter = () => {
@@ -28,6 +29,17 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email, firstName } = body
     const normalizedEmail = email.toLowerCase()
+
+    // Rate Limiting: 3 signups per hour per IP
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+    const limitResult = await checkRateLimit(`newsletter:${ip}`, 3, 3600)
+
+    if (!limitResult.success) {
+      return NextResponse.json(
+        { success: false, message: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      )
+    }
 
     // Validate email
     if (!email || !email.includes('@')) {
@@ -193,9 +205,9 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail(teamNotification)
 
     return NextResponse.json(
-      { 
-        success: true, 
-        message: 'Successfully subscribed to our newsletter! Check your email for a welcome message.' 
+      {
+        success: true,
+        message: 'Successfully subscribed to our newsletter! Check your email for a welcome message.'
       },
       { status: 200 }
     )
@@ -203,9 +215,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Newsletter subscription error:', error)
     return NextResponse.json(
-      { 
+      {
         success: false,
-        message: 'Failed to subscribe. Please try again or contact us directly.' 
+        message: 'Failed to subscribe. Please try again or contact us directly.'
       },
       { status: 500 }
     )

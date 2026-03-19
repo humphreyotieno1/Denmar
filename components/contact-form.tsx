@@ -10,9 +10,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { Send, CheckCircle, Plus, Minus, Users, Baby } from "lucide-react"
+import { Send, CheckCircle, Plus, Minus, Users, Baby, Plane } from "lucide-react"
 import { toast } from "@/components/ui/toast"
 import { trackContactFormSubmission } from "@/lib/facebook-pixel"
+import { format, differenceInDays, addDays, isPast, parseISO } from "date-fns"
 
 const contactSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters").max(50, "First name must be less than 50 characters"),
@@ -26,6 +27,7 @@ const contactSchema = z.object({
   children: z.number().min(0, "Children cannot be negative").max(100, "Maximum 100 children"),
   budget: z.string().min(1, "Please select your budget range"),
   message: z.string().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
+  website: z.string().optional(), // Honeypot field
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
@@ -35,6 +37,7 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adults, setAdults] = useState(1)
   const [children, setChildren] = useState(0)
+  const today = format(new Date(), 'yyyy-MM-dd')
 
   const {
     register,
@@ -48,8 +51,20 @@ export function ContactForm() {
     defaultValues: {
       adults: 1,
       children: 0,
+      travelDateFrom: today,
     }
   })
+
+  // Watch dates for duration calculation and validation
+  const travelDateFrom = watch("travelDateFrom")
+  const travelDateTo = watch("travelDateTo")
+
+  const duration = travelDateFrom && travelDateTo 
+    ? differenceInDays(parseISO(travelDateTo), parseISO(travelDateFrom))
+    : 0
+
+  const nights = duration > 0 ? duration : 0
+  const days = duration > 0 ? duration + 1 : 0
 
   const handleAdultsChange = (increment: boolean) => {
     if (increment && adults < 100) {
@@ -72,6 +87,15 @@ export function ContactForm() {
   }
 
   const onSubmit = async (data: ContactFormData) => {
+    // Honeypot check: If 'website' field is filled, it's likely a bot
+    if (data.website) {
+      // console.warn("Bot submission detected via honeypot")
+      // We still simulate success so the bot thinks it worked and doesn't try harder
+      setIsSubmitted(true)
+      setIsSubmitting(false)
+      return
+    }
+
     setIsSubmitting(true)
     try {
       const response = await fetch('/api/contact', {
@@ -146,6 +170,19 @@ export function ContactForm() {
       </CardHeader>
       <CardContent className="p-8 pt-0">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Honeypot field - hidden from users but visible to bots */}
+          <div className="hidden" aria-hidden="true">
+            <Label htmlFor="website">Website</Label>
+            <Input
+              id="website"
+              type="text"
+              {...register("website")}
+              tabIndex={-1}
+              autoComplete="off"
+              placeholder="If you're a human, leave this empty"
+            />
+          </div>
+
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -243,6 +280,7 @@ export function ContactForm() {
                   <Input
                     id="travelDateFrom"
                     type="date"
+                    min={today}
                     {...register("travelDateFrom")}
                     className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
                       errors.travelDateFrom ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
@@ -255,6 +293,7 @@ export function ContactForm() {
                   <Input
                     id="travelDateTo"
                     type="date"
+                    min={travelDateFrom || today}
                     {...register("travelDateTo")}
                     className={`transition-all duration-200 focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent ${
                       errors.travelDateTo ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-gray-300"
@@ -263,6 +302,13 @@ export function ContactForm() {
                   {errors.travelDateTo && <p className="text-sm text-red-500 mt-1">{errors.travelDateTo.message}</p>}
                 </div>
               </div>
+              {/* Duration Display */}
+              {duration > 0 && (
+                <div className="mt-2 flex items-center gap-2 text-brand-primary font-medium bg-brand-accent/10 p-2 rounded-md border border-brand-accent/20 animate-in fade-in slide-in-from-top-1">
+                  <Plane className="h-4 w-4" />
+                  <span>Trip Duration: {days} Days, {nights} Nights</span>
+                </div>
+              )}
             </div>
           </div>
 

@@ -1,11 +1,12 @@
 {
-  "name": "my-v0-project",
+  "name": "denmartravel",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "build": "prisma generate && next build",
     "postbuild": "npm run generate-sitemap",
-    "generate-sitemap": "ts-node scripts/generate-sitemap.ts",
+    "generate-sitemap": "bun scripts/generate-sitemap.ts",
     "ingest:ai": "ts-node scripts/ingest-ai-documents.ts",
     "dev": "next dev",
     "lint": "next lint",

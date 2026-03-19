@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { prisma } from '@/lib/db'
+import { checkRateLimit } from '@/lib/rate-limit'
+import { differenceInDays, parseISO, format } from 'date-fns'
 
 // Create SMTP transporter for hosting.com email
 const createTransporter = () => {
@@ -26,27 +28,37 @@ const createTransporter = () => {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { 
-      firstName, 
-      lastName, 
-      email, 
-      phone, 
-      destination, 
-      travelDateFrom, 
-      travelDateTo, 
-      adults, 
-      children, 
-      budget, 
-      message 
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      destination,
+      travelDateFrom,
+      travelDateTo,
+      adults,
+      children,
+      budget,
+      message
     } = body
 
-    // Validate required fields
-    if (!firstName || !lastName || !email || !destination) {
+    // Rate Limiting: 5 inquiries per hour per IP
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+    const limitResult = await checkRateLimit(`contact-form:${ip}`, 5, 3600)
+
+    if (!limitResult.success) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
+        { error: 'Too many requests. Please try again in an hour.' },
+        { status: 429 }
       )
     }
+
+    // Calculate duration
+    const fromDate = parseISO(travelDateFrom)
+    const toDate = parseISO(travelDateTo)
+    const nightCount = Math.max(0, differenceInDays(toDate, fromDate))
+    const dayCount = nightCount + 1
+    const durationLabel = `${dayCount} Days, ${nightCount} Nights`
 
     // Store contact submission in database
     await prisma.contactSubmission.create({
@@ -55,8 +67,8 @@ export async function POST(request: NextRequest) {
         email: email.toLowerCase(),
         phone: phone || null,
         country: destination || null,
-        message: `Destination: ${destination}\nTravel Dates: ${travelDateFrom} to ${travelDateTo}\nTravelers: ${adults} adults, ${children} children\nBudget: $${budget || 'Not specified'}\n\nMessage:\n${message}`,
-        ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+        message: `Destination: ${destination}\nDuration: ${durationLabel}\nTravel Dates: ${travelDateFrom} to ${travelDateTo}\nTravelers: ${adults} adults, ${children} children\nBudget: $${budget || 'Not specified'}\n\nMessage:\n${message}`,
+        ipAddress: ip,
         userAgent: request.headers.get('user-agent') || 'unknown'
       }
     })
@@ -85,6 +97,7 @@ export async function POST(request: NextRequest) {
           <div style="background: rgba(158, 184, 138, 0.72); padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="color: rgba(98, 122, 8, 0.72); margin-top: 0;">Travel Details</h3>
             <p><strong>Destination:</strong> ${destination}</p>
+            <p><strong>Duration:</strong> ${durationLabel}</p>
             <p><strong>Travel Dates:</strong> ${travelDateFrom} to ${travelDateTo}</p>
             <p><strong>Travelers:</strong> ${adults} adults, ${children} children</p>
             <p><strong>Budget Range:</strong> $${budget || 'Not specified'}</p>
@@ -118,7 +131,7 @@ export async function POST(request: NextRequest) {
           
           <div style="background: rgba(158, 184, 138, 0.72); padding: 25px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #1e293b; margin-top: 0;">Dear ${firstName},</h2>
-            <p>Thank you for contacting Denmar Travel! We're excited to help you plan your trip to <strong>${destination}</strong>.</p>
+            <p>Thank you for contacting Denmar Travel! We're excited to help you plan your <strong>${durationLabel}</strong> trip to <strong>${destination}</strong>.</p>
             <p>Our travel experts will review your inquiry and get back to you within <strong>24 hours</strong> with personalized recommendations and pricing.</p>
           </div>
           
@@ -159,9 +172,9 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail(customerEmail)
 
     return NextResponse.json(
-      { 
-        success: true, 
-        message: 'Your inquiry has been sent successfully. We\'ll get back to you within 24 hours!' 
+      {
+        success: true,
+        message: 'Your inquiry has been sent successfully. We\'ll get back to you within 24 hours!'
       },
       { status: 200 }
     )
@@ -169,8 +182,8 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('SMTP error:', error)
     return NextResponse.json(
-      { 
-        error: 'Failed to send your inquiry. Please try again or contact us directly.' 
+      {
+        error: 'Failed to send your inquiry. Please try again or contact us directly.'
       },
       { status: 500 }
     )

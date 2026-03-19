@@ -19,13 +19,23 @@ export function Footer({ settings }: FooterProps) {
 
   const handleSubscribe = async () => {
     const email = (document.getElementById('footer-email') as HTMLInputElement)?.value
+    const website = (document.getElementById('footer-website') as HTMLInputElement)?.value
+
+    // Honeypot check
+    if (website) {
+      console.warn("Newsletter bot detected")
+      toast.success('Successfully subscribed to our newsletter!') // Fake success
+      setIsLoading(false)
+      return
+    }
+
     if (email) {
       setIsLoading(true)
       try {
         const response = await fetch('/api/newsletter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, firstName: 'Guest' })
+          body: JSON.stringify({ email, firstName: 'Guest', website })
         })
 
         const data = await response.json()
@@ -167,6 +177,14 @@ export function Footer({ settings }: FooterProps) {
 
             {/* Simple Newsletter Form for Footer */}
             <div className="space-y-3">
+              <div className="hidden" aria-hidden="true">
+                <Input
+                  type="text"
+                  id="footer-website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
               <Input
                 type="email"
                 placeholder="Your email"

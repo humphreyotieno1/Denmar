@@ -1,12 +1,9 @@
 import fs from 'fs';
 import { globby } from 'globby';
 
-// Import data using createRequire for CommonJS compatibility
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-
-const { countries, destinations } = require('../lib/destinations.ts');
-const { deals, packages, services } = require('../lib/services.ts');
+// Import data directly using standard imports (Bun/TS will handle this)
+import { countries, destinations } from '../lib/destinations';
+import { deals, packages, services } from '../lib/services';
 
 // Site configuration
 const siteConfig = {

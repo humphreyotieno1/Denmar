@@ -342,3 +342,16 @@ model DealsPopup {
   @@index([priority])
   @@map("deals_popups")
 }
+
+// Rate Limiting
+model RateLimit {
+  id        String   @id @default(cuid())
+  key       String   // e.g. "contact-form:127.0.0.1"
+  count     Int      @default(0)
+  expiresAt DateTime
+  updatedAt DateTime @updatedAt
+
+  @@unique([key])
+  @@index([expiresAt])
+  @@map("rate_limits")
+}
