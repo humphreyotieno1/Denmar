@@ -10,6 +10,8 @@ import { toast } from "@/components/ui/toast"
 import { trackNewsletterSignup, trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics"
 import { trackNewsletterSignup as trackFacebookNewsletter, trackPhoneClick as trackFacebookPhone, trackWhatsAppClick as trackFacebookWhatsApp } from "@/lib/facebook-pixel"
 
+import Image from "next/image"
+
 interface FooterProps {
   settings: any
 }
@@ -67,15 +69,24 @@ export function Footer({ settings }: FooterProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Company Info */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
+          <div className="space-y-6">
+            <Link href="/" className="block">
+              <Image 
+                src={settings?.logo || "/denmar.png"} 
+                alt={settings?.siteName || "Denmar Travel"} 
+                width={150} 
+                height={60} 
+                className="grayscale object-contain"
+              />
+            </Link>
+            {/* <div className="flex items-center space-x-2">
               <div className="font-heading text-xl font-bold text-white">
                 {settings?.siteName?.split(' ')[0] || 'DENMAR'}
               </div>
               <div className="text-brand-accent font-heading text-xl font-bold">
                 {settings?.siteName?.split(' ').slice(1).join(' ') || 'TOURS'}
               </div>
-            </div>
+            </div> */}
             <p className="text-gray-300 text-sm leading-relaxed">
               {settings?.siteDescription || 'Your trusted travel partner for unforgettable adventures.'}
             </p>

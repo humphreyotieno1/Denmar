@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
       email,
       phone,
       destination,
+      packageName,
       travelDateFrom,
       travelDateTo,
       adults,
@@ -41,6 +42,9 @@ export async function POST(request: NextRequest) {
       budget,
       message
     } = body
+
+    // Fallback for destination label
+    const destLabel = packageName || destination || 'Custom Destination'
 
     // Rate Limiting: 5 inquiries per hour per IP
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
@@ -66,8 +70,8 @@ export async function POST(request: NextRequest) {
         name: `${firstName} ${lastName}`,
         email: email.toLowerCase(),
         phone: phone || null,
-        country: destination || null,
-        message: `Destination: ${destination}\nDuration: ${durationLabel}\nTravel Dates: ${travelDateFrom} to ${travelDateTo}\nTravelers: ${adults} adults, ${children} children\nBudget: $${budget || 'Not specified'}\n\nMessage:\n${message}`,
+        country: destLabel,
+        message: `Package/Destination: ${destLabel}\nDuration: ${durationLabel}\nTravel Dates: ${travelDateFrom} to ${travelDateTo}\nTravelers: ${adults} adults, ${children} children\nBudget: $${budget || 'Not specified'}\n\nMessage:\n${message}`,
         ipAddress: ip,
         userAgent: request.headers.get('user-agent') || 'unknown'
       }
@@ -80,7 +84,7 @@ export async function POST(request: NextRequest) {
     const teamEmail = {
       from: process.env.SMTP_USER!, // Your GoDaddy email
       to: 'info@denmartravel.co.ke',
-      subject: `New Travel Inquiry: ${destination}`,
+      subject: `New Travel Inquiry: ${destLabel}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color:rgba(98, 122, 8, 0.72); border-bottom: 2px solid rgba(98, 122, 8, 0.72); padding-bottom: 10px;">
@@ -96,7 +100,7 @@ export async function POST(request: NextRequest) {
           
           <div style="background: rgba(158, 184, 138, 0.72); padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="color: rgba(98, 122, 8, 0.72); margin-top: 0;">Travel Details</h3>
-            <p><strong>Destination:</strong> ${destination}</p>
+            <p><strong>Package/Destination:</strong> ${destLabel}</p>
             <p><strong>Duration:</strong> ${durationLabel}</p>
             <p><strong>Travel Dates:</strong> ${travelDateFrom} to ${travelDateTo}</p>
             <p><strong>Travelers:</strong> ${adults} adults, ${children} children</p>

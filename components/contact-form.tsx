@@ -62,6 +62,7 @@ export function ContactForm({ countries = [] }: { countries?: any[] }) {
   useEffect(() => {
     const destParam = searchParams.get('destination')
     if (destParam) {
+      // console.log("Prefilling destination:", destParam)
       // Check if the destination exists in our dynamic list
       let found = false
       countries.forEach(country => {
@@ -123,6 +124,8 @@ export function ContactForm({ countries = [] }: { countries?: any[] }) {
     }
 
     setIsSubmitting(true)
+    const packageName = searchParams.get('destination')
+    
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -135,6 +138,7 @@ export function ContactForm({ countries = [] }: { countries?: any[] }) {
           email: data.email,
           phone: data.phone,
           destination: data.destination === 'other' ? data.otherDestination : data.destination,
+          packageName: packageName || undefined,
           travelDateFrom: data.travelDateFrom,
           travelDateTo: data.travelDateTo,
           adults: data.adults,
@@ -282,7 +286,10 @@ export function ContactForm({ countries = [] }: { countries?: any[] }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="destination">Preferred Destination *</Label>
-              <Select onValueChange={(value) => setValue("destination", value)}>
+              <Select 
+                onValueChange={(value) => setValue("destination", value)}
+                value={watch("destination")}
+              >
                 <SelectTrigger className={errors.destination ? "border-red-500" : ""}>
                   <SelectValue placeholder="Select destination" />
                 </SelectTrigger>
@@ -312,6 +319,8 @@ export function ContactForm({ countries = [] }: { countries?: any[] }) {
                 <Input
                   id="otherDestination"
                   {...register("otherDestination", { required: watch("destination") === "other" })}
+                  value={watch("otherDestination") || ""}
+                  onChange={(e) => setValue("otherDestination", e.target.value)}
                   placeholder="Where would you like to go?"
                   className={errors.otherDestination ? "border-red-500" : ""}
                 />
