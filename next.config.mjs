@@ -16,8 +16,21 @@ const nextConfig = {
   
   // Configure image optimization
   images: {
-    unoptimized: true, // Disable default optimization since we're using next-optimized-images
-    domains: ['denmartravel.co.ke', 'www.denmartravel.co.ke'],
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'denmartravel.co.ke',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.denmartravel.co.ke',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      }
+    ],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
     formats: ['image/avif', 'image/webp'],
   },
@@ -28,9 +41,9 @@ const nextConfig = {
       default-src 'self';
       script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com *.facebook.net *.facebook.com *.cloudinary.com *.vercel-scripts.com;
       style-src 'self' 'unsafe-inline' fonts.googleapis.com;
-      img-src 'self' blob: data: *.cloudinary.com *.googletagmanager.com *.google-analytics.com *.facebook.com *.facebook.net res.cloudinary.com;
+      img-src 'self' blob: data: *.cloudinary.com *.googletagmanager.com *.google-analytics.com *.facebook.com *.facebook.net;
       font-src 'self' data: fonts.gstatic.com;
-      connect-src 'self' *.googletagmanager.com *.google-analytics.com *.analytics.google.com *.facebook.com *.facebook.net res.cloudinary.com;
+      connect-src 'self' *.googletagmanager.com *.google-analytics.com *.analytics.google.com *.facebook.com *.facebook.net *.cloudinary.com;
       frame-src 'self' *.facebook.com *.facebook.net;
       base-uri 'self';
       form-action 'self';
@@ -70,9 +83,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,

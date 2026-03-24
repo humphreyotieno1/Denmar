@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -55,6 +56,30 @@ export function ContactForm({ countries = [] }: { countries?: any[] }) {
       travelDateFrom: today,
     }
   })
+
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const destParam = searchParams.get('destination')
+    if (destParam) {
+      // Check if the destination exists in our dynamic list
+      let found = false
+      countries.forEach(country => {
+        country.destinations.forEach((dest: any) => {
+          if (dest.name.toLowerCase() === destParam.toLowerCase()) {
+            setValue("destination", dest.name)
+            found = true
+          }
+        })
+      })
+
+      // If not found in dynamic list, it might be a package name or custom destination
+      if (!found) {
+        setValue("destination", "other")
+        setValue("otherDestination", destParam)
+      }
+    }
+  }, [searchParams, countries, setValue])
 
   // Watch dates for duration calculation and validation
   const travelDateFrom = watch("travelDateFrom")

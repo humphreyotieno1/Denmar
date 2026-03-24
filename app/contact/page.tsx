@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { TopBanner } from "@/components/top-banner"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -56,7 +57,9 @@ export default async function ContactPage() {
               {/* Left Column - Contact Form */}
               <div className="lg:col-span-3">
                 <div className="p-6 rounded-xl">
-                  <ContactForm countries={countries} />
+                  <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100 rounded-xl" />}>
+                    <ContactForm countries={countries} />
+                  </Suspense>
                 </div>
               </div>
 

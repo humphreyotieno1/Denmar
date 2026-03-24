@@ -180,7 +180,7 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                                                 className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white"
                                                 asChild
                                             >
-                                                <a href="/contact">
+                                                <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
                                                     Book This Package
                                                     <ArrowRight className="w-5 h-5 ml-2" />
                                                 </a>
@@ -191,7 +191,7 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                                                 className="w-full border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white"
                                                 asChild
                                             >
-                                                <a href="/contact">
+                                                <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
                                                     Get Custom Quote
                                                 </a>
                                             </Button>
