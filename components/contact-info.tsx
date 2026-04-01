@@ -35,13 +35,13 @@ export function ContactInfo() {
           <div>
             <h3 className="font-semibold text-brand-primary mb-1">Phone Numbers</h3>
             <p className="text-gray-600">
-              Office Line: +254 114 320 486
+              Office Line: +254 113 039 737
+              <br />
+              Landline: +254 114 320 486
               <br />
               Call/ Whatsapp: +254 793 041 888
               <br />
               Call/ Whatsapp: +254 791 841 346
-              <br />
-              Call/ Whatsapp: +254 113 039 737
               <br />
               Call/ Whatsapp: +254 113 025 613
             </p>
