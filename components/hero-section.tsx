@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ChevronLeft, ChevronRight, Plane, MapPin, Sparkles } from "lucide-react"
+import { ChevronLeft, ChevronRight, Plane, MapPin, StarIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -20,7 +20,7 @@ interface HeroSlide {
 const heroStats = [
   { label: "Countries", value: "35+", icon: <MapPin className="h-4 w-4" /> },
   { label: "Custom Itineraries", value: "500+", icon: <Plane className="h-4 w-4" /> },
-  { label: "Guest Satisfaction", value: "4.9/5", icon: <Sparkles className="h-4 w-4" /> },
+  { label: "Guest Satisfaction", value: "4.9/5", icon: <StarIcon className="h-4 w-4" /> },
 ]
 
 interface HighlightPackage {

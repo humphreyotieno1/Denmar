@@ -100,7 +100,7 @@ export function DealsGrid({ deals }: DealsGridProps) {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="h-full"
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg flex flex-col">
+              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg flex flex-col p-0 gap-0">
                 <div className="relative h-56 overflow-hidden group flex-shrink-0">
                   <Image
                     src={deal.image}

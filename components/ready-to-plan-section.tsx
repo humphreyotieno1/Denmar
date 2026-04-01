@@ -2,6 +2,7 @@ import { MessageSquare, Phone, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import Image from "next/image"
 
 const ctaOptions = [
   {

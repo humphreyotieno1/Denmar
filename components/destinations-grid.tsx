@@ -214,7 +214,7 @@ export function DestinationsGrid() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg min-h-[500px] flex flex-col">
+              <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg min-h-[500px] flex flex-col p-0 gap-0">
                 <div className="relative">
                   <Image
                     src={destination.image || "/placeholder.svg"}

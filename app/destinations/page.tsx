@@ -8,12 +8,12 @@ import { Suspense } from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Kenya Destinations - Masai Mara, Amboseli, Diani Beach Tours | Denmar",
-  description: "Explore amazing Kenya destinations with Denmar Tours & Travel - Masai Mara safaris, Amboseli tours, Diani beach holidays, Mount Kenya climbing, Lake Nakuru safaris. Book your Kenya travel package today.",
-  keywords: "Kenya destinations, Masai Mara safari packages, Amboseli National Park tours, Diani beach holidays, Mount Kenya climbing, Kenya travel packages, Kenya safari agency, Tsavo National Park tours, Lamu island holidays",
+  title: "Kenya Safari & Travel Destinations | Affordable Packages – Denmar",
+  description: "Explore top Kenya destinations — Masai Mara safaris, Amboseli tours, Diani Beach holidays & more. Get affordable packages from Nairobi. Book your trip today.",
+  keywords: "Kenya travel destinations, Masai Mara safari packages from Kenya, Amboseli National Park tours from Nairobi, Diani beach holiday packages, Zanzibar packages from Kenya, Dubai packages from Kenya, Mount Kenya climbing, Tsavo safari packages, Lamu island holidays, Kenya travel agency Nairobi",
   openGraph: {
-    title: "Travel Destinations - Explore Amazing Places Worldwide",
-    description: "Discover incredible travel destinations worldwide with Denmar Tours & Travel. Find your perfect destination today.",
+    title: "Kenya Safari & Travel Destinations | Affordable Packages – Denmar Travel",
+    description: "Explore top Kenya destinations — Masai Mara safaris, Amboseli tours, Diani Beach holidays & more. Get affordable packages from Nairobi.",
     images: ["/tablogo.png"],
   },
 }

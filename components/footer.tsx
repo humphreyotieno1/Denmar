@@ -76,7 +76,7 @@ export function Footer({ settings }: FooterProps) {
                 alt={settings?.siteName || "Denmar Travel"} 
                 width={150} 
                 height={60} 
-                className="grayscale object-contain"
+                className="object-contain"
               />
             </Link>
             {/* <div className="flex items-center space-x-2">
@@ -100,11 +100,11 @@ export function Footer({ settings }: FooterProps) {
               <div className="flex items-center space-x-2 text-sm">
                 <Phone className="h-4 w-4 text-brand-accent flex-shrink-0" />
                 <a
-                  href={`tel:${settings?.contactPhone || '+254793041888'}`}
+                  href={`tel:${settings?.contactPhone || '+254 113 039 737'}`}
                   className="text-gray-300 hover:text-brand-accent transition-colors"
-                  onClick={() => handlePhoneClick(settings?.contactPhone || '+254793041888')}
+                  onClick={() => handlePhoneClick(settings?.contactPhone || '+254 113 039 737')}
                 >
-                  {settings?.contactPhone || '+254 793 041 888'}
+                  {settings?.contactPhone || '+254 113 039 737'}
                 </a>
               </div>
               <div className="flex items-center space-x-2 text-sm">

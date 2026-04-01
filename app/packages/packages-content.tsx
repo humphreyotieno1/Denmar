@@ -99,11 +99,11 @@ export function PackagesContent({ packages, settings, navCountries }: PackagesCo
                             className="text-center mb-12"
                         >
                             <h1 className="font-heading text-4xl font-bold text-brand-primary mb-4">
-                                Travel Packages
+                                Kenya Safari &amp; Holiday Packages from Nairobi
                             </h1>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                Discover our carefully curated travel packages designed to create unforgettable experiences.
-                                From luxury getaways to adventure escapes, find the perfect package for your next journey.
+                                Browse affordable Kenya safaris, Dubai holiday packages, Zanzibar trips, beach escapes, and more.
+                                All packages include expert support and flexible travel dates from Nairobi.
                             </p>
                         </motion.div>
 

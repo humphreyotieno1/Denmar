@@ -95,7 +95,7 @@ export function CountryGrid({
               className="h-full"
             >
               <Link href={`/destinations/${country.slug}`} className="h-full block">
-                <Card className="group h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg flex flex-col">
+                <Card className="group h-full overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg flex flex-col p-0 gap-0">
                   <div className="relative h-56 overflow-hidden flex-shrink-0">
                     {/* Skeleton backdrop */}
                     <div className={`absolute inset-0 animate-pulse bg-gray-200 ${

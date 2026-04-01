@@ -33,14 +33,14 @@ export function CountryContent({ country, destinations, settings, navCountries }
                     <div className="absolute inset-0">
                         <img
                             src={country.heroImage}
-                            alt={country.name}
+                            alt={`${country.name} travel packages from Kenya — book with Denmar Travel`}
                             className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-black/40" />
                     </div>
                     <div className="relative z-10 flex items-center justify-center h-full">
                         <div className="text-center text-white">
-                            <h1 className="font-heading text-5xl font-bold mb-4">{country.name}</h1>
+                            <h1 className="font-heading text-5xl font-bold mb-4">{country.name} Travel Packages</h1>
                             <p className="text-xl max-w-2xl mx-auto px-4">{country.summary}</p>
                         </div>
                     </div>
@@ -123,10 +123,10 @@ export function CountryContent({ country, destinations, settings, navCountries }
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-12">
                             <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
-                                Destinations in {country.name}
+                                Explore {country.name} Destinations &amp; Packages
                             </h2>
                             <p className="text-xl text-gray-600">
-                                Discover amazing places and experiences in {country.name}
+                                Browse affordable travel packages and experiences across {country.name}, bookable from Kenya
                             </p>
                         </div>
 

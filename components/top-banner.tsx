@@ -22,8 +22,8 @@ export function TopBanner({ settings }: TopBannerProps) {
             </span>
             <div className="flex items-center gap-1">
               <Phone className="h-4 w-4 text-white/80" strokeWidth={1.5} />
-              <a href={`tel:${settings?.contactPhone || '+254793041888'}`} className="hover:text-white transition-colors">
-                {settings?.contactPhone || '+254 793 041 888'}
+              <a href={`tel:${settings?.contactPhone || '+254 113 039 737'}`} className="hover:text-white transition-colors">
+                {settings?.contactPhone || '+254 113 039 737'}
               </a>
             </div>
             <div className="hidden sm:flex items-center gap-1">

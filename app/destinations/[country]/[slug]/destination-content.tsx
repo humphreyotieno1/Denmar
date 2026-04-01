@@ -46,7 +46,7 @@ export function DestinationContent({ country, destination, packages, relatedDest
                     <div className="absolute inset-0">
                         <Image
                             src={destination.heroImage}
-                            alt={destination.name}
+                            alt={`${destination.name} travel packages from Kenya — ${destination.summary?.substring(0, 60) || country.name}`}
                             fill
                             className="object-cover"
                             priority
@@ -73,7 +73,7 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                     </div>
 
                                     <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
-                                        Explore {destination.name} — <span className="text-brand-accent">Premium Travel Packages</span> from Kenya
+                                        {destination.name} Travel Packages from Kenya — <span className="text-brand-accent">Book with Denmar</span>
                                     </h1>
 
                                     <p className="text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
@@ -81,14 +81,13 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                     </p>
                                 </div>
 
-                                {/* Primary & Secondary CTAs */}
                                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                                     <Button
                                         size="lg"
                                         className="bg-brand-accent text-white hover:bg-brand-accent/90 h-14 px-8 text-base font-bold shadow-xl shadow-brand-accent/20"
                                         asChild
                                     >
-                                        <a href="#packages">Check Availability & Get Quote</a>
+                                        <a href="#packages">Check Availability &amp; Get Quote</a>
                                     </Button>
                                     <Button
                                         size="lg"
@@ -163,7 +162,9 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                 </div>
 
                                 <div className="prose prose-slate max-w-none">
-                                    <h2 className="text-3xl font-black text-brand-primary">Discover {destination.name}</h2>
+                                    <h2 className="text-3xl font-black text-brand-primary">
+                                        About {destination.name} Travel Packages from {country.name}
+                                    </h2>
                                     <p className="text-lg text-slate-600 leading-relaxed whitespace-pre-wrap">
                                         {destination.description}
                                     </p>
@@ -215,20 +216,6 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                             <div className="text-xs text-orange-600">Travelers are currently booking {destination.name} for the next season.</div>
                                         </div>
                                     </div>
-
-                                    {/* Trust Line
-                                    <div className="text-center space-y-3">
-                                        <div className="flex justify-center -space-x-2">
-                                            {[1,2,3,4].map(i => (
-                                                <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
-                                                    <Image src={`https://i.pravatar.cc/150?u=${i}`} alt="user" width={40} height={40} />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="text-sm font-medium text-slate-600">
-                                            Joined by <span className="text-brand-primary font-bold">500+ daily travelers</span>
-                                        </div>
-                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -242,10 +229,10 @@ export function DestinationContent({ country, destination, packages, relatedDest
                             <div className="text-center mb-16 max-w-2xl mx-auto space-y-4">
                                 <Badge className="bg-brand-accent font-bold px-4 py-1">CURATED ITINERARIES</Badge>
                                 <h2 className="text-4xl md:text-5xl font-black text-brand-primary leading-tight">
-                                    Travel Packages for <span className="text-brand-accent">{destination.name}</span>
+                                    {destination.name} Travel Packages <span className="text-brand-accent">from Kenya</span>
                                 </h2>
                                 <p className="text-lg text-slate-600">
-                                    Handpicked stays, transfers, and experiences tailored to the best of {destination.name}.
+                                    Handpicked stays, transfers, and experiences tailored to {destination.name}. Flexible dates from Nairobi.
                                 </p>
                             </div>
 
@@ -262,7 +249,7 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                         <div className="relative h-64">
                                             <Image 
                                                 src={pkg.image ?? destination.heroImage} 
-                                                alt={pkg.name} 
+                                                alt={`${pkg.name} — ${destination.name} travel package from Kenya`} 
                                                 fill 
                                                 className="object-cover" 
                                             />
@@ -290,7 +277,7 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                                     <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Per Person sharing</div>
                                                 </div>
                                                 <Button size="lg" className="w-full h-12 rounded-xl bg-brand-primary text-white" asChild>
-                                                    <Link href={`/packages/${pkg.slug}`}>Book This Package</Link>
+                                                    <Link href={`/packages/${pkg.slug}`}>Check Availability &amp; Get Quote</Link>
                                                 </Button>
                                             </div>
                                         </div>
@@ -307,11 +294,11 @@ export function DestinationContent({ country, destination, packages, relatedDest
                         <div className="max-w-7xl mx-auto">
                             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                                 <div className="space-y-4">
-                                    <h2 className="text-4xl font-black text-brand-primary">More in {country.name}</h2>
-                                    <p className="text-lg text-slate-600">Explore other amazing places in {country.name}</p>
+                                    <h2 className="text-4xl font-black text-brand-primary">More {country.name} Destinations to Explore</h2>
+                                    <p className="text-lg text-slate-600">Discover more affordable travel packages across {country.name}</p>
                                 </div>
                                 <Button variant="link" className="text-brand-accent font-bold p-0" asChild>
-                                    <Link href={`/destinations/${country.slug}`}>See All in {country.name} &rarr;</Link>
+                                    <Link href={`/destinations/${country.slug}`}>See All {country.name} Packages &rarr;</Link>
                                 </Button>
                             </div>
 

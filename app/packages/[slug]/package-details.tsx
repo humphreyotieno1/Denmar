@@ -100,7 +100,7 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                                 >
                                     <Image
                                         src={packageData.image}
-                                        alt={packageData.name}
+                                        alt={`${packageData.name} — ${packageData.destinationSlug?.replace(/-/g, ' ')} travel package from Kenya`}
                                         fill
                                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                                         sizes="(max-width: 1024px) 100vw, 500px"
@@ -135,8 +135,13 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                                     <div className="space-y-4">
                                         <div>
                                             <h1 className="text-3xl font-bold text-brand-primary mb-2">
-                                                {packageData.name}
-                                            </h1>
+                                            {packageData.name}
+                                            {packageData.destinationSlug && (
+                                                <span className="block text-lg font-medium text-slate-500 mt-1">
+                                                    {packageData.destinationSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())} Travel Package from Kenya
+                                                </span>
+                                            )}
+                                        </h1>
                                             {/* <p className="text-gray-600 text-lg">
                                                 {packageData.description}
                                             </p> */}
@@ -181,7 +186,7 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                                                 asChild
                                             >
                                                 <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
-                                                    Book This Package
+                                                    Check Availability &amp; Get Quote
                                                     <ArrowRight className="w-5 h-5 ml-2" />
                                                 </a>
                                             </Button>
@@ -192,7 +197,7 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                                                 asChild
                                             >
                                                 <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
-                                                    Get Custom Quote
+                                                    Request Custom Itinerary
                                                 </a>
                                             </Button>
                                         </div>
@@ -398,10 +403,10 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                                 className="text-center mb-12"
                             >
                                 <h2 className="text-3xl font-bold text-brand-primary mb-4">
-                                    Similar Packages
+                                    Similar {packageData.category ? packageData.category.charAt(0).toUpperCase() + packageData.category.slice(1) : ""} Packages from Kenya
                                 </h2>
                                 <p className="text-lg text-gray-600">
-                                    Explore more {packageData.category} packages you might enjoy
+                                    Explore more affordable {packageData.category} packages departing from Kenya
                                 </p>
                             </motion.div>
 

@@ -22,17 +22,37 @@ const openSans = Open_Sans({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://denmartravel.co.ke/"),
+  metadataBase: new URL("https://www.denmartravel.co.ke/"),
+
+  // Title template — page titles slot in as "%s"
   title: {
-    default: "Best Travel Agency in Kenya - Kenya Safari Tour Operator | Denmar",
+    default: "Denmar Tours & Travel | Affordable Travel Packages from Kenya",
     template: "%s | Denmar Tours & Travel",
   },
+
+  // Global fallback description (≤160 chars)
   description:
-    "Kenya's premier travel agency offering affordable Kenya tour packages, luxury Kenya safaris, Masai Mara tours, and customized Kenya holidays. Best tour company in Kenya with trusted service.",
-  keywords: "travel agency in Kenya, tour company in Kenya, Kenya safari tour operator, Kenya tour packages, Kenya holidays, best tour companies in Kenya, Kenya travel agency Nairobi, Kenya safari, Masai Mara safari",
-  authors: [{ name: "Denmar Tours & Travel" }],
+    "Denmar Tours & Travel offers affordable local & international packages from Kenya. Explore Dubai, Zanzibar, Maasai Mara & more. Book your next trip today.",
+
+  // High-intent global keywords
+  keywords: [
+    "Travel agency Kenya",
+    "Tours and travel Nairobi",
+    "Travel packages from Kenya",
+    "Dubai packages from Kenya",
+    "Maasai Mara safari packages",
+    "Zanzibar travel packages",
+    "Kenya safari tour operator",
+    "affordable travel packages Kenya",
+    "international travel packages Nairobi",
+    "Kenya tour company",
+  ],
+
+  authors: [{ name: "Denmar Tours & Travel", url: "https://www.denmartravel.co.ke" }],
   creator: "Denmar Tours & Travel",
   publisher: "Denmar Tours & Travel",
+
+  // Indexing directives
   robots: {
     index: true,
     follow: true,
@@ -44,48 +64,59 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+
+  // Favicon & app icons
   icons: {
     icon: [
-      { url: '/tablogo.png', sizes: 'any', type: 'image/png' },
-      { url: '/tablogo.png', sizes: '16x16', type: 'image/png' },
-      { url: '/tablogo.png', sizes: '32x32', type: 'image/png' },
+      { url: "/tablogo.png", sizes: "any", type: "image/png" },
+      { url: "/tablogo.png", sizes: "16x16", type: "image/png" },
+      { url: "/tablogo.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: [
-      { url: '/tablogo.png' }
-    ]
+    apple: [{ url: "/tablogo.png" }],
+    shortcut: "/tablogo.png",
   },
+
+  // Open Graph — controls how the site looks when shared on WhatsApp, Facebook, etc.
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://denmartravel.co.ke",
+    locale: "en_KE",
+    url: "https://www.denmartravel.co.ke/",
     siteName: "Denmar Tours & Travel",
-    title: "Best Travel Agency in Kenya - Kenya Safari Tours",
+    title: "Denmar Tours & Travel | Affordable Travel Packages from Kenya",
     description:
-      "Kenya's premier travel agency specializing in Kenya safaris, Masai Mara tours, and customized Kenya holidays. Book your Kenya safari package today!",
+      "Denmar Tours & Travel offers affordable local & international packages from Kenya. Explore Dubai, Zanzibar, Maasai Mara & more. Book your next trip today.",
     images: [
       {
         url: "/tablogo.png",
         width: 1200,
         height: 630,
-        alt: "Denmar Tours & Travel - Kenya's Best Travel Agency",
+        alt: "Denmar Tours & Travel — Affordable Travel Packages from Kenya",
       },
     ],
   },
+
+  // Twitter / X Card
   twitter: {
     card: "summary_large_image",
-    title: "Best Travel Agency in Kenya - Kenya Safari Tours",
+    site: "@DenmarTravel",
+    creator: "@DenmarTravel",
+    title: "Denmar Tours & Travel | Affordable Travel Packages from Kenya",
     description:
-      "Kenya's premier travel agency specializing in Kenya safaris, Masai Mara tours, and customized Kenya holidays.",
-    images: ["/tablogo.png"],
-    creator: "@denmartours",
+      "Denmar Tours & Travel offers affordable local & international packages from Kenya. Explore Dubai, Zanzibar, Maasai Mara & more. Book your next trip today.",
+    images: ["/denmar.png"],
   },
+
+  // Canonical URL — prevents duplicate content issues
+  alternates: {
+    canonical: "https://www.denmartravel.co.ke/",
+  },
+
+  // Google Search Console verification
   verification: {
     google: "e6SBUs9A3eNWIHMPfU5wunAran6HCfBxRaSfwTmjENs",
   },
-  alternates: {
-    canonical: "https://denmartravel.co.ke",
-  },
-  generator: 'v0.dev'
+
+  generator: "Next.js",
 }
 
 import { prisma } from "@/lib/db"

@@ -20,13 +20,37 @@ export async function generateMetadata({
     }
   }
 
+  // Build a conversion-focused title (≤65 chars)
+  const destLabel = packageData.destinationSlug
+    ? packageData.destinationSlug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())
+    : ""
+  const countryCode = (packageData.countryShortCode || "").toUpperCase()
+
+  const title = destLabel
+    ? `${packageData.name} | ${destLabel} Packages from Kenya – Denmar`
+    : `${packageData.name} | Affordable Travel Package – Denmar`
+
+  const description = `${packageData.shortDescription}. ${packageData.duration} trip from ${countryCode || "Kenya"}. From ${packageData.price} per person. Check availability & get your quote today.`
+
+  const keywords = [
+    packageData.name,
+    destLabel ? `${destLabel} packages from Kenya` : "",
+    destLabel ? `${destLabel} travel packages Nairobi` : "",
+    destLabel ? `${destLabel} holiday cost from Kenya` : "",
+    `${packageData.category} packages`,
+    `${packageData.duration} ${destLabel || packageData.category} trip`,
+    countryCode ? `${countryCode} holiday packages` : "",
+    "affordable travel packages Kenya",
+    "Denmar travel packages",
+  ].filter(Boolean).join(", ")
+
   return {
-    title: `${packageData.name} - Travel Package | Denmar Travel`,
-    description: `${packageData.shortDescription}. Duration: ${packageData.duration}. Price: ${packageData.price}. Book with Denmar Tours & Travel.`,
-    keywords: `${packageData.name}, ${packageData.destinationSlug} travel packages, ${packageData.category} packages, ${packageData.duration} trips, ${packageData.countryShortCode || ''} holidays`,
+    title,
+    description,
+    keywords,
     openGraph: {
-      title: `${packageData.name} - Travel Package`,
-      description: packageData.shortDescription,
+      title,
+      description,
       images: [packageData.heroImage || "/tablogo.png"],
     },
   }

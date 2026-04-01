@@ -5,7 +5,7 @@ import { FloatingActions } from "@/components/floating-actions"
 import { AboutHeroBanner } from "@/components/about-hero-banner"
 import { ShowYouWorldSection } from "@/components/show-you-world-section"
 import { StorySection } from "@/components/story-section"
-import { TestimonialsSection } from "@/components/testimonials-section"
+// import { TestimonialsSection } from "@/components/testimonials-section"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ export default async function AboutPage() {
         <AboutHeroBanner />
         <ShowYouWorldSection />
         <StorySection />
-        <TestimonialsSection />
+        {/* <TestimonialsSection /> */}
       </main>
 
       <Footer settings={settings} />

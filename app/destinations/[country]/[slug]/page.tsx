@@ -21,38 +21,68 @@ export async function generateMetadata({ params }: DestinationPageProps) {
 
   if (!destination) return { title: "Destination Not Found" }
 
-  // Special handling for Kenya destinations to maximize SEO
   const isKenya = countrySlug === "kenya"
 
-  // Create Kenya-specific keywords for popular destinations
-  const getKenyaKeywords = (destName: string) => {
-    const destLower = destName.toLowerCase()
-    if (destLower === "mombasa") return "Mombasa travel packages, Mombasa beach holidays, Diani Beach packages, Kenya coast travel, Mombasa city tours"
-    if (destLower === "diani") return "Diani Beach holidays, Diani Beach Kenya, Kenya coast travel, beach holidays Kenya, Diani packages"
-    if (destLower === "amboseli") return "Amboseli National Park tours, Amboseli safari, Mount Kilimanjaro views, Kenya safari, Amboseli elephant tours"
-    if (destLower === "nairobi") return "Nairobi travel, Nairobi city tours, Kenya capital tours, Nairobi attractions, Kenya tours from Nairobi"
-    return `${destination.name} Kenya travel, ${destination.name} Kenya tours, ${destination.name} Kenya packages, Kenya safari, ${destination.name} travel`
+  // Per-destination primary keyword targeting
+  const getKenyaKeywords = (destName: string): string => {
+    const d = destName.toLowerCase()
+    if (d.includes("masai mara") || d.includes("maasai mara"))
+      return "Masai Mara safari packages, Masai Mara safari cost, 3 days Masai Mara safari, Masai Mara packages from Nairobi, Masai Mara wildlife safari Kenya"
+    if (d.includes("amboseli"))
+      return "Amboseli National Park tours from Nairobi, Amboseli safari packages Kenya, Amboseli elephant tours, Amboseli Kilimanjaro views safari"
+    if (d.includes("diani"))
+      return "Diani Beach packages from Kenya, Diani Beach holiday deals, Kenya coast travel packages, Diani beach holiday cost, Mombasa coast packages Nairobi"
+    if (d.includes("mombasa"))
+      return "Mombasa packages from Nairobi, Mombasa beach holiday Kenya, Kenya coast tours, Mombasa city tour packages, Diani Beach packages Mombasa"
+    if (d.includes("nairobi"))
+      return "Nairobi city tour packages, Nairobi day trips from Kenya, Nairobi travel deals, Nairobi attractions packages, Kenya tours from Nairobi"
+    if (d.includes("tsavo"))
+      return "Tsavo safari packages from Nairobi, Tsavo National Park tours Kenya, Tsavo East West safari, affordable Tsavo safari packages"
+    if (d.includes("nakuru"))
+      return "Lake Nakuru safari packages, Lake Nakuru flamingo tours Kenya, Nakuru National Park tours from Nairobi"
+    if (d.includes("lamu"))
+      return "Lamu island packages from Kenya, Lamu holiday deals Nairobi, Lamu cultural tour packages, Kenya coast Lamu trips"
+    if (d.includes("samburu"))
+      return "Samburu safari packages Kenya, Samburu National Reserve tours, Samburu wildlife safari from Nairobi"
+    return `${destination.name} safari packages from Nairobi, ${destination.name} Kenya tours, ${destination.name} travel packages Kenya, affordable ${destination.name} safari`
   }
 
   const keywords = isKenya
     ? getKenyaKeywords(destination.name)
-    : `${destination.name} travel, ${destination.name} packages, ${destination.country.name} holidays, ${destination.name} ${(destination.tags as string[]).join(', ')} trips, ${destination.name} tours`
+    : `${destination.name} packages from Kenya, affordable ${destination.name} travel, ${destination.name} ${destination.country.name} holiday deals, ${destination.name} tours from Nairobi, ${(destination.tags as string[]).join(" ")} packages`
+
+  const getKenyaTitle = (destName: string): string => {
+    const d = destName.toLowerCase()
+    if (d.includes("masai mara") || d.includes("maasai mara"))
+      return `Masai Mara Safari Packages | Best Deals from Nairobi – Denmar`
+    if (d.includes("amboseli"))
+      return `Amboseli National Park Tours | Affordable Packages – Denmar`
+    if (d.includes("diani"))
+      return `Diani Beach Packages from Kenya | Holiday Deals – Denmar`
+    if (d.includes("mombasa"))
+      return `Mombasa Packages from Nairobi | Kenya Coast Deals – Denmar`
+    if (d.includes("nairobi"))
+      return `Nairobi City Tour Packages | Kenya Travel Deals – Denmar`
+    if (d.includes("tsavo"))
+      return `Tsavo Safari Packages from Nairobi | Affordable Tours – Denmar`
+    return `${destination.name} Safari Packages from Nairobi | Affordable – Denmar`
+  }
 
   const title = isKenya
-    ? `${destination.name} Kenya - Travel Packages & Tours | ${destination.country.name}'s Premier Destination | Denmar`
-    : `${destination.name}, ${destination.country.name} - Travel Guide & Packages`
+    ? getKenyaTitle(destination.name)
+    : `${destination.name} Packages from Kenya | Affordable Travel – Denmar`
 
   const description = isKenya
-    ? `${destination.summary}. ${destination.description.substring(0, 80)}. Book your ${destination.name} Kenya tour package today with Kenya's best travel agency. Best prices guaranteed!`
-    : `${destination.summary}. ${destination.description.substring(0, 120)}... Plan your perfect ${destination.name} trip with Denmar Tours & Travel.`
+    ? `${destination.summary.substring(0, 90)}. Book your ${destination.name} package from Nairobi today. Best prices & expert support guaranteed.`
+    : `${destination.summary.substring(0, 90)}. Explore affordable ${destination.name}, ${destination.country.name} packages from Kenya. Check availability & get a quote today.`
 
   return {
     title,
     description,
     keywords,
     openGraph: {
-      title: `${destination.name}, ${destination.country.name} - Travel Guide`,
-      description: destination.summary,
+      title,
+      description,
       images: [destination.heroImage || "/tablogo.png"],
     },
   }

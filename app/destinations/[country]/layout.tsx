@@ -18,21 +18,25 @@ export async function generateMetadata({
 
   // Special handling for Kenya to maximize local SEO
   const isKenya = countrySlug === "kenya"
-  const kenyaKeywords = isKenya 
-    ? "Kenya destinations, Kenya travel, Kenya tours, Kenya safari, Masai Mara, Amboseli, Diani Beach, Kenya travel packages, best Kenya destinations"
-    : `${country.name} travel, ${country.name} tours, ${country.name} destinations`
-  
+  const keywords = isKenya
+    ? "Kenya safari packages from Nairobi, Kenya travel packages, Masai Mara safari cost, 3 days Masai Mara safari, Amboseli National Park tours from Kenya, Diani beach holiday packages, affordable Kenya safaris, Kenya tour company Nairobi"
+    : `${country.name} packages from Kenya, ${country.name} holiday packages from Nairobi, affordable ${country.name} travel deals, ${country.name} tour packages Kenya, ${country.name} travel agency Nairobi`
+
+  const title = isKenya
+    ? `Kenya Safari Packages from Nairobi | Affordable Tours – Denmar`
+    : `${country.name} Packages from Kenya | Affordable Travel – Denmar`
+
+  const description = isKenya
+    ? `${country.summary}. Find affordable Kenya safari packages from Nairobi — Masai Mara, Amboseli, Diani Beach & more. Check availability & get your custom quote today.`
+    : `${country.summary}. Book affordable ${country.name} packages from Kenya with Denmar Travel. Flexible dates, expert support — check availability & get a quote today.`
+
   return {
-    title: isKenya 
-      ? `${country.name} Travel Guide & Tour Packages | Best Kenya Destinations | Denmar`
-      : `${country.name} Travel Guide - Denmar Tours & Travel`,
-    description: isKenya
-      ? `${country.summary}. Discover amazing Kenya destinations including Masai Mara, Amboseli, Diani Beach, and Lake Nakuru with Kenya's best travel agency. Book your Kenya tour package today!`
-      : `${country.summary}. Explore ${country.name} with Denmar Tours & Travel - your trusted travel partner for ${country.region} adventures.`,
-    keywords: kenyaKeywords,
+    title,
+    description,
+    keywords,
     openGraph: {
-      title: `${country.name} Travel Guide - Denmar Tours & Travel`,
-      description: country.summary,
+      title,
+      description,
       images: [country.heroImage || "/tablogo.png"],
     },
   }
