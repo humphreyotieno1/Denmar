@@ -58,7 +58,7 @@ export function TopDestinationsSection({ destinations = [] }: TopDestinationsSec
           transition={{ duration: 0.6 }}
         >
           <span className="inline-flex items-center gap-2 rounded-full bg-brand-accent/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.4em] text-brand-accent">
-            Popular Tours
+            Popular Destinations
           </span>
           <h2 className="mt-6 font-heading text-3xl font-bold text-brand-primary sm:text-4xl">
             Handpicked getaways guests can’t stop talking about
@@ -127,7 +127,7 @@ export function TopDestinationsSection({ destinations = [] }: TopDestinationsSec
               <motion.button
                 key="left-arrow"
                 type="button"
-                className="absolute left-0 top-1/2 hidden -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:scale-110 sm:flex"
+                className="absolute -left-4 md:-left-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:scale-110 sm:flex"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
@@ -141,7 +141,7 @@ export function TopDestinationsSection({ destinations = [] }: TopDestinationsSec
               <motion.button
                 key="right-arrow"
                 type="button"
-                className="absolute right-0 top-1/2 hidden -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:scale-110 sm:flex"
+                className="absolute -right-4 md:-right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:scale-110 sm:flex"
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}

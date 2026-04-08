@@ -76,7 +76,7 @@ export function Footer({ settings }: FooterProps) {
                 alt={settings?.siteName || "Denmar Travel"} 
                 width={150} 
                 height={60} 
-                className="object-contain"
+                className="object-contain w-auto h-auto"
               />
             </Link>
             {/* <div className="flex items-center space-x-2">

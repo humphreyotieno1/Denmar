@@ -83,7 +83,7 @@ export function HeroSection({ slides, highlightPackages = [] }: HeroSectionProps
 
   return (
     <section
-      className="relative min-h-[640px] mt-18 sm:min-h-[740px] lg:min-h-[820px] overflow-hidden pb-16 sm:pb-20 lg:pb-0"
+      className="relative min-h-[840px] sm:min-h-[840px] lg:min-h-[820px] overflow-hidden pb-16 sm:pb-20 lg:pb-0"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -111,7 +111,7 @@ export function HeroSection({ slides, highlightPackages = [] }: HeroSectionProps
           <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/70 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/40 via-black/10 to-transparent sm:hidden" />
 
-          <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-4 pb-8 pt-16 sm:justify-center sm:px-6 lg:flex-row lg:items-center lg:gap-12 lg:px-8">
+          <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-4 pb-20 pt-[50px] sm:pb-12 sm:justify-center sm:px-6 lg:flex-row lg:items-center lg:gap-12 lg:px-8">
             <div className="w-full text-white lg:w-3/5">
               {slide.eyebrow && (
                 <div className="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white/80">

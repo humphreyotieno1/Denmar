@@ -215,13 +215,13 @@ export function DestinationsGrid() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-lg min-h-[500px] flex flex-col p-0 gap-0">
-                <div className="relative">
+                <div className="relative h-60 w-full overflow-hidden">
                   <Image
                     src={destination.image || "/placeholder.svg"}
                     alt={destination.name}
-                    width={400}
-                    height={240}
-                    className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-300 aspect-[5/3]"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                     priority={index < 3}
                   />
                   <Badge className={`absolute top-4 left-4 ${destination.badgeColor} text-white`}>

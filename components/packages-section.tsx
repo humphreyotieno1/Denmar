@@ -41,8 +41,8 @@ export function PackagesSection({ packages = [] }: PackagesSectionProps) {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="font-heading text-3xl font-bold text-brand-primary mb-3">
-            FEATURED PACKAGES
+          <h2 className="font-heading text-3xl font-bold text-brand-primary sm:text-4xl">
+            Featured Packages
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover our handpicked travel packages designed to create unforgettable experiences.
@@ -126,14 +126,14 @@ export function PackagesSection({ packages = [] }: PackagesSectionProps) {
           {/* Navigation Buttons */}
           <button
             onClick={scrollPrev}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10 ${featuredPackages.length <= 3 ? 'lg:hidden' : ''}`}
+            className={`absolute -left-4 md:-left-8 top-1/2 z-10 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center text-brand-primary hover:scale-110 transition-transform ${featuredPackages.length <= 3 ? 'lg:hidden' : ''}`}
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={scrollNext}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-primary hover:bg-gray-50 transition-colors z-10 ${featuredPackages.length <= 3 ? 'lg:hidden' : ''}`}
+            className={`absolute -right-4 md:-right-8 top-1/2 z-10 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center text-brand-primary hover:scale-110 transition-transform ${featuredPackages.length <= 3 ? 'lg:hidden' : ''}`}
             aria-label="Next slide"
           >
             <ChevronRight className="w-5 h-5" />

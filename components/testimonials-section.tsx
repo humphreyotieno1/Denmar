@@ -40,7 +40,7 @@ export function TestimonialsSection({ testimonials = [] }: TestimonialsSectionPr
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-heading text-4xl font-bold text-brand-primary mb-6">WHAT OUR TRAVELERS SAY</h2>
+          <h2 className="font-heading text-3xl font-bold text-brand-primary sm:text-4xl mb-6">What Our Travelers Say</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Don't just take our word for it. Here's what our satisfied customers have to say about their experiences
             with Denmar Tours & Travel.

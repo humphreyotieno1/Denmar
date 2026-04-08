@@ -75,9 +75,8 @@ export default async function HomePage() {
       where: { id: "settings" },
     }),
     modelDestination.findMany({
-      where: { isActive: true },
+      where: { isActive: true, featured: true },
       orderBy: { order: "asc" },
-      take: 8,
     }),
     modelPackage.findMany({
       where: { isActive: true, featured: true },
