@@ -72,7 +72,7 @@ export function PackagesContent({ packages, settings, navCountries }: PackagesCo
     const currentPackages = filteredPackages.slice(startIndex, startIndex + pageSize)
 
     const breadcrumbItems = [
-        { label: "Home", href: "/" },
+        // { label: "Home", href: "/" },
         { label: "Packages", href: "/packages" }
     ]
 

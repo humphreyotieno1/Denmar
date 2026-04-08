@@ -67,7 +67,7 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
     }, [isImageModalOpen])
 
     const breadcrumbItems = [
-        { label: "Home", href: "/" },
+        // { label: "Home", href: "/" },
         { label: "Packages", href: "/packages" },
         { label: packageData.name, href: `/packages/${packageData.slug}` }
     ]

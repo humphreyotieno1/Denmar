@@ -232,7 +232,7 @@ export function DealsGrid({ deals }: DealsGridProps) {
         )}
 
         {/* Call to Action */}
-        <div className="text-center mt-12">
+        {/* <div className="text-center mt-12">
           <div className="bg-gradient-to-r from-brand-accent to-brand-success rounded-lg p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">
               Don't Miss Out on These Amazing Deals!
@@ -248,7 +248,7 @@ export function DealsGrid({ deals }: DealsGridProps) {
               Subscribe Now
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   )
