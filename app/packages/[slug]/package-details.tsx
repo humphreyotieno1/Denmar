@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 import { trackPackageView } from "@/lib/facebook-pixel"
 import { Package } from "@/lib/services"
+import { BreadcrumbSchema, TravelPackageSchema } from "@/lib/structured-data"
 
 interface PackageDetailsProps {
     packageData: Package
@@ -74,6 +75,24 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
 
     return (
         <div className="min-h-screen overflow-x-hidden">
+            {/* SEO Structured Data */}
+            <BreadcrumbSchema 
+                items={[
+                    { name: "Home", url: "https://www.denmartravel.co.ke" },
+                    { name: "Packages", url: "https://www.denmartravel.co.ke/packages" },
+                    { name: packageData.name, url: `https://www.denmartravel.co.ke/packages/${packageData.slug}` }
+                ]} 
+            />
+            <TravelPackageSchema 
+                name={packageData.name}
+                description={packageData.shortDescription || packageData.description}
+                price={packageData.price}
+                destination={packageData.destinationSlug || "Kenya"}
+                duration={packageData.duration}
+                image={packageData.image}
+                rating={5} // Default rating if none provided
+            />
+
             <TopBanner settings={settings} />
             <Navbar settings={settings} countries={navCountries} />
 
