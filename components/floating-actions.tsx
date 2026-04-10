@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { MessageCircle, Phone, ArrowUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { trackPhoneClick, trackWhatsAppClick } from "@/lib/facebook-pixel"
 
 export function FloatingActions() {
   const [showBackToTop, setShowBackToTop] = useState(false)
@@ -32,6 +33,7 @@ export function FloatingActions() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contact us on WhatsApp"
+          onClick={() => trackWhatsAppClick()}
         >
           <MessageCircle className="h-6 w-6" />
         </a>
@@ -43,7 +45,11 @@ export function FloatingActions() {
         className="rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg w-14 h-14 p-0"
         asChild
       >
-        <a href="tel:+254793041888" aria-label="Call us">
+        <a 
+          href="tel:+254793041888" 
+          aria-label="Call us"
+          onClick={() => trackPhoneClick('+254793041888')}
+        >
           <Phone className="h-6 w-6" />
         </a>
       </Button>
