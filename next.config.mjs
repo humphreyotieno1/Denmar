@@ -39,12 +39,12 @@ const nextConfig = {
   async headers() {
     const cspHeader = `
       default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com *.facebook.net *.facebook.com *.cloudinary.com *.vercel-scripts.com;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com *.facebook.net *.facebook.com *.cloudinary.com *.vercel-scripts.com *.google.com;
       style-src 'self' 'unsafe-inline' fonts.googleapis.com;
-      img-src 'self' blob: data: *.cloudinary.com *.googletagmanager.com *.google-analytics.com *.facebook.com *.facebook.net;
+      img-src 'self' blob: data: *.cloudinary.com *.googletagmanager.com *.google-analytics.com *.facebook.com *.facebook.net *.google.com *.gstatic.com *.googleapis.com;
       font-src 'self' data: fonts.gstatic.com;
-      connect-src 'self' *.googletagmanager.com *.google-analytics.com *.analytics.google.com *.facebook.com *.facebook.net *.cloudinary.com;
-      frame-src 'self' *.facebook.com *.facebook.net;
+      connect-src 'self' *.googletagmanager.com *.google-analytics.com *.analytics.google.com *.facebook.com *.facebook.net *.cloudinary.com *.google.com;
+      frame-src 'self' *.facebook.com *.facebook.net *.google.com;
       base-uri 'self';
       form-action 'self';
       frame-ancestors 'self';
