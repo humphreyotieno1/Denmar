@@ -16,23 +16,8 @@ const nextConfig = {
   
   // Configure image optimization
   images: {
-    qualities: [25, 50, 75, 90, 100],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'denmartravel.co.ke',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.denmartravel.co.ke',
-      },
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-      }
-    ],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
-    formats: ['image/avif', 'image/webp'],
+    loader: 'custom',
+    loaderFile: './lib/cloudinary-loader.ts',
   },
   
   // Add security headers
