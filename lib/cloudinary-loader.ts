@@ -33,6 +33,8 @@ export default function cloudinaryLoader({
     }
   }
   
-  // Return local static assets or non-Cloudinary images as-is
-  return src;
+  // Return local static assets or non-Cloudinary images with width query param
+  // to satisfy Next.js loader width verification check
+  const separator = src.includes('?') ? '&' : '?';
+  return `${src}${separator}w=${width}`;
 }

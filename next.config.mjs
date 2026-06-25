@@ -18,6 +18,7 @@ const nextConfig = {
   images: {
     loader: 'custom',
     loaderFile: './lib/cloudinary-loader.ts',
+    qualities: [75, 90, 100],
   },
   
   // Add security headers

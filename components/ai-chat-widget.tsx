@@ -9,12 +9,12 @@ import {
   Loader2,
   Sparkles,
   Mail,
-  PhoneCall,
   Plane,
   UserRound,
   ChevronDown,
   ChevronUp,
 } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
@@ -355,7 +355,7 @@ export function AiChatWidget() {
                         rel="noreferrer"
                         className="flex items-center gap-1 text-brand-primary hover:underline"
                       >
-                        <PhoneCall className="h-3.5 w-3.5" /> WhatsApp
+                        <FaWhatsapp className="h-3.5 w-3.5 text-[#25D366]" /> WhatsApp
                       </a>
                     </div>
                   </div>

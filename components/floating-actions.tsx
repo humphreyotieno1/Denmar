@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { MessageCircle, Phone, ArrowUp } from "lucide-react"
+import { Phone, ArrowUp } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
 import { trackPhoneClick, trackWhatsAppClick } from "@/lib/facebook-pixel"
 
@@ -35,7 +36,7 @@ export function FloatingActions() {
           aria-label="Contact us on WhatsApp"
           onClick={() => trackWhatsAppClick()}
         >
-          <MessageCircle className="h-6 w-6" />
+          <FaWhatsapp className="h-7 w-7" />
         </a>
       </Button>
 

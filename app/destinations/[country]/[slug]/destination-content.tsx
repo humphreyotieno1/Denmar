@@ -24,7 +24,8 @@ interface DestinationContentProps {
 }
 
 import { MiniQuoteForm } from "@/components/mini-quote-form"
-import { MessageCircle, Zap, ShieldCheck, Users2, Award } from "lucide-react"
+import { Zap, ShieldCheck, Users2, Award } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa"
 
 export function DestinationContent({ country, destination, packages, relatedDestinations, settings, navCountries }: DestinationContentProps) {
     const formatPrice = (price: number) => {
@@ -65,12 +66,6 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                 className="text-white space-y-6"
                             >
                                 <div className="space-y-4">
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/20 border border-brand-accent/30 backdrop-blur-md">
-                                        <Star className="w-4 h-4 text-brand-accent fill-brand-accent" />
-                                        <span className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-                                            ⭐ 4.8 RATED | 500+ TRAVELERS SERVED
-                                        </span>
-                                    </div>
 
                                     <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
                                         {destination.name} Travel Packages from Kenya — <span className="text-brand-accent">Book with Denmar</span>
@@ -96,7 +91,7 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                         asChild
                                     >
                                         <a href={`https://wa.me/${whatsappNumber.replace('+', '')}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer">
-                                            <MessageCircle className="w-5 h-5 mr-2 text-green-400 fill-green-400" />
+                                            <FaWhatsapp className="w-5 h-5 mr-2 text-[#25D366]" />
                                             Chat on WhatsApp
                                         </a>
                                     </Button>
@@ -153,11 +148,6 @@ export function DestinationContent({ country, destination, packages, relatedDest
                                         <Calendar className="w-6 h-6 text-indigo-500 mx-auto mb-3" />
                                         <div className="text-sm text-slate-500 uppercase tracking-widest font-bold mb-1 font-bold">Best Time</div>
                                         <div className="text-base font-bold text-slate-800">{destination.bestTime || "Year round"}</div>
-                                    </div>
-                                    <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm text-center group transition-all hover:shadow-md">
-                                        <Star className="w-6 h-6 text-yellow-400 fill-current mx-auto mb-3" />
-                                        <div className="text-sm text-slate-500 uppercase tracking-widest font-bold mb-1">Reviews</div>
-                                        <div className="text-lg font-bold text-slate-800">{4.8} / 5</div>
                                     </div>
                                 </div>
 

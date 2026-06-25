@@ -59,10 +59,7 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
               Featured
             </Badge>
           )}
-          <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-white/85 px-2 py-1 text-xs font-semibold text-[#3d3a2c] shadow">
-            <Star className="h-3.5 w-3.5 text-yellow-500" />
-            {destination.rating.toFixed(1)}
-          </div>
+        
           <div className="absolute bottom-4 left-4 text-white">
             <span className="uppercase text-[10px] tracking-[0.3em] text-white/70">Inspiration</span>
             <h3 className="text-lg font-semibold md:text-xl">{destination.name}</h3>
@@ -88,9 +85,6 @@ export function DestinationCard({ destination, countrySlug, index = 0 }: Destina
           </div>
 
           <div className="flex-1 space-y-3">
-            <DetailRow icon={Star}>
-              Rated {destination.rating.toFixed(1)} ({destination.reviews.toLocaleString()} reviews)
-            </DetailRow>
             <DetailRow icon={Clock}>{destination.duration}</DetailRow>
             <DetailRow icon={CalendarDays}>{`Best time: ${destination.bestTime}`}</DetailRow>
             {primaryHighlight && <DetailRow icon={Tag}>{primaryHighlight}</DetailRow>}

@@ -83,12 +83,6 @@ export function CountryContent({ country, destinations, settings, navCountries }
                                         </div>
                                         <div className="text-sm text-gray-600">Featured</div>
                                     </div>
-                                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                        <div className="text-2xl font-bold text-brand-accent">
-                                            {destinations.length > 0 ? (Math.round(destinations.reduce((acc, d) => acc + (d.rating || 5), 0) / destinations.length * 10) / 10) : 5}
-                                        </div>
-                                        <div className="text-sm text-gray-600">Avg Rating</div>
-                                    </div>
                                 </div>
                             </div>
 

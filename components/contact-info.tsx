@@ -1,4 +1,5 @@
-import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react"
+import { MapPin, Phone, Mail, Clock } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
@@ -84,7 +85,7 @@ export function ContactInfo() {
         <div className="pt-6 border-t space-y-3">
           <Button className="w-full bg-green-500 hover:bg-green-600 text-white" asChild>
             <a href="https://wa.me/254793041888" target="_blank" rel="noopener noreferrer">
-              <MessageCircle className="mr-2 h-4 w-4" />
+              <FaWhatsapp className="mr-2 h-4 w-4" />
               WhatsApp Chat
             </a>
           </Button>

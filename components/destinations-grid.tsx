@@ -227,11 +227,7 @@ export function DestinationsGrid() {
                   <Badge className={`absolute top-4 left-4 ${destination.badgeColor} text-white`}>
                     {destination.badge}
                   </Badge>
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
-                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-medium">{destination.rating}</span>
-                    <span className="text-xs text-gray-500">({destination.reviews})</span>
-                  </div>
+                 
                 </div>
 
                 <CardContent className="p-6 flex flex-col flex-grow">
@@ -261,10 +257,6 @@ export function DestinationsGrid() {
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
                       <span>{destination.duration}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-4 w-4" />
-                      <span>{destination.reviews} reviews</span>
                     </div>
                   </div>
 
