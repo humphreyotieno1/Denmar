@@ -2,12 +2,11 @@
 
 import "dotenv/config"
 import { PrismaClient, type Prisma } from "@prisma/client"
-import { pipeline, Tensor } from "@xenova/transformers"
+import OpenAI from "openai"
 import path from "node:path"
 
 const prisma = new PrismaClient()
-
-let embeddingPipelinePromise: Promise<any> | null = null
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null
 
 interface AiContent {
   id: string
@@ -19,19 +18,17 @@ interface AiContent {
   metadata: Record<string, any>
 }
 
-async function getEmbeddingPipeline() {
-  if (!embeddingPipelinePromise) {
-    embeddingPipelinePromise = pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2")
-  }
-  return embeddingPipelinePromise
-}
+const startedAt = new Date()
 
 async function generateEmbedding(text: string) {
-  const extractor = await getEmbeddingPipeline()
-  const result = (await extractor(text, { pooling: "mean", normalize: true })) as Tensor
-
-  const array = result.data instanceof Float32Array ? result.data : new Float32Array(result.data as any)
-  return Array.from(array)
+  if (!openai) {
+    throw new Error("OpenAI client not initialized. Please set OPENAI_API_KEY in your environment.")
+  }
+  const response = await openai.embeddings.create({
+    model: "text-embedding-3-small",
+    input: text.replace(/\n/g, " "),
+  })
+  return response.data[0].embedding
 }
 
 function sanitize(text: string): string {

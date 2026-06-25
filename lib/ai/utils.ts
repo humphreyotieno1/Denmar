@@ -1,20 +1,24 @@
-import { pipeline, Tensor } from "@xenova/transformers"
+import OpenAI from "openai"
 import type { AiDocument } from "@prisma/client"
 
-let embeddingPipelinePromise: Promise<any> | null = null
-
-async function getEmbeddingPipeline() {
-  if (!embeddingPipelinePromise) {
-    embeddingPipelinePromise = pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2")
-  }
-  return embeddingPipelinePromise
-}
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null
 
 export async function summarizeForChat(text: string): Promise<number[]> {
-  const extractor = await getEmbeddingPipeline()
-  const result = (await extractor(text, { pooling: "mean", normalize: true })) as Tensor
-  const data = result.data instanceof Float32Array ? result.data : new Float32Array(result.data as any)
-  return Array.from(data)
+  if (!openai) {
+    console.error("OpenAI client not initialized (missing OPENAI_API_KEY). Returning empty array for embedding.")
+    return []
+  }
+
+  try {
+    const response = await openai.embeddings.create({
+      model: "text-embedding-3-small",
+      input: text.replace(/\n/g, " "),
+    })
+    return response.data[0].embedding
+  } catch (error) {
+    console.error("Failed to generate embedding via OpenAI:", error)
+    throw error
+  }
 }
 
 export function createSystemPrompt(
