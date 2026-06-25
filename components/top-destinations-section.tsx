@@ -44,7 +44,7 @@ export function TopDestinationsSection({ destinations = [] }: TopDestinationsSec
     price: `From $${d.priceFrom}`,
     badge: d.featured ? "Featured" : "Popular",
     badgeColor: d.featured ? "bg-brand-accent" : "bg-brand-success",
-    href: `/destinations/${d.slug}`,
+    href: `/destinations/${d.country?.slug || 'kenya'}/${d.slug}`,
   }))
 
   return (

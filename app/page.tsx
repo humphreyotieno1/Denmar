@@ -76,6 +76,7 @@ export default async function HomePage() {
     }),
     modelDestination.findMany({
       where: { isActive: true, featured: true },
+      include: { country: true },
       orderBy: { order: "asc" },
     }),
     modelPackage.findMany({
