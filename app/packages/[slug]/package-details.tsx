@@ -4,7 +4,7 @@ import { TopBanner, Navbar, Footer, FloatingActions, Breadcrumbs } from "@/compo
 import { PackageCard } from "@/components/cards"
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { CheckCircle, X } from "@/components/ui/huge-icons"
+import { CheckCircle, Eye, X } from "@/components/ui/huge-icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -153,6 +153,7 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                 <section className="bg-gray-50 py-10">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="mb-8 flex flex-wrap items-center gap-2">
+                            <a href="#package-poster" className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-gray-700 hover:border-brand-secondary hover:text-brand-secondary">Package Poster</a>
                             <a href="#package-details" className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-gray-700 hover:border-brand-secondary hover:text-brand-secondary">Package Details</a>
                             <a href="#whats-included" className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-gray-700 hover:border-brand-secondary hover:text-brand-secondary">What's Included</a>
                             <a href="#booking-enquiry" className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-gray-700 hover:border-brand-secondary hover:text-brand-secondary">Booking Enquiry</a>
@@ -232,34 +233,71 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                             </div>
 
                             <aside className="lg:col-span-1">
-                                <Card className="sticky top-24 border-gray-200 shadow-sm">
-                                    <CardContent className="space-y-4 p-5">
-                                        <h3 className="font-heading text-lg font-bold text-brand-primary">Package Summary</h3>
-                                        <div className="space-y-3 text-sm">
-                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                                                <span className="text-gray-500">Trip type</span>
-                                                <span className="font-medium capitalize text-gray-900">{packageData.category || "Package"}</span>
+                                <div className="sticky top-24 space-y-4">
+                                    <Card id="package-poster" className="border-gray-200 shadow-sm">
+                                        <CardContent className="space-y-4 p-5">
+                                            <div className="flex items-center justify-between gap-3">
+                                                <h3 className="font-heading text-lg font-bold text-brand-primary">Package Poster</h3>
+                                                <span className="rounded-full bg-brand-accent/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-brand-primary">
+                                                    Click to view
+                                                </span>
                                             </div>
-                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                                                <span className="text-gray-500">Cost PPS</span>
-                                                <span className="font-semibold text-brand-primary">{displayPrice}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                                                <span className="text-gray-500">Duration</span>
-                                                <span className="font-medium text-gray-900">{packageData.duration}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                                                <span className="text-gray-500">Destination</span>
-                                                <span className="font-medium text-gray-900">{destinationLabel}</span>
-                                            </div>
-                                            {packageData.terms?.[0] && (
-                                                <div className="rounded-lg bg-gray-50 p-3 text-xs leading-relaxed text-gray-600">
-                                                    {packageData.terms[0]}
+
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsImageModalOpen(true)}
+                                                className="group relative block w-full overflow-hidden rounded-xl border border-gray-200 bg-gray-100 text-left"
+                                                aria-label={`Open poster for ${packageData.name}`}
+                                            >
+                                                <div className="relative aspect-[4/5] w-full">
+                                                    <Image
+                                                        src={packageData.image}
+                                                        alt={`${packageData.name} poster`}
+                                                        fill
+                                                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                                                        sizes="(max-width: 1024px) 100vw, 420px"
+                                                    />
                                                 </div>
-                                            )}
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/85 to-transparent p-3 text-white">
+                                                    <span className="line-clamp-1 pr-3 text-xs font-medium">{packageData.name}</span>
+                                                    <span className="inline-flex items-center gap-1 rounded-full border border-white/35 bg-black/30 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]">
+                                                        <Eye className="h-3 w-3" />
+                                                        View
+                                                    </span>
+                                                </div>
+                                            </button>
+                                        </CardContent>
+                                    </Card>
+
+                                    <Card className="border-gray-200 shadow-sm">
+                                        <CardContent className="space-y-4 p-5">
+                                            <h3 className="font-heading text-lg font-bold text-brand-primary">Package Summary</h3>
+                                            <div className="space-y-3 text-sm">
+                                                <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                    <span className="text-gray-500">Trip type</span>
+                                                    <span className="font-medium capitalize text-gray-900">{packageData.category || "Package"}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                    <span className="text-gray-500">Cost PPS</span>
+                                                    <span className="font-semibold text-brand-primary">{displayPrice}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                    <span className="text-gray-500">Duration</span>
+                                                    <span className="font-medium text-gray-900">{packageData.duration}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                    <span className="text-gray-500">Destination</span>
+                                                    <span className="font-medium text-gray-900">{destinationLabel}</span>
+                                                </div>
+                                                {packageData.terms?.[0] && (
+                                                    <div className="rounded-lg bg-gray-50 p-3 text-xs leading-relaxed text-gray-600">
+                                                        {packageData.terms[0]}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </div>
                             </aside>
                         </div>
                     </div>
