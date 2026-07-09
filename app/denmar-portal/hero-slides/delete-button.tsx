@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Trash2 } from "lucide-react"
+import { Trash2 } from "@/components/ui/huge-icons"
 import { Button } from "@/components/ui/button"
 import {
     AlertDialog,

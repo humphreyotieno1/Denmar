@@ -1,14 +1,10 @@
 "use client"
 
 import { notFound } from "next/navigation"
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { Breadcrumbs } from "@/components/breadcrumbs"
+import { TopBanner, Navbar, Footer, FloatingActions, Breadcrumbs } from "@/components/layout"
 
 import { useState, useEffect, use } from "react"
-import { Star, CheckCircle, Clock, DollarSign, ArrowRight } from "lucide-react"
+import { Star, CheckCircle, Clock, DollarSign, ArrowRight } from "@/components/ui/huge-icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -107,8 +103,8 @@ export default function ServicePage({ params }: ServicePageProps) {
               >
                 {service.category}
               </Badge>
-              <h1 className="text-5xl font-bold mb-4">{service.name}</h1>
-              <p className="text-xl max-w-3xl mx-auto px-4">{service.shortDescription}</p>
+              <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{service.name}</h1>
+              <p className="text-base sm:text-lg max-w-3xl mx-auto px-4">{service.shortDescription}</p>
             </div>
           </div>
         </section>
@@ -129,14 +125,14 @@ export default function ServicePage({ params }: ServicePageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Main Content */}
               <div className="lg:col-span-2">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">About {service.name}</h2>
-                <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-6">About {service.name}</h2>
+                <p className="text-gray-600 text-base leading-relaxed mb-8">
                   {service.description}
                 </p>
 
                 {/* Features Grid */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Features</h3>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-gray-900 mb-6">Key Features</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {service.features.map((feature: string, index: number) => (
                       <div key={index} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
@@ -150,7 +146,7 @@ export default function ServicePage({ params }: ServicePageProps) {
                 {/* Pricing & Duration */}
                 {(service.price || service.duration) && (
                   <div className="mb-8">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6">Service Details</h3>
+                    <h3 className="font-heading text-xl sm:text-2xl font-bold text-gray-900 mb-6">Service Details</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {service.price && (
                         <Card className="border-0 shadow-lg">
@@ -222,10 +218,10 @@ export default function ServicePage({ params }: ServicePageProps) {
         <section className="py-16 px-4 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
                 Explore Other Services
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-base sm:text-lg text-gray-600">
                 Discover more ways we can help with your travel needs
               </p>
             </div>

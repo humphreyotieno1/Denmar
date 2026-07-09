@@ -1,22 +1,18 @@
 "use client"
 
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { Breadcrumbs } from "@/components/breadcrumbs"
-import { PackageCard } from "@/components/package-card"
+import { TopBanner, Navbar, Footer, FloatingActions, Breadcrumbs } from "@/components/layout"
+import { PackageCard } from "@/components/cards"
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Star, MapPin, Clock, DollarSign, Calendar, Users, CheckCircle, X, ArrowRight, Share2, Heart } from "lucide-react"
+import { CheckCircle, X } from "@/components/ui/huge-icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 import { trackPackageView } from "@/lib/facebook-pixel"
 import { Package } from "@/lib/services"
 import { BreadcrumbSchema, TravelPackageSchema } from "@/lib/structured-data"
+import { formatCardDuration, formatCardPrice } from "@/lib/format-travel"
 
 interface PackageDetailsProps {
     packageData: Package
@@ -26,8 +22,16 @@ interface PackageDetailsProps {
 }
 
 export function PackageDetails({ packageData, relatedPackages, settings, navCountries }: PackageDetailsProps) {
-    const [activeTab, setActiveTab] = useState("overview")
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+    const durationMeta = formatCardDuration(packageData.duration || "")
+    const displayPrice = formatCardPrice(packageData.price || "")
+    const whatsappNumber = String(settings?.whatsappNumber || settings?.contactPhone || "+254793041888").replace(/[^\d]/g, "")
+    const whatsappMessage = encodeURIComponent(
+        `Hi Denmar, I'm interested in the ${packageData.name} package. Please share availability and booking details.`,
+    )
+    const destinationLabel = packageData.destinationSlug
+        ? packageData.destinationSlug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())
+        : "Signature Journey"
 
     useEffect(() => {
         // Track Facebook Pixel event for package view
@@ -105,309 +109,159 @@ export function PackageDetails({ packageData, relatedPackages, settings, navCoun
                 </div>
 
                 {/* Hero Section */}
-                <section className="py-8 bg-white">
-                    <div className="max-w-6xl mx-auto px-4">
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Package Image */}
-                            <div className="lg:col-span-2 flex justify-center lg:justify-start">
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.6 }}
-                                    className="relative w-full max-w-[500px] aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer group shadow-2xl border-8 border-white"
-                                    onClick={() => setIsImageModalOpen(true)}
-                                >
-                                    <Image
-                                        src={packageData.image}
-                                        alt={`${packageData.name} — ${packageData.destinationSlug?.replace(/-/g, ' ')} travel package from Kenya`}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                                        sizes="(max-width: 1024px) 100vw, 500px"
-                                        priority
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                                    <div className="absolute inset-0 border border-black/5 rounded-[inherit]" />
+                <section className="relative isolate min-h-[380px] overflow-hidden md:min-h-[440px]">
+                    <Image
+                        src={packageData.image}
+                        alt={`${packageData.name} — ${destinationLabel} travel package from Kenya`}
+                        fill
+                        priority
+                        sizes="100vw"
+                        className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
 
-                                    {/* Featured Badge */}
-                                    {packageData.featured && (
-                                        <Badge className="absolute top-4 left-4 bg-brand-accent text-white border-0 shadow-lg">
-                                            Featured Package
-                                        </Badge>
-                                    )}
-
-                                    {/* Zoom Hint */}
-                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 backdrop-blur-[2px]">
-                                        <div className="bg-white/90 text-brand-primary px-4 py-2 rounded-full font-medium text-sm shadow-xl">
-                                            Click to view full poster
-                                        </div>
-                                    </div>
-                                </motion.div>
+                    <div className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-8 pt-20 sm:px-6 md:pb-10 lg:px-8">
+                        <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                            <div className="max-w-4xl text-white">
+                                <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white/85">
+                                    {durationMeta.days && <span>{durationMeta.days}</span>}
+                                    {durationMeta.days && durationMeta.nights && <span className="text-white/55">|</span>}
+                                    {durationMeta.nights && <span>{durationMeta.nights}</span>}
+                                    {(durationMeta.days || durationMeta.nights) && <span className="text-white/55">|</span>}
+                                    <span>{displayPrice} PPS</span>
+                                </div>
+                                <h1 className="font-heading text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
+                                    {packageData.name}
+                                </h1>
                             </div>
 
-                            {/* Package Info */}
-                            <div className="space-y-6">
-                                <motion.div
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.2 }}
+                            <div className="shrink-0">
+                                <Button
+                                    asChild
+                                    className="h-11 rounded-full bg-[#117a49] px-6 text-xs font-bold uppercase tracking-[0.08em] text-white hover:bg-[#0d6a3f]"
                                 >
-                                    <div className="space-y-4">
-                                        <div>
-                                            <h1 className="text-3xl font-bold text-brand-primary mb-2">
-                                            {packageData.name}
-                                            {packageData.destinationSlug && (
-                                                <span className="block text-lg font-medium text-slate-500 mt-1">
-                                                    {packageData.destinationSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())} Travel Package from Kenya
-                                                </span>
-                                            )}
-                                        </h1>
-                                            {/* <p className="text-gray-600 text-lg">
-                                                {packageData.description}
-                                            </p> */}
-                                        </div>
-
-                                        {/* Package Details */}
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-3">
-                                                <Clock className="w-5 h-5 text-brand-accent" />
-                                                <span className="text-gray-700">{packageData.duration}</span>
-                                            </div>
-
-                                            {/* <div className="flex items-center gap-3">
-                                                <MapPin className="w-5 h-5 text-brand-accent" />
-                                                <span className="text-gray-700">Best time: {packageData.bestTime}</span>
-                                            </div> */}
-
-                                        </div>
-
-                                        {/* Price */}
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <div className="flex items-center justify-between">
-                                                <div>
-                                                    <div className="text-3xl font-bold text-green-600">
-                                                        From {packageData.price}
-                                                    </div>
-                                                    <div className="text-sm text-gray-600">per person sharing</div>
-                                                </div>
-                                                {packageData.featured && (
-                                                    <Badge className="bg-red-500 text-white text-lg px-3 py-1">
-                                                        Featured
-                                                    </Badge>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* Action Buttons */}
-                                        <div className="space-y-3">
-                                            <Button
-                                                size="lg"
-                                                className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white"
-                                                asChild
-                                            >
-                                                <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
-                                                    Check Availability &amp; Get Quote
-                                                    <ArrowRight className="w-5 h-5 ml-2" />
-                                                </a>
-                                            </Button>
-                                            <Button
-                                                size="lg"
-                                                variant="outline"
-                                                className="w-full border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white"
-                                                asChild
-                                            >
-                                                <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
-                                                    Request Custom Itinerary
-                                                </a>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                    <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
+                                        Ask About This Package
+                                    </a>
+                                </Button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Package Details Tabs */}
-                <section className="py-12 bg-gray-50">
-                    <div className="max-w-6xl mx-auto px-4">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                        >
-                            {/* Tab Navigation */}
-                            <div className="flex flex-wrap gap-2 mb-8">
-                                {[
-                                    { id: "overview", label: "Overview" },
-                                    { id: "itinerary", label: "Itinerary" },
-                                    { id: "includes", label: "What's Included" },
-                                    { id: "terms", label: "Terms & Conditions" }
-                                ].map(tab => (
-                                    <Button
-                                        key={tab.id}
-                                        variant={activeTab === tab.id ? "default" : "outline"}
-                                        onClick={() => setActiveTab(tab.id)}
-                                        className={activeTab === tab.id ? "bg-brand-accent text-white" : ""}
-                                    >
-                                        {tab.label}
-                                    </Button>
-                                ))}
-                            </div>
+                {/* Package Details Layout */}
+                <section className="bg-gray-50 py-10">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="mb-8 flex flex-wrap items-center gap-2">
+                            <a href="#package-details" className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-gray-700 hover:border-brand-secondary hover:text-brand-secondary">Package Details</a>
+                            <a href="#whats-included" className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-gray-700 hover:border-brand-secondary hover:text-brand-secondary">What's Included</a>
+                            <a href="#booking-enquiry" className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-gray-700 hover:border-brand-secondary hover:text-brand-secondary">Booking Enquiry</a>
+                        </div>
 
-                            {/* Tab Content */}
-                            <div className="bg-white rounded-xl shadow-lg p-8">
-                                {activeTab === "overview" && (
-                                    <div className="space-y-6">
-                                        <h3 className="text-2xl font-bold text-brand-primary mb-4">Package Overview</h3>
-                                        <p className="text-gray-700 text-lg leading-relaxed">
-                                            {packageData.description}
-                                        </p>
+                        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                            <div className="space-y-8 lg:col-span-2">
+                                <article id="package-details" className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                                    <h2 className="font-heading text-2xl font-bold text-brand-primary">Package Details</h2>
+                                    <p className="mt-4 text-base leading-relaxed text-gray-700">
+                                        {packageData.description}
+                                    </p>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                                            <div>
-                                                <h4 className="font-semibold text-gray-900 mb-3">Package Highlights</h4>
-                                                <ul className="space-y-2">
-                                                    {packageData.includes?.slice(0, 5).map((item: string, index: number) => (
-                                                        <li key={index} className="flex items-center gap-2">
-                                                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                                                            <span className="text-gray-700">{item}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <h4 className="font-semibold text-gray-900 mb-3">Quick Facts</h4>
-                                                <div className="space-y-2">
-                                                    <div className="flex justify-between">
-                                                        <span className="text-gray-600">Duration:</span>
-                                                        <span className="font-medium">{packageData.duration}</span>
-                                                    </div>
-                                                    <div className="flex justify-between">
-                                                        {/* <span className="text-gray-600">Best Time:</span> */}
-                                                        <span className="font-medium">{packageData.bestTime}</span>
-                                                    </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="text-gray-600">Category:</span>
-                                                        <span className="font-medium capitalize">{packageData.category}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {activeTab === "itinerary" && (
-                                    <div className="space-y-6">
-                                        <h3 className="text-2xl font-bold text-brand-primary mb-6">Daily Itinerary</h3>
-                                        <div className="space-y-6">
-                                            {packageData.itinerary?.map((day: any, index: number) => (
-                                                <Card key={index} className="border-l-4 border-l-brand-accent">
-                                                    <CardContent className="p-6">
-                                                        <div className="flex items-start gap-4">
-                                                            <div className="flex-shrink-0 w-12 h-12 bg-brand-accent text-white rounded-full flex items-center justify-center font-bold">
-                                                                {day.day}
-                                                            </div>
-                                                            <div className="flex-1">
-                                                                <h4 className="text-xl font-semibold text-gray-900 mb-2">
-                                                                    {day.title}
-                                                                </h4>
-                                                                <p className="text-gray-700 mb-4">
-                                                                    {day.description}
-                                                                </p>
-
-                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                                    <div>
-                                                                        <h5 className="font-medium text-gray-900 mb-2">Activities</h5>
-                                                                        <ul className="space-y-1">
-                                                                            {day.activities?.map((activity: string, actIndex: number) => (
-                                                                                <li key={actIndex} className="flex items-center gap-2 text-sm text-gray-600">
-                                                                                    <CheckCircle className="w-3 h-3 text-green-500" />
-                                                                                    {activity}
-                                                                                </li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5 className="font-medium text-gray-900 mb-2">Meals</h5>
-                                                                        <div className="flex flex-wrap gap-1">
-                                                                            {(Array.isArray(day.meals) ? day.meals : (typeof day.meals === 'string' ? (day.meals as string).split(',') : [])).map((meal: string, mealIndex: number) => (
-                                                                                <Badge key={mealIndex} variant="secondary" className="text-xs">
-                                                                                    {meal.trim()}
-                                                                                </Badge>
-                                                                            ))}
-                                                                        </div>
-                                                                        {day.accommodation && (
-                                                                            <>
-                                                                                <h5 className="font-medium text-gray-900 mb-2 mt-3">Accommodation</h5>
-                                                                                <p className="text-sm text-gray-600">{day.accommodation}</p>
-                                                                            </>
-                                                                        )}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                    {Array.isArray(packageData.itinerary) && packageData.itinerary.length > 0 && (
+                                        <div className="mt-8 space-y-4">
+                                            <h3 className="text-lg font-semibold text-gray-900">Day-by-day itinerary</h3>
+                                            <div className="space-y-3">
+                                                {packageData.itinerary.map((day: any, index: number) => (
+                                                    <div key={index} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                                                        <div className="text-sm font-semibold uppercase tracking-[0.08em] text-brand-secondary">
+                                                            Day {day.day}: {day.title}
                                                         </div>
-                                                    </CardContent>
-                                                </Card>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {activeTab === "includes" && (
-                                    <div className="space-y-6">
-                                        <h3 className="text-2xl font-bold text-brand-primary mb-6">What's Included</h3>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                            <div>
-                                                <h4 className="text-lg font-semibold text-green-600 mb-4 flex items-center gap-2">
-                                                    <CheckCircle className="w-5 h-5" />
-                                                    Included in Package
-                                                </h4>
-                                                <ul className="space-y-3">
-                                                    {(Array.isArray(packageData.includes) ? packageData.includes : []).map((item: string, index: number) => (
-                                                        <li key={index} className="flex items-start gap-3">
-                                                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                                                            <span className="text-gray-700">{item}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-
-                                            <div>
-                                                <h4 className="text-lg font-semibold text-red-600 mb-4 flex items-center gap-2">
-                                                    <X className="w-5 h-5" />
-                                                    Not Included
-                                                </h4>
-                                                <ul className="space-y-3">
-                                                    {(Array.isArray(packageData.excludes) ? packageData.excludes : []).map((item: string, index: number) => (
-                                                        <li key={index} className="flex items-start gap-3">
-                                                            <X className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-                                                            <span className="text-gray-700">{item}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {activeTab === "terms" && (
-                                    <div className="space-y-6">
-                                        <h3 className="text-2xl font-bold text-brand-primary mb-6">Terms & Conditions</h3>
-                                        <div className="space-y-4">
-                                            {(Array.isArray(packageData.terms) ? packageData.terms : []).map((term: string, index: number) => (
-                                                <div key={index} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                                                    <div className="w-6 h-6 bg-brand-accent text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
-                                                        {index + 1}
+                                                        <p className="mt-1 text-sm text-gray-700">{day.description}</p>
                                                     </div>
-                                                    <p className="text-gray-700">{term}</p>
-                                                </div>
-                                            ))}
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </article>
+
+                                <article id="whats-included" className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                                    <h2 className="font-heading text-2xl font-bold text-brand-primary">Summary of Inclusions & Exclusions</h2>
+                                    <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-2">
+                                        <div>
+                                            <h3 className="mb-4 text-base font-semibold text-green-700">Package includes</h3>
+                                            <ul className="space-y-3">
+                                                {(Array.isArray(packageData.includes) ? packageData.includes : []).map((item: string, index: number) => (
+                                                    <li key={index} className="flex items-start gap-2.5 text-sm text-gray-700">
+                                                        <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                                                        <span>{item}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h3 className="mb-4 text-base font-semibold text-red-700">Package excludes</h3>
+                                            <ul className="space-y-3">
+                                                {(Array.isArray(packageData.excludes) ? packageData.excludes : []).map((item: string, index: number) => (
+                                                    <li key={index} className="flex items-start gap-2.5 text-sm text-gray-700">
+                                                        <X className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                                                        <span>{item}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
                                         </div>
                                     </div>
-                                )}
+                                </article>
+
+                                <article id="booking-enquiry" className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                                    <h2 className="font-heading text-2xl font-bold text-brand-primary">Book {packageData.name}</h2>
+                                    <p className="mt-3 text-sm leading-relaxed text-gray-700">
+                                        Ready to travel? Send your preferred departure date and travelers count. We will confirm availability and share a full quotation.
+                                    </p>
+                                    <div className="mt-6 flex flex-wrap gap-3">
+                                        <Button asChild className="bg-[#117a49] rounded-full hover:bg-[#0d6a3f] text-white">
+                                            <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer">
+                                                Ask on WhatsApp
+                                            </a>
+                                        </Button>
+                                        <Button asChild variant="outline" className="border-brand-secondary rounded-full text-brand-secondary hover:bg-brand-secondary hover:text-white">
+                                            <a href={`/contact?destination=${encodeURIComponent(packageData.name)}`}>
+                                                Submit Booking Enquiry
+                                            </a>
+                                        </Button>
+                                    </div>
+                                </article>
                             </div>
-                        </motion.div>
+
+                            <aside className="lg:col-span-1">
+                                <Card className="sticky top-24 border-gray-200 shadow-sm">
+                                    <CardContent className="space-y-4 p-5">
+                                        <h3 className="font-heading text-lg font-bold text-brand-primary">Package Summary</h3>
+                                        <div className="space-y-3 text-sm">
+                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                <span className="text-gray-500">Trip type</span>
+                                                <span className="font-medium capitalize text-gray-900">{packageData.category || "Package"}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                <span className="text-gray-500">Cost PPS</span>
+                                                <span className="font-semibold text-brand-primary">{displayPrice}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                <span className="text-gray-500">Duration</span>
+                                                <span className="font-medium text-gray-900">{packageData.duration}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                                <span className="text-gray-500">Destination</span>
+                                                <span className="font-medium text-gray-900">{destinationLabel}</span>
+                                            </div>
+                                            {packageData.terms?.[0] && (
+                                                <div className="rounded-lg bg-gray-50 p-3 text-xs leading-relaxed text-gray-600">
+                                                    {packageData.terms[0]}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </aside>
+                        </div>
                     </div>
                 </section>
 

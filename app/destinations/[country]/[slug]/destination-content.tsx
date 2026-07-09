@@ -1,18 +1,15 @@
 "use client"
 
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { Breadcrumbs } from "@/components/breadcrumbs"
-import { DestinationCard } from "@/components/destination-card"
-import { Star, MapPin, Clock, Calendar, CheckCircle, Info } from "lucide-react"
+import { TopBanner, Navbar, Footer, FloatingActions, Breadcrumbs } from "@/components/layout"
+import { DestinationCard } from "@/components/cards"
+import { Clock, Calendar, CheckCircle, Zap } from "@/components/ui/huge-icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { formatCardDuration } from "@/lib/format-travel"
 
 interface DestinationContentProps {
     country: any
@@ -23,92 +20,57 @@ interface DestinationContentProps {
     navCountries?: any[]
 }
 
-import { MiniQuoteForm } from "@/components/mini-quote-form"
-import { Zap, ShieldCheck, Users2, Award } from "lucide-react"
-import { FaWhatsapp } from "react-icons/fa"
+import { MiniQuoteForm } from "@/components/sections/contact/mini-quote-form"
 
 export function DestinationContent({ country, destination, packages, relatedDestinations, settings, navCountries }: DestinationContentProps) {
     const formatPrice = (price: number) => {
         return `$${price.toLocaleString()}`
     }
-
-    const whatsappNumber = "+254793041888" // Hardcoded but could be from settings
-    const whatsappMessage = encodeURIComponent(`Hi Denmar, I'm interested in the ${destination.name} travel packages.`)
+    const durationMeta = formatCardDuration(destination.duration || "")
 
     return (
         <div className="min-h-screen overflow-x-hidden bg-white selection:bg-brand-accent/30">
             <TopBanner settings={settings} />
             <Navbar settings={settings} countries={navCountries} />
 
-            <main>
-                {/* HERO SECTION - REFINED FOR CONVERSION */}
-                <section className="relative min-h-[500px] flex items-center pt-24 pb-12 overflow-hidden">
-                    {/* Background Layer */}
-                    <div className="absolute inset-0">
-                        <Image
-                            src={destination.heroImage}
-                            alt={`${destination.name} travel packages from Kenya — ${destination.summary?.substring(0, 60) || country.name}`}
-                            fill
-                            className="object-cover"
-                            priority
-                            sizes="100vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-                    </div>
+            <main className="pt-16">
+                {/* HERO SECTION */}
+                <section className="relative isolate min-h-[380px] overflow-hidden md:min-h-[440px]">
+                    <Image
+                        src={destination.heroImage}
+                        alt={`${destination.name} travel packages from Kenya — ${destination.summary?.substring(0, 60) || country.name}`}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="100vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
 
-                    <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                            {/* Copy Side */}
-                            <motion.div
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.8 }}
-                                className="text-white space-y-6"
-                            >
-                                <div className="space-y-4">
-
-                                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
-                                        {destination.name} Travel Packages from Kenya — <span className="text-brand-accent">Book with Denmar</span>
-                                    </h1>
-
-                                    <p className="text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
-                                        {destination.summary || `Discover curated ${destination.name} experiences with flights, hotels, and expert-guided tours. Explore at your own pace.`}
-                                    </p>
+                    <div className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-8 pt-20 sm:px-6 md:pb-10 lg:px-8">
+                        <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                            <div className="max-w-4xl text-white">
+                                <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white/85">
+                                    {durationMeta.days && <span>{durationMeta.days}</span>}
+                                    {durationMeta.days && durationMeta.nights && <span className="text-white/55">|</span>}
+                                    {durationMeta.nights && <span>{durationMeta.nights}</span>}
+                                    {(durationMeta.days || durationMeta.nights) && <span className="text-white/55">|</span>}
+                                    <span>From {formatPrice(destination.priceFrom || 0)} PPS</span>
                                 </div>
+                                <h1 className="font-heading text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
+                                    {destination.name} Travel Packages from Kenya
+                                </h1>
+                            </div>
 
-                                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                                    <Button
-                                        size="lg"
-                                        className="bg-brand-accent text-white hover:bg-brand-accent/90 h-14 px-8 text-base font-bold shadow-xl shadow-brand-accent/20"
-                                        asChild
-                                    >
-                                        <a href="#packages">Check Availability &amp; Get Quote</a>
-                                    </Button>
-                                    <Button
-                                        size="lg"
-                                        variant="outline"
-                                        className="bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20 h-14 px-8 text-base font-semibold"
-                                        asChild
-                                    >
-                                        <a href={`https://wa.me/${whatsappNumber.replace('+', '')}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer">
-                                            <FaWhatsapp className="w-5 h-5 mr-2 text-[#25D366]" />
-                                            Chat on WhatsApp
-                                        </a>
-                                    </Button>
-                                </div>
-
-                                <div className="flex flex-wrap items-center gap-6 pt-6 opacity-80">
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <ShieldCheck className="w-4 h-4" /> Secure Bookings
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <Users2 className="w-4 h-4" /> Local Experts
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <Award className="w-4 h-4" /> 24/7 Support
-                                    </div>
-                                </div>
-                            </motion.div>
+                            <div className="shrink-0">
+                                <Button
+                                    asChild
+                                    className="h-11 rounded-[4px] bg-[#117a49] px-6 text-xs font-bold uppercase tracking-[0.08em] text-white hover:bg-[#0d6a3f]"
+                                >
+                                    <a href={`/contact?destination=${encodeURIComponent(destination.name)}`}>
+                                        Ask About This Destination
+                                    </a>
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -218,10 +180,10 @@ export function DestinationContent({ country, destination, packages, relatedDest
                         <div className="max-w-7xl mx-auto px-4">
                             <div className="text-center mb-16 max-w-2xl mx-auto space-y-4">
                                 <Badge className="bg-brand-accent font-bold px-4 py-1">CURATED ITINERARIES</Badge>
-                                <h2 className="text-4xl md:text-5xl font-black text-brand-primary leading-tight">
+                                <h2 className="font-heading text-3xl md:text-4xl font-bold text-brand-primary leading-tight">
                                     {destination.name} Travel Packages <span className="text-brand-accent">from Kenya</span>
                                 </h2>
-                                <p className="text-lg text-slate-600">
+                                <p className="text-base sm:text-lg text-slate-600">
                                     Handpicked stays, transfers, and experiences tailored to {destination.name}. Flexible dates from Nairobi.
                                 </p>
                             </div>
@@ -284,8 +246,8 @@ export function DestinationContent({ country, destination, packages, relatedDest
                         <div className="max-w-7xl mx-auto">
                             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                                 <div className="space-y-4">
-                                    <h2 className="text-4xl font-black text-brand-primary">More {country.name} Destinations to Explore</h2>
-                                    <p className="text-lg text-slate-600">Discover more affordable travel packages across {country.name}</p>
+                                    <h2 className="font-heading text-3xl sm:text-4xl font-bold text-brand-primary">More {country.name} Destinations to Explore</h2>
+                                    <p className="text-base sm:text-lg text-slate-600">Discover more affordable travel packages across {country.name}</p>
                                 </div>
                                 <Button variant="link" className="text-brand-accent font-bold p-0" asChild>
                                     <Link href={`/destinations/${country.slug}`}>See All {country.name} Packages &rarr;</Link>

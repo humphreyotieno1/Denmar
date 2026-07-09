@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db"
 import { PackagesContent } from "./packages-content"
 import { Package } from "@/lib/services"
+import { getRandomDestinationImage } from "@/lib/random-hero-image"
 
 export const dynamic = 'force-dynamic'
 
@@ -24,5 +25,7 @@ export default async function PackagesPage() {
     })
   ])
 
-  return <PackagesContent packages={packages} settings={settings} navCountries={countriesForNav} />
+  const heroImage = getRandomDestinationImage()
+
+  return <PackagesContent packages={packages} settings={settings} navCountries={countriesForNav} heroImage={heroImage} />
 }

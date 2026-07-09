@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, ReactNode } from "react"
-import { X, CheckCircle, AlertCircle, Info } from "lucide-react"
+import { X, CheckCircle, AlertCircle, Info } from "@/components/ui/huge-icons"
 import { motion, AnimatePresence } from "framer-motion"
 
 type ToastType = "success" | "error" | "info"

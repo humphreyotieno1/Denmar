@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Loader2, Eye, EyeOff, Plane, ArrowLeft } from "lucide-react"
+import { Loader2, Eye, EyeOff, Plane, ArrowLeft } from "@/components/ui/huge-icons"
 import Link from "next/link"
 
 import { Suspense } from "react"

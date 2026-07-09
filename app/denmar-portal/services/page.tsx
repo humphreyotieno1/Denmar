@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { Plus, Wrench, Pencil, Eye, EyeOff, Star } from "lucide-react"
+import { Plus, Wrench, Pencil, Eye, EyeOff, Star } from "@/components/ui/huge-icons"
 import { Button } from "@/components/ui/button"
 import { DeleteServiceButton } from "./delete-button"
 import { Pagination } from "@/components/admin/pagination"

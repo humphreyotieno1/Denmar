@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { Breadcrumbs } from "@/components/breadcrumbs"
-import { FiltersBar } from "@/components/filters-bar"
-import { DestinationCard } from "@/components/destination-card"
-import { Pagination } from "@/components/pagination"
+import { TopBanner } from "@/components/layout/top-banner"
+import { Navbar } from "@/components/layout/navbar"
+import { Footer } from "@/components/layout/footer"
+import { FloatingActions } from "@/components/layout/floating-actions"
+import { Breadcrumbs } from "@/components/layout/breadcrumbs"
+import { FiltersBar } from "@/components/sections/listing/filters-bar"
+import { DestinationCard } from "@/components/cards/destination-card"
+import { Pagination } from "@/components/shared/pagination"
 
 interface CountryContentProps {
     country: any
@@ -40,8 +40,8 @@ export function CountryContent({ country, destinations, settings, navCountries }
                     </div>
                     <div className="relative z-10 flex items-center justify-center h-full">
                         <div className="text-center text-white">
-                            <h1 className="font-heading text-5xl font-bold mb-4">{country.name} Travel Packages</h1>
-                            <p className="text-xl max-w-2xl mx-auto px-4">{country.summary}</p>
+                            <h1 className="font-heading text-3xl font-bold sm:text-4xl md:text-5xl mb-4">{country.name} Travel Packages</h1>
+                            <p className="text-base sm:text-lg max-w-2xl mx-auto px-4">{country.summary}</p>
                         </div>
                     </div>
                 </section>
@@ -62,8 +62,8 @@ export function CountryContent({ country, destinations, settings, navCountries }
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             {/* Main Content */}
                             <div className="lg:col-span-2">
-                                <h2 className="font-heading text-3xl font-bold text-gray-900 mb-6">About {country.name}</h2>
-                                <div className="prose prose-slate max-w-none text-gray-600 text-lg leading-relaxed mb-6 whitespace-pre-wrap">
+                                <h2 className="font-heading text-2xl font-bold text-gray-900 sm:text-3xl mb-6">About {country.name}</h2>
+                                <div className="prose prose-slate max-w-none text-gray-600 text-base leading-relaxed mb-6 whitespace-pre-wrap">
                                     {country.description}
                                 </div>
 
@@ -116,10 +116,10 @@ export function CountryContent({ country, destinations, settings, navCountries }
                 <section className="py-16 px-4 bg-gray-50">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-12">
-                            <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4">
+                            <h2 className="font-heading text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
                                 Explore {country.name} Destinations &amp; Packages
                             </h2>
-                            <p className="text-xl text-gray-600">
+                            <p className="text-base sm:text-lg text-gray-600">
                                 Browse affordable travel packages and experiences across {country.name}, bookable from Kenya
                             </p>
                         </div>

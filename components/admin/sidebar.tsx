@@ -25,7 +25,7 @@ import {
     Megaphone,
     Menu,
     X,
-} from "lucide-react"
+} from "@/components/ui/huge-icons"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {

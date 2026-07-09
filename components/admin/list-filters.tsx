@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import { useCallback } from "react"
-import { ArrowUpDown, Filter } from "lucide-react"
+import { ArrowUpDown, Filter } from "@/components/ui/huge-icons"
 
 export type SortOption = {
     value: string

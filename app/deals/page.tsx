@@ -1,9 +1,5 @@
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { DealsHero } from "@/components/deals-hero"
-import { DealsGrid } from "@/components/deals-grid"
+import { TopBanner, Navbar, Footer, FloatingActions } from "@/components/layout"
+import { DealsHero, DealsGrid } from "@/components/sections/listing"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -59,7 +55,7 @@ export default async function DealsPage() {
       <TopBanner settings={settings} />
       <Navbar settings={settings} countries={countries as any} />
 
-      <main>
+      <main className="pt-16">
         <DealsHero />
         <DealsGrid deals={deals} />
       </main>

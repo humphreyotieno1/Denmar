@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { Users, Mail, Phone, Calendar, MessageSquare } from "lucide-react"
+import { Users, Mail, Phone, Calendar, MessageSquare } from "@/components/ui/huge-icons"
 import { format } from "date-fns"
 import { Pagination } from "@/components/admin/pagination"
 import { ListFilters } from "@/components/admin/list-filters"

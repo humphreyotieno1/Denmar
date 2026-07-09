@@ -1,11 +1,7 @@
 import { prisma } from "@/lib/db"
 import { notFound } from "next/navigation"
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { Breadcrumbs } from "@/components/breadcrumbs"
-import { MapPin, Percent, ArrowRight, CheckCircle, Clock } from "lucide-react"
+import { TopBanner, Navbar, Footer, FloatingActions, Breadcrumbs } from "@/components/layout"
+import { MapPin, Percent, ArrowRight, CheckCircle, Clock } from "@/components/ui/huge-icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -93,12 +89,12 @@ export default async function DealPage({ params }: DealPageProps) {
             <div className="text-center text-white">
               <Badge
                 variant="secondary"
-                className={`${getCategoryColor(deal.category)} text-white border-0 mb-4`}
+                className={`${getCategoryColor(deal.category)} rounded-full text-white border-0 mb-4`}
               >
                 {deal.category}
               </Badge>
-              <h1 className="text-5xl font-bold mb-4">{deal.title}</h1>
-              <p className="text-xl max-w-3xl mx-auto px-4">{deal.shortDescription}</p>
+              <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{deal.title}</h1>
+              <p className="text-base sm:text-lg max-w-3xl mx-auto px-4">{deal.shortDescription}</p>
             </div>
           </div>
         </section>
@@ -120,17 +116,17 @@ export default async function DealPage({ params }: DealPageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Main Content */}
               <div className="lg:col-span-2">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">About This Deal</h2>
-                <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-6">About This Deal</h2>
+                <p className="text-gray-600 text-base leading-relaxed mb-8">
                   {deal.description}
                 </p>
 
                 {/* Destinations */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Destinations</h3>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-gray-900 mb-4">Destinations</h3>
                   <div className="flex flex-wrap gap-2">
                     {deal.destinations.map((dest: string, index: number) => (
-                      <Badge key={index} variant="outline" className="text-sm">
+                      <Badge key={index} variant="outline" className="text-sm rounded-full">
                         <MapPin className="w-3 h-3 mr-1" />
                         {dest}
                       </Badge>
@@ -140,7 +136,7 @@ export default async function DealPage({ params }: DealPageProps) {
 
                 {/* Highlights */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">What's Included</h3>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-gray-900 mb-4">What's Included</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {deal.highlights.map((highlight: string, index: number) => (
                       <div key={index} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
@@ -153,7 +149,7 @@ export default async function DealPage({ params }: DealPageProps) {
 
                 {/* Terms */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Terms & Conditions</h3>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-gray-900 mb-4">Terms & Conditions</h3>
                   <div className="space-y-2">
                     {deal.terms.map((term: string, index: number) => (
                       <div key={index} className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
@@ -173,7 +169,7 @@ export default async function DealPage({ params }: DealPageProps) {
                   {/* Pricing */}
                   <div className="mb-6 p-4 bg-white rounded-lg border">
                     <div className="text-center">
-                      <Badge className={`${getCategoryColor(deal.category)} text-white border-0 text-sm font-bold`}>
+                      <Badge className={`${getCategoryColor(deal.category)} rounded-full text-white border-0 text-sm font-bold`}>
                         <Percent className="w-3 h-3 mr-1" />
                         UP TO {deal.discount}% OFF
                       </Badge>
@@ -212,7 +208,7 @@ export default async function DealPage({ params }: DealPageProps) {
                   <div className="space-y-3">
                     <Link href="/contact" className="w-full">
                       <Button
-                        className="w-full bg-brand-accent hover:bg-brand-accent/90 text-white"
+                        className="w-full bg-brand-accent rounded-full hover:bg-brand-accent/90 text-white"
                         size="lg"
                       >
                         Book This Deal
@@ -229,10 +225,10 @@ export default async function DealPage({ params }: DealPageProps) {
         <section className="py-16 px-4 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
                 More Amazing Deals
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-base sm:text-lg text-gray-600">
                 Don't miss out on other incredible offers
               </p>
             </div>
@@ -240,7 +236,7 @@ export default async function DealPage({ params }: DealPageProps) {
             <div className="text-center">
               <Button
                 size="lg"
-                className="bg-brand-accent hover:bg-brand-accent/90 text-white"
+                className="bg-brand-accent rounded-full hover:bg-brand-accent/90 text-white"
                 asChild
               >
                 <Link href="/deals">
