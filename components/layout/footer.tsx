@@ -245,9 +245,17 @@ export function Footer({ settings }: FooterProps) {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p className="text-gray-400 text-sm">
-            {`  ${new Date().getFullYear()} ${settings?.siteName || 'Denmar Tours & Travel'}. All rights reserved.`} | Privacy Policy | Terms of Service
-          </p>
+          <div className="text-gray-400 text-sm">
+            <span>{`${new Date().getFullYear()} ${settings?.siteName || 'Denmar Tours & Travel'}. All rights reserved.`}</span>
+            <span className="mx-2">|</span>
+            <Link href="/privacy-policy" className="underline-offset-4 hover:underline hover:text-brand-accent transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="mx-2">|</span>
+            <Link href="/terms" className="underline-offset-4 hover:underline hover:text-brand-accent transition-colors">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
