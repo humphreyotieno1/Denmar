@@ -1,12 +1,6 @@
 import { Suspense } from "react"
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { ContactHero } from "@/components/contact-hero"
-import { ContactForm } from "@/components/contact-form"
-import { ContactInfo } from "@/components/contact-info"
-import { ContactMap } from "@/components/contact-map"
+import { TopBanner, Navbar, Footer, FloatingActions } from "@/components/layout"
+import { ContactHero, ContactForm, ContactInfo, ContactMap } from "@/components/sections/contact"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -38,36 +32,32 @@ export default async function ContactPage() {
   ])
 
   return (
-    <div className="min-h-screen overflow-x-hidden flex flex-col mt-4">
+    <div className="min-h-screen overflow-x-hidden flex flex-col">
       <TopBanner settings={settings} />
       <Navbar settings={settings} countries={countries as any} />
 
-      <main className="flex-grow">
+      <main className="flex-grow pt-16">
         <ContactHero />
-        <div className="py-12 md:py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="py-12 md:py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Talk To Us Today!</h2>
-              <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              <h2 className="font-heading text-3xl font-bold text-gray-900 sm:text-4xl">Talk To Us Today!</h2>
+              <p className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
                 Have questions or ready to book your next adventure? Our team is here to help you plan the perfect trip.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
               {/* Left Column - Contact Form */}
               <div className="lg:col-span-3">
-                <div className="p-6 rounded-xl">
-                  <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100 rounded-xl" />}>
-                    <ContactForm countries={countries} />
-                  </Suspense>
-                </div>
+                <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100 rounded-xl" />}>
+                  <ContactForm countries={countries} />
+                </Suspense>
               </div>
 
               {/* Right Column - Contact Info */}
               <div className="lg:col-span-2 lg:sticky lg:top-24 h-fit">
-                <div className="p-6 rounded-xl">
-                  <ContactInfo />
-                </div>
+                <ContactInfo />
               </div>
 
               {/* Full Width Map */}

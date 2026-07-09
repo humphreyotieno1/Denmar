@@ -1,16 +1,16 @@
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { HeroSection } from "@/components/hero-section"
-import { WhyUsSection } from "@/components/why-us-section"
-import { TopDestinationsSection } from "@/components/top-destinations-section"
-import { PackagesSection } from "@/components/packages-section"
-import { ReadyToPlanSection } from "@/components/ready-to-plan-section"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
+import { TopBanner, Navbar, Footer, FloatingActions } from "@/components/layout"
+import {
+  HeroSection,
+  WhyUsSection,
+  TopDestinationsSection,
+  PackagesSection,
+  ReadyToPlanSection,
+  DealsPopup,
+  ValentinesPackages,
+  TestimonialsSection,
+} from "@/components/sections/home"
 import type { Metadata } from "next"
-import { DealsPopup } from "@/components/deals-popup"
-// import { ChristmasPackages } from "@/components/xmass-packages"
-import { ValentinesPackages } from "@/components/valentines"
+// import { ChristmasPackages } from "@/components/sections/home/xmass-packages"
 
 export const metadata: Metadata = {
   title: "Best Travel Agency in Kenya - Kenya Safari Tour Operator | Denmar Travel",
@@ -54,8 +54,7 @@ export const metadata: Metadata = {
 }
 
 import { prisma } from "@/lib/db"
-import { TestimonialsSection } from "@/components/testimonials-section"
-// import { ServicesGrid } from "@/components/services-grid"
+// import { ServicesGrid } from "@/components/sections/listing/services-grid"
 
 export default async function HomePage() {
   const modelHero: any = prisma.heroSlide
@@ -144,7 +143,7 @@ export default async function HomePage() {
           <ServicesGrid services={formattedServices} />
         </section> */}
         <TestimonialsSection testimonials={testimonials} />
-        <ReadyToPlanSection />
+        <ReadyToPlanSection backgroundImage={destinations[0]?.heroImage || packages[0]?.image} />
       </main>
 
       <Footer settings={settings} />

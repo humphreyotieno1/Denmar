@@ -1,9 +1,5 @@
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { DestinationsBanner } from "@/components/destinations-banner"
-import { CountryGrid } from "@/components/country-grid"
+import { TopBanner, Navbar, Footer, FloatingActions } from "@/components/layout"
+import { DestinationsBanner, CountryGrid } from "@/components/sections/listing"
 import { Suspense } from "react"
 import type { Metadata } from "next"
 
@@ -44,7 +40,7 @@ export default async function DestinationsPage() {
       <TopBanner settings={settings} />
       <Navbar settings={settings} countries={allCountriesForNav as any} />
 
-      <main>
+      <main className="pt-16">
         <DestinationsBanner />
         <Suspense fallback={
           <div className="py-16 px-4 text-center">

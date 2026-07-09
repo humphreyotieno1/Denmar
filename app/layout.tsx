@@ -4,8 +4,9 @@ import { Poppins, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { ToastProvider } from "@/components/ui/toast"
 import Script from "next/script"
-import { AiChatWidget } from "@/components/ai-chat-widget"
-import { FooterSchema } from "@/components/footer-schema"
+import { AiChatWidget } from "@/components/widgets/ai-chat-widget"
+import { FooterSchema } from "@/components/layout"
+import { Toaster } from "sonner"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -177,6 +178,7 @@ export default async function RootLayout({
         <FooterSchema />
         <ToastProvider>
           {children}
+          <Toaster richColors position="top-right" closeButton />
           <AiChatWidget />
         </ToastProvider>
       </body>

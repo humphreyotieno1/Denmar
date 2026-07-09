@@ -153,8 +153,34 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    font-size: 15px;
+    scroll-behavior: smooth;
+  }
+  @media (min-width: 1280px) {
+    html {
+      font-size: 15.5px;
+    }
+  }
   body {
     @apply bg-background text-foreground;
+    line-height: 1.55;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-poppins);
+    line-height: 1.15;
+    letter-spacing: -0.012em;
+  }
+  p,
+  li {
+    line-height: 1.6;
   }
 }
 
@@ -199,9 +225,9 @@
     border-color: var(--color-brand-secondary);
   }
 
-  /* Added heading font utility */
+  /* Premium font pairing: Poppins headings, Open Sans body */
   .font-heading {
-    font-family: var(--font-open-sans);
+    font-family: var(--font-poppins);
   }
 
   /* Added custom animations for hero section */
@@ -240,7 +266,3 @@
   }
 }
 
-/* Added smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}

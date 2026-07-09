@@ -16,7 +16,7 @@ import {
     Plus,
     Pencil,
     Trash2,
-} from "lucide-react"
+} from "@/components/ui/huge-icons"
 import { formatDistanceToNow } from "date-fns"
 
 async function getStats() {

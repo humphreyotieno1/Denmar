@@ -12,7 +12,7 @@ import {
     Wrench,
     Loader2,
     X,
-} from "lucide-react"
+} from "@/components/ui/huge-icons"
 
 interface SearchResult {
     id: string

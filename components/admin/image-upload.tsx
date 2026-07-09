@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { Upload, X, Loader2, ImageIcon } from "lucide-react"
+import { Upload, X, Loader2, ImageIcon } from "@/components/ui/huge-icons"
 import { cn } from "@/lib/utils"
 import { uploadToCloudinary } from "@/lib/cloudinary"
 import Image from "next/image"

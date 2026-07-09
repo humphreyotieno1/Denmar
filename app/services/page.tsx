@@ -1,9 +1,5 @@
-import { TopBanner } from "@/components/top-banner"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { FloatingActions } from "@/components/floating-actions"
-import { ServicesBanner } from "@/components/services-banner"
-import { ServicesGrid } from "@/components/services-grid"
+import { TopBanner, Navbar, Footer, FloatingActions } from "@/components/layout"
+import { ServicesBanner, ServicesGrid } from "@/components/sections/listing"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {

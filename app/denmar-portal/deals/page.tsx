@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Suspense } from "react"
 import { prisma } from "@/lib/db"
-import { Plus, Tag, Pencil, Eye, EyeOff, Star, Calendar } from "lucide-react"
+import { Plus, Tag, Pencil, Eye, EyeOff, Star, Calendar } from "@/components/ui/huge-icons"
 import { Button } from "@/components/ui/button"
 import { DeleteDealButton } from "./delete-button"
 import { format } from "date-fns"

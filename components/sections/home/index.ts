@@ -1,0 +1,8 @@
+export { HeroSection } from "@/components/sections/home/hero-section"
+export { WhyUsSection } from "@/components/sections/home/why-us-section"
+export { TopDestinationsSection } from "@/components/sections/home/top-destinations-section"
+export { PackagesSection } from "@/components/sections/home/packages-section"
+export { TestimonialsSection } from "@/components/sections/home/testimonials-section"
+export { ReadyToPlanSection } from "@/components/sections/home/ready-to-plan-section"
+export { DealsPopup } from "@/components/sections/home/deals-popup"
+export { ValentinesPackages } from "@/components/sections/home/valentines"
