@@ -64,7 +64,7 @@ export function ContactInfo() {
         {/* Quick Contact Buttons */}
         <div className="pt-4 border-t space-y-3">
           <Button className="w-full bg-green-500 rounded-full hover:bg-green-600 text-white" asChild>
-            <a href="https://wa.me/254793041888" target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/254720490883" target="_blank" rel="noopener noreferrer">
               <FaWhatsapp className="mr-2 h-4 w-4" />
               WhatsApp Chat
             </a>

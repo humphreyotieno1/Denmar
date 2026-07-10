@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { trackPhoneClick, trackWhatsAppClick } from "@/lib/facebook-pixel"
 
 export function FloatingActions() {
+  const primaryContact = "254720490883"
   const [showBackToTop, setShowBackToTop] = useState(false)
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export function FloatingActions() {
         asChild
       >
         <a
-          href="https://wa.me/254720490888"
+          href={`https://wa.me/${primaryContact}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contact us on WhatsApp"
@@ -47,9 +48,9 @@ export function FloatingActions() {
         asChild
       >
         <a 
-          href="tel:+254720490888" 
+          href={`tel:+${primaryContact}`} 
           aria-label="Call us"
-          onClick={() => trackPhoneClick('+254720490888')}
+          onClick={() => trackPhoneClick(`+${primaryContact}`)}
         >
           <Phone className="h-6 w-6" />
         </a>

@@ -17,6 +17,7 @@ interface FooterProps {
 }
 
 export function Footer({ settings }: FooterProps) {
+  const primaryContact = "+254720490883"
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubscribe = async () => {
@@ -100,11 +101,11 @@ export function Footer({ settings }: FooterProps) {
               <div className="flex items-center space-x-2 text-sm">
                 <Phone className="h-4 w-4 text-brand-accent flex-shrink-0" />
                 <a
-                  href={`tel:${settings?.contactPhone || '+254 720 490 883'}`}
+                  href={`tel:${primaryContact}`}
                   className="text-gray-300 hover:text-brand-accent transition-colors"
-                  onClick={() => handlePhoneClick(settings?.contactPhone || '+254 720 490 883')}
+                  onClick={() => handlePhoneClick(primaryContact)}
                 >
-                  {settings?.contactPhone || '+254 720 490 883'}
+                  {primaryContact}
                 </a>
               </div>
               <div className="flex items-center space-x-2 text-sm">

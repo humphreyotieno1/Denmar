@@ -10,6 +10,7 @@ interface TopBannerProps {
 }
 
 export function TopBanner({ settings }: TopBannerProps) {
+  const primaryContact = "+254720490883"
   const [showPromo, setShowPromo] = useState(true)
 
   return (
@@ -22,8 +23,8 @@ export function TopBanner({ settings }: TopBannerProps) {
             </span>
             <div className="flex items-center gap-1">
               <Phone className="h-4 w-4 text-white/80" strokeWidth={1.5} />
-              <a href={`tel:${settings?.contactPhone || '+254 720 490 883'}`} className="hover:text-white transition-colors">
-                {settings?.contactPhone || '+254 720 490 883'}
+              <a href={`tel:${primaryContact}`} className="hover:text-white transition-colors">
+                {primaryContact}
               </a>
             </div>
             <div className="hidden sm:flex items-center gap-1">
