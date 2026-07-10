@@ -4,7 +4,6 @@ import { Poppins, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { ToastProvider } from "@/components/ui/toast"
 import Script from "next/script"
-import { AiChatWidget } from "@/components/widgets/ai-chat-widget"
 import { FooterSchema } from "@/components/layout"
 import { Toaster } from "sonner"
 
@@ -179,8 +178,28 @@ export default async function RootLayout({
         <ToastProvider>
           {children}
           <Toaster richColors position="top-right" closeButton />
-          <AiChatWidget />
+          {/* Legacy Denmar AI widget intentionally disabled for full tawk.to replacement.
+              Code is preserved in components/widgets/ai-chat-widget.tsx */}
+          {/* <AiChatWidget /> */}
         </ToastProvider>
+        {/* Standard tawk.to installation snippet (recommended approach) */}
+        <Script
+          id="tawkto-widget"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+              (function(){
+                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                s1.async=true;
+                s1.src='https://embed.tawk.to/6a50b2978926201d475f51d0/1jt5jj8jk';
+                s1.charset='UTF-8';
+                s1.setAttribute('crossorigin','*');
+                s0.parentNode.insertBefore(s1,s0);
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   )
