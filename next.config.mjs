@@ -26,9 +26,9 @@ const nextConfig = {
     const cspHeader = `
       default-src 'self';
       script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com *.facebook.net *.facebook.com *.cloudinary.com *.vercel-scripts.com *.google.com *.tawk.to;
-      style-src 'self' 'unsafe-inline' fonts.googleapis.com;
+      style-src 'self' 'unsafe-inline' fonts.googleapis.com *.tawk.to embed.tawk.to;
       img-src 'self' blob: data: *.cloudinary.com *.googletagmanager.com *.google-analytics.com *.facebook.com *.facebook.net *.google.com *.gstatic.com *.googleapis.com *.tawk.to *.tawk.link;
-      font-src 'self' data: fonts.gstatic.com;
+      font-src 'self' data: fonts.gstatic.com *.tawk.to embed.tawk.to;
       connect-src 'self' *.googletagmanager.com *.google-analytics.com *.analytics.google.com *.facebook.com *.facebook.net *.cloudinary.com *.google.com *.tawk.to *.tawk.link https://*.tawk.to wss://*.tawk.to;
       frame-src 'self' *.facebook.com *.facebook.net *.google.com *.tawk.to *.tawk.link;
       base-uri 'self';
