@@ -25,7 +25,7 @@ const nextConfig = {
   async headers() {
     const cspHeader = `
       default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com *.facebook.net *.facebook.com *.cloudinary.com *.vercel-scripts.com *.google.com *.tawk.to;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com *.facebook.net *.facebook.com *.cloudinary.com *.vercel-scripts.com *.google.com *.tawk.to *.tawk.link *.jsdelivr.net cdn.jsdelivr.net;
       style-src 'self' 'unsafe-inline' fonts.googleapis.com *.tawk.to embed.tawk.to;
       img-src 'self' blob: data: *.cloudinary.com *.googletagmanager.com *.google-analytics.com *.facebook.com *.facebook.net *.google.com *.gstatic.com *.googleapis.com *.tawk.to *.tawk.link;
       font-src 'self' data: fonts.gstatic.com *.tawk.to embed.tawk.to;
